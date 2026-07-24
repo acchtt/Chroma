@@ -21,14 +21,20 @@ jobs:
           ref: agent/update-website-screenshot
           fetch-depth: 0
 
-      - name: Rebuild screenshot and update website
+      - name: Decode screenshot asset
+        shell: bash
+        run: cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
+
+      - name: Validate screenshot asset
         shell: bash
         run: |
-          set -euo pipefail
-          cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
           test -s website/assets/chroma-app.webp
+          file website/assets/chroma-app.webp
           file website/assets/chroma-app.webp | grep -q "Web/P image"
-          python3 - <<'PY'
+
+      - name: Update screenshot markup
+        shell: python
+        run: |
           from pathlib import Path
 
           path = Path("website/index.html")
@@ -38,7 +44,10 @@ jobs:
           if old not in text:
               raise SystemExit("Expected website screenshot markup was not found")
           path.write_text(text.replace(old, new, 1), encoding="utf-8")
-          PY
+
+      - name: Remove old and temporary files
+        shell: bash
+        run: |
           rm -f website/assets/chroma-app.png
           rm -f WEBSITE_SCREENSHOT_UPDATE.md
           rm -rf .github/update-assets
