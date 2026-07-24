@@ -7,7 +7,7 @@
 #include <mutex>
 #include <sstream>
 
-namespace ArcVibrance
+namespace Chroma
 {
 namespace
 {
@@ -31,11 +31,11 @@ std::filesystem::path GetLogPath()
     const DWORD length = GetEnvironmentVariableW(L"LOCALAPPDATA", localAppData, MAX_PATH);
     if (length == 0 || length >= MAX_PATH) return {};
 
-    std::filesystem::path directory = std::filesystem::path(localAppData) / L"ArcVibrance" / L"Logs";
+    std::filesystem::path directory = std::filesystem::path(localAppData) / L"Chroma" / L"Logs";
     std::error_code error;
     std::filesystem::create_directories(directory, error);
     if (error) return {};
-    return directory / L"ArcVibrance.Agent.log";
+    return directory / L"Chroma.Agent.log";
 }
 }
 

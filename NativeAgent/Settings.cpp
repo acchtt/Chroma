@@ -9,7 +9,7 @@
 #include <Windows.h>
 #include <string>
 
-namespace ArcVibrance
+namespace Chroma
 {
 bool GetProfilesFilePath(
         std::filesystem::path& profilesPath)
@@ -31,7 +31,7 @@ bool GetProfilesFilePath(
         std::filesystem::path settingsDirectory =
             std::filesystem::path(
                 localAppDataPath) /
-            L"ArcVibrance";
+            L"Chroma";
 
         std::error_code error;
 
@@ -47,6 +47,26 @@ bool GetProfilesFilePath(
         profilesPath =
             settingsDirectory /
             L"profiles.txt";
+
+        const std::filesystem::path legacyProfilesPath =
+            std::filesystem::path(localAppDataPath) /
+            L"ArcVibrance" /
+            L"profiles.txt";
+        if (!std::filesystem::exists(profilesPath) &&
+            std::filesystem::exists(legacyProfilesPath))
+        {
+            std::filesystem::copy_file(
+                legacyProfilesPath,
+                profilesPath,
+                std::filesystem::copy_options::none,
+                error);
+            if (error &&
+                error != std::make_error_code(
+                    std::errc::file_exists))
+            {
+                return false;
+            }
+        }
 
         return true;
     }
@@ -138,7 +158,7 @@ bool SetAutoStartEnabled(
         }
 
         std::filesystem::path agentPath(applicationPath);
-        agentPath.replace_filename(L"ArcVibrance.Agent.exe");
+        agentPath.replace_filename(L"Chroma.Agent.exe");
         const std::wstring command =
             L"\"" + agentPath.wstring() + L"\"";
 
@@ -173,7 +193,7 @@ bool SetAutoStartEnabled(
 }
 namespace
 {
-constexpr wchar_t CLOSE_BEHAVIOR_KEY[] = L"Software\\ArcVibrance";
+constexpr wchar_t CLOSE_BEHAVIOR_KEY[] = L"Software\\Chroma";
 constexpr wchar_t CLOSE_BEHAVIOR_VALUE[] = L"CloseBehavior";
 constexpr wchar_t THEME_MODE_VALUE[] = L"ThemeMode";
 }
@@ -308,7 +328,7 @@ bool SaveGameProfiles(const std::vector<GameProfile>& profiles)
             return false;
         }
 
-        outputFile << L"ArcVibranceProfiles 2\n";
+        outputFile << L"ChromaProfiles 2\n";
         for (const GameProfile& profile : profiles)
         {
             outputFile << std::quoted(profile.executablePath)
@@ -367,8 +387,8 @@ bool LoadGameProfiles(std::vector<GameProfile>& profiles)
         return false;
     }
 
-    if (formatName !=
-        L"ArcVibranceProfiles" ||
+    if ((formatName != L"ChromaProfiles" &&
+         formatName != L"ArcVibranceProfiles") ||
         (formatVersion != 1 && formatVersion != 2))
     {
         return false;

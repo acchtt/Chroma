@@ -2,7 +2,7 @@
 
 #include "AgentProtocol.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 class AgentClient
 {

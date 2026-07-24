@@ -1,4 +1,4 @@
-# ArcVibrance v1.0
+# Chroma v1.0
 
 First stable public release.
 
@@ -10,7 +10,7 @@ First stable public release.
 - Steam executable detection and improved game-icon loading.
 - Windows startup support.
 - Refined dark and light WinUI 3 themes.
-- Rounded neon ArcVibrance branding across the app, tray, taskbar, About page, and footer.
+- Rounded neon Chroma branding across the app, tray, taskbar, About page, and footer.
 
 ## v1.0 updates
 

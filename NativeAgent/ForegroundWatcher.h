@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-namespace ArcVibrance
+namespace Chroma
 {
 class ForegroundWatcher
 {

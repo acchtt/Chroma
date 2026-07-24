@@ -2,13 +2,13 @@
 
 #include <Windows.h>
 
-namespace ArcVibrance
+namespace Chroma
 {
-inline constexpr wchar_t AGENT_PIPE_NAME[] = L"\\\\.\\pipe\\ArcVibrance.Agent.v1";
-inline constexpr wchar_t AGENT_MUTEX_NAME[] = L"Local\\ArcVibrance.Agent.v1";
-inline constexpr wchar_t UI_CLOSE_EVENT_NAME[] = L"Local\\ArcVibrance.Ui.Close.v1";
+inline constexpr wchar_t AGENT_PIPE_NAME[] = L"\\\\.\\pipe\\Chroma.Agent.v1";
+inline constexpr wchar_t AGENT_MUTEX_NAME[] = L"Local\\Chroma.Agent.v1";
+inline constexpr wchar_t UI_CLOSE_EVENT_NAME[] = L"Local\\Chroma.Ui.Close.v1";
 inline constexpr unsigned long AGENT_PROTOCOL_VERSION = 1;
-inline constexpr UINT WM_ARCVIBRANCE_FORCE_CLOSE_UI = WM_APP + 30;
+inline constexpr UINT WM_CHROMA_FORCE_CLOSE_UI = WM_APP + 30;
 
 enum class AgentCommand : unsigned long
 {

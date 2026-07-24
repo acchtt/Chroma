@@ -3,7 +3,7 @@
 #include <vector>
 #include "GameProfile.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
     enum class ThemeMode
     {

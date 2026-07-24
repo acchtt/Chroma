@@ -2,7 +2,7 @@
 
 #include "IntelColorBackend.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 std::unique_ptr<IColorBackend> CreateDefaultColorBackend()
 {

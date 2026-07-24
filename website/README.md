@@ -1,7 +1,7 @@
 # Chroma Website
 
 Responsive, dependency-free landing page for Chroma, published at
-[acchtt.github.io/ArcVibrance](https://acchtt.github.io/ArcVibrance/).
+[acchtt.github.io/Chroma](https://acchtt.github.io/Chroma/).
 
 ## Run locally
 

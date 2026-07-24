@@ -17,4 +17,4 @@ You may not, without prior written permission:
 
 Forks should use a clearly different project name and visual identity.
 
-Official repository: https://github.com/acchtt/ArcVibrance
+Official repository: https://github.com/acchtt/Chroma

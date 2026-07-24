@@ -7,7 +7,7 @@
 #include "AgentClient.h"
 #include "GameProfile.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 constexpr int IDC_GAME_LIST = 1101;
 constexpr int IDC_ADD_GAME_BUTTON = 1102;
@@ -38,8 +38,8 @@ constexpr double NORMAL_SATURATION = 1.0;
 constexpr UINT_PTR GAME_MONITOR_TIMER_ID = 1;
 constexpr UINT GAME_MONITOR_INTERVAL_MS = 2000;
 
-inline constexpr wchar_t PROFILE_EDITOR_CLASS_NAME[] = L"ArcVibranceProfileEditor";
-inline constexpr wchar_t AUTOSTART_VALUE_NAME[] = L"ArcVibrance";
+inline constexpr wchar_t PROFILE_EDITOR_CLASS_NAME[] = L"ChromaProfileEditor";
+inline constexpr wchar_t AUTOSTART_VALUE_NAME[] = L"Chroma";
 
 extern AgentClient g_agentClient;
 extern AgentStatus g_agentStatus;

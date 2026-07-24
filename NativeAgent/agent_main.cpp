@@ -1,6 +1,6 @@
 #include "AgentProtocol.h"
 #include "AgentTray.h"
-#include "ArcVibranceRuntime.h"
+#include "ChromaRuntime.h"
 #include "ForegroundWatcher.h"
 #include "Settings.h"
 #include "Logger.h"
@@ -13,11 +13,11 @@
 #include <filesystem>
 #include <string>
 
-namespace ArcVibrance
+namespace Chroma
 {
 namespace
 {
-constexpr wchar_t kWindowClass[] = L"ArcVibranceAgentWindow";
+constexpr wchar_t kWindowClass[] = L"ChromaAgentWindow";
 constexpr UINT WM_AGENT_FOREGROUND_CHANGED = WM_APP + 20;
 constexpr UINT_PTR kRecoveryTimerId = 1;
 constexpr UINT_PTR kBackendRetryTimerId = 2;
@@ -27,7 +27,7 @@ constexpr UINT kInitialBackendDelayMs = 100;
 constexpr UINT kBackendRetryIntervalMs = 10000;
 constexpr UINT kTrayRetryIntervalMs = 2000;
 
-ArcVibranceRuntime g_agentRuntime;
+ChromaRuntime g_agentRuntime;
 ForegroundWatcher g_agentWatcher;
 std::vector<GameProfile> g_agentProfiles;
 std::atomic<bool> g_pipeRunning{true};
@@ -47,7 +47,7 @@ void CloseUiIfRunning()
 
 bool LaunchOrShowUi()
 {
-    // The WinUI frontend is single-instanced. Starting ArcVibrance.exe again
+    // The WinUI frontend is single-instanced. Starting Chroma.exe again
     // redirects activation to the existing window and brings it to the front.
     Log(LogLevel::Info, L"Opening settings UI");
     wchar_t modulePath[MAX_PATH] = {};
@@ -55,7 +55,7 @@ bool LaunchOrShowUi()
     if (length == 0 || length >= MAX_PATH) return false;
 
     std::filesystem::path uiPath(modulePath);
-    uiPath.replace_filename(L"ArcVibrance.exe");
+    uiPath.replace_filename(L"Chroma.exe");
     std::wstring commandLine = L"\"" + uiPath.wstring() + L"\"";
 
     STARTUPINFOW startupInfo{};
@@ -329,7 +329,7 @@ LRESULT CALLBACK AgentWindowProcedure(HWND window, UINT message, WPARAM wParam, 
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int)
 {
-    using namespace ArcVibrance;
+    using namespace Chroma;
 
     InitializeLogging();
     Log(LogLevel::Info, L"Chroma Agent starting");

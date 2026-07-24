@@ -1,6 +1,6 @@
 #include "AppState.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 AgentClient g_agentClient;
 AgentStatus g_agentStatus;

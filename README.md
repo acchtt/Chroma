@@ -4,9 +4,9 @@
 
 Chroma is a lightweight Windows utility that automatically applies a configurable color-vibrance profile when a game starts and restores the desktop color state when the game closes.
 
-> Current release: **v1.1**
+> Current release: **v1.2**
 
-[Visit the Chroma website](https://acchtt.github.io/ArcVibrance/)
+[Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
 <img src="website/assets/chroma-app.png" alt="Chroma game profiles and profile editor" width="100%">
 
@@ -32,11 +32,11 @@ The current release uses Intel's native graphics-control API. Native AMD and NVI
 ## Download
 
 Download the validated Windows x64 build from
-[GitHub Releases](https://github.com/acchtt/ArcVibrance/releases).
+[GitHub Releases](https://github.com/acchtt/Chroma/releases).
 
 ## Repository layout
 
-- [`ArcVibrance.WinUI/`](ArcVibrance.WinUI/) — .NET 8 / WinUI 3 desktop interface
+- [`Chroma.WinUI/`](Chroma.WinUI/) — .NET 8 / WinUI 3 desktop interface
 - [`NativeAgent/`](NativeAgent/) — native C++ monitoring and Intel color-control agent
 - [`NativeAgent/tests/`](NativeAgent/tests/) — native profile-matching tests
 - [`website/`](website/) — dependency-free GitHub Pages website
@@ -58,12 +58,12 @@ From PowerShell:
 ./build.ps1 -Configuration Release -Platform x64 -SelfContained
 ```
 
-The build output is written to `dist/x64/`. The solution can also be opened directly from `ArcVibrance.sln`.
+The build output is written to `dist/x64/`. The solution can also be opened directly from `Chroma.sln`.
 
 GitHub Actions runs the same Release x64 build and uploads a packaged Windows artifact for validation.
-Release builds use the version in `ArcVibrance.WinUI.csproj`, publish a matching
+Release builds use the version in `Chroma.WinUI.csproj`, publish a matching
 versioned ZIP, and include a SHA-256 checksum beside the download. The portable
-package contains only `ArcVibrance.exe` and `ArcVibrance.Agent.exe`; application
+package contains only `Chroma.exe` and `Chroma.Agent.exe`; application
 artwork is embedded in the UI executable.
 
 ## Reporting issues

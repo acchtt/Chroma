@@ -4,9 +4,9 @@
 
 #include "IColorBackend.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 // Central backend selection point. Vendor detection and external plugin
-// discovery can be added here without coupling ArcVibranceRuntime to them.
+// discovery can be added here without coupling ChromaRuntime to them.
 std::unique_ptr<IColorBackend> CreateDefaultColorBackend();
 }

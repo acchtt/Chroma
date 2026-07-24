@@ -4,7 +4,7 @@
 #include <string>
 #include <atomic>
 
-namespace ArcVibrance
+namespace Chroma
 {
 namespace
 {
@@ -20,7 +20,7 @@ bool GetAgentPath(std::wstring& path)
     }
 
     std::filesystem::path executablePath(modulePath);
-    executablePath.replace_filename(L"ArcVibrance.Agent.exe");
+    executablePath.replace_filename(L"Chroma.Agent.exe");
     path = executablePath.wstring();
     return true;
 }

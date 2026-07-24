@@ -2,7 +2,7 @@
 #include "resource.h"
 #include <Shellapi.h>
 
-namespace ArcVibrance
+namespace Chroma
 {
 namespace
 {
@@ -28,7 +28,7 @@ bool AddAgentTrayIcon(HWND owner)
         GetWindowLongPtrW(owner, GWLP_HINSTANCE));
     data.hIcon = static_cast<HICON>(LoadImageW(
         instance,
-        MAKEINTRESOURCEW(IDI_ARCVIBRANCE),
+        MAKEINTRESOURCEW(IDI_CHROMA),
         IMAGE_ICON,
         GetSystemMetrics(SM_CXSMICON),
         GetSystemMetrics(SM_CYSMICON),

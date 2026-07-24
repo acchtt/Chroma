@@ -1,10 +1,11 @@
 # Chroma v1.1
 
-ArcVibrance is now **Chroma**: the same lightweight per-game color-profile utility with a new vendor-neutral identity.
+Version 1.1 introduced Chroma's vendor-neutral visual identity while retaining
+the established application internals for upgrade compatibility.
 
 ## What changed
 
-- Replaced the previous ArcVibrance identity with the new Chroma name and multicolor C logo.
+- Introduced the Chroma name and multicolor C logo.
 - Added matching application, taskbar, tray, About-page, footer, favicon, and website artwork.
 - Recolored the WinUI application and website around Chroma's cyan, violet, magenta, and deep-navy palette.
 - Updated user-facing dialogs, tray actions, status messages, documentation, and website content.
@@ -12,12 +13,14 @@ ArcVibrance is now **Chroma**: the same lightweight per-game color-profile utili
 
 ## Upgrade compatibility
 
-This is a transitional release. The Windows archive and two executable filenames retain their ArcVibrance names so the existing v1.0 updater, startup entry, saved profiles, and settings continue to work without migration.
+This was a transitional release. The Windows archive and executable names
+remained compatible with v1.0 so the updater, startup entry, saved profiles,
+and settings continued to work without migration.
 
 The portable package still contains only:
 
-- `ArcVibrance.exe`
-- `ArcVibrance.Agent.exe`
+- `Chroma.exe`
+- `Chroma.Agent.exe`
 
 ## Requirements
 

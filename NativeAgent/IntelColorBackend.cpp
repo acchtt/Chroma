@@ -1,6 +1,6 @@
 #include "IntelColorBackend.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 std::wstring_view IntelColorBackend::GetId() const noexcept
 {

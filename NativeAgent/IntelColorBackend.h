@@ -3,7 +3,7 @@
 #include "IColorBackend.h"
 #include "IGCLManager.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 class IntelColorBackend final : public IColorBackend
 {

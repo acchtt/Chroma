@@ -2,9 +2,9 @@
 
 #include <string_view>
 
-namespace ArcVibrance
+namespace Chroma
 {
-// Hardware-neutral color control contract used by ArcVibranceRuntime.
+// Hardware-neutral color control contract used by ChromaRuntime.
 // Implementations own their API lifetime and translate normalized values
 // (1.0 = desktop/default saturation) to the vendor-specific API.
 class IColorBackend

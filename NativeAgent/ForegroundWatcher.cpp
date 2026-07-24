@@ -1,6 +1,6 @@
 #include "ForegroundWatcher.h"
 
-namespace ArcVibrance
+namespace Chroma
 {
 ForegroundWatcher* ForegroundWatcher::activeWatcher_ = nullptr;
 

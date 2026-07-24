@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace ArcVibrance
+namespace Chroma
 {
 enum class LogLevel
 {
