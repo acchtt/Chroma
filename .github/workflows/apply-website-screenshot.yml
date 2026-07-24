@@ -37,6 +37,7 @@ jobs:
           path.write_text(text.replace(old, new, 1), encoding="utf-8")
           PY
           rm -f website/assets/chroma-app.png
+          rm -f WEBSITE_SCREENSHOT_UPDATE.md
           rm -rf .github/update-assets
           rm -f .github/workflows/apply-website-screenshot.yml
 
