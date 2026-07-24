@@ -4,7 +4,7 @@
 
 Chroma is a lightweight Windows utility that automatically applies a configurable color-vibrance profile when a game starts and restores the desktop color state when the game closes.
 
-> Current release: **v1.2**
+> Current release: **v1.3**
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 

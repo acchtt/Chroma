@@ -82,12 +82,13 @@ public sealed class AgentClient
                 return true;
             }
 
-            string agentPath = Path.Combine(AppContext.BaseDirectory, "Chroma.Agent.exe");
+            string agentPath = GetAgentPath();
             if (!File.Exists(agentPath))
             {
                 throw new FileNotFoundException(
-                    $"Chroma.Agent.exe was not found in '{AppContext.BaseDirectory}'. " +
-                    "Run build.ps1 and launch the Chroma application from dist\\x64.",
+                    $"Chroma.Agent.exe was not found beside Chroma.exe in " +
+                    $"'{Path.GetDirectoryName(agentPath)}'. Extract both files from the release ZIP " +
+                    "into the same folder before launching Chroma.",
                     agentPath);
             }
 
@@ -97,9 +98,9 @@ public sealed class AgentClient
                 process = Process.Start(new ProcessStartInfo
                 {
                     FileName = agentPath,
-                    WorkingDirectory = AppContext.BaseDirectory,
-                    UseShellExecute = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
+                    WorkingDirectory = Path.GetDirectoryName(agentPath)!,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
                 });
             }
             catch (Exception exception) when (exception is Win32Exception or InvalidOperationException)
@@ -121,7 +122,7 @@ public sealed class AgentClient
                     return true;
                 }
 
-                if (process.HasExited && process.ExitCode != 0)
+                if (process.HasExited)
                 {
                     string logPath = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -130,8 +131,6 @@ public sealed class AgentClient
                         $"The Chroma agent exited during startup (code {process.ExitCode}). " +
                         $"Check the agent log at {logPath}.");
                 }
-                // Exit code 0 can mean that another agent instance already owns
-                // the mutex and is still completing startup, so keep probing.
             }
 
             throw new TimeoutException("The Chroma tray agent started but its IPC service did not become ready.");
@@ -140,6 +139,15 @@ public sealed class AgentClient
         {
             _launchGate.Release();
         }
+    }
+
+    private static string GetAgentPath()
+    {
+        string? executableDirectory = Path.GetDirectoryName(Environment.ProcessPath);
+        string baseDirectory = string.IsNullOrWhiteSpace(executableDirectory)
+            ? AppContext.BaseDirectory
+            : executableDirectory;
+        return Path.GetFullPath(Path.Combine(baseDirectory, "Chroma.Agent.exe"));
     }
 
     public async Task<AgentStatus> GetStatusAsync(CancellationToken cancellationToken = default)

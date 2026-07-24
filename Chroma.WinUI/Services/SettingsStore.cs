@@ -11,6 +11,8 @@ public sealed class SettingsStore
     private const string StartupApprovedRunKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
     private const string AutoStartValue = "Chroma";
     private const string LegacyAutoStartValue = "ArcVibrance";
+    private const string SettingsSchemaValue = "SettingsSchema";
+    private const int CurrentSettingsSchema = 2;
 
     public SettingsStore()
     {
@@ -22,7 +24,7 @@ public sealed class SettingsStore
     public void SetThemeMode(ThemeMode mode) => WriteDword("ThemeMode", (int)mode);
 
     public CloseBehavior GetCloseBehavior() =>
-        (CloseBehavior)ReadDword("CloseBehavior", (int)CloseBehavior.MinimizeToTray, 0, 1);
+        (CloseBehavior)ReadDword("CloseBehavior", (int)CloseBehavior.ExitCompletely, 0, 1);
 
     public void SetCloseBehavior(CloseBehavior behavior) => WriteDword("CloseBehavior", (int)behavior);
 
@@ -75,7 +77,9 @@ public sealed class SettingsStore
     }
 
     private static string GetAgentPath() =>
-        Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Chroma.Agent.exe"));
+        Path.GetFullPath(Path.Combine(
+            Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory,
+            "Chroma.Agent.exe"));
 
     private static bool CommandTargetsExecutable(string command, string expectedPath)
     {
@@ -159,6 +163,27 @@ public sealed class SettingsStore
                 ?? throw new InvalidOperationException("Could not open the Chroma registry key.");
             CopyDwordIfMissing(legacySettings, currentSettings, "ThemeMode");
             CopyDwordIfMissing(legacySettings, currentSettings, "CloseBehavior");
+        }
+
+        using (RegistryKey currentSettings = Registry.CurrentUser.CreateSubKey(SettingsKey, true)
+            ?? throw new InvalidOperationException("Could not open the Chroma registry key."))
+        {
+            int schema = currentSettings.GetValue(SettingsSchemaValue) is int value ? value : 0;
+            if (schema < CurrentSettingsSchema)
+            {
+                // Earlier builds defaulted X to hiding the UI in the tray. That
+                // made a failed agent launch appear to make the app impossible
+                // to close. Adopt normal Windows close behavior once; users can
+                // still opt back into minimize-to-tray from Settings.
+                currentSettings.SetValue(
+                    "CloseBehavior",
+                    (int)CloseBehavior.ExitCompletely,
+                    RegistryValueKind.DWord);
+                currentSettings.SetValue(
+                    SettingsSchemaValue,
+                    CurrentSettingsSchema,
+                    RegistryValueKind.DWord);
+            }
         }
 
         using RegistryKey runKey = Registry.CurrentUser.CreateSubKey(RunKey, true)

@@ -125,7 +125,9 @@ public sealed partial class MainWindow : Window
 
     private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
     {
-        if (_forceClose || _viewModel.CloseBehavior != CloseBehavior.MinimizeToTray)
+        if (_forceClose ||
+            _viewModel.CloseBehavior != CloseBehavior.MinimizeToTray ||
+            !_viewModel.IsAgentConnected)
         {
             return;
         }
