@@ -1,0 +1,117 @@
+name: Validate website screenshot
+
+on:
+  push:
+    branches:
+      - agent/update-website-screenshot
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/update-website-screenshot
+          fetch-depth: 0
+
+      - name: Validate fragments and finalize
+        shell: bash
+        run: |
+          set -euo pipefail
+          declare -a specs=(
+            '6a077b70fbd771a5f999a975c9d274ced48c6764 .github/update-assets/chroma-app.part000'
+            '555c721c1f64d14d6781147cbe7a9e75fad0b837 .github/update-assets/chroma-app.part001'
+            'b3a6555b8011e836137174e0b9e4d26133e0e1ca .github/update-assets/chroma-app.part01'
+            '5f15606c6465e4395e25133b737e0ce365d90f04 .github/update-assets/chroma-app.part020'
+            '4b4867ead73e0ec58e73675aa7506113af03e83f .github/update-assets/chroma-app.part021'
+            'a714837f31da84a8876e8677ff6736f229bc9430 .github/update-assets/chroma-app.part022'
+            'f8d47c02a8b9ead42a5e5411dbc062425bb37cab .github/update-assets/chroma-app.part023'
+            'f1f86279e309f3062e95be1e8610509ee86b4d33 .github/update-assets/chroma-app.part030'
+            '934060325b60021e16d9c18840b08650b27bab59 .github/update-assets/chroma-app.part031'
+            'bb5f3258039a6248af481a5cdd18b628585739df .github/update-assets/chroma-app.part032'
+            'c70987a969d38a0eb60097281af7c997b225f305 .github/update-assets/chroma-app.part033'
+            '3c3cc2e48bcd39c7174b18f737a6af021d3a6131 .github/update-assets/chroma-app.part040'
+            '48c8be9c20d638f3ac7f9650e865c728b9b2a21b .github/update-assets/chroma-app.part041'
+            'dbefbb4f61e95c7ec3c907e11c0864e3a3c1d73d .github/update-assets/chroma-app.part042'
+            '9769ebc4407eb2b2abf33a8e4e5260adbd9250d0 .github/update-assets/chroma-app.part0430'
+            '9d05fc37852ff8c15d183bcc9c8bbfbd83c7834d .github/update-assets/chroma-app.part0431'
+            '7e7e176bc8777f059e3229b9370d6e721673ab03 .github/update-assets/chroma-app.part0432'
+            '302329d9a608f16612b94e3f374e353ad9fe6c3f .github/update-assets/chroma-app.part04330'
+            '5aac88e22db5a261ed5d69be32f0cd07e5acbdb9 .github/update-assets/chroma-app.part04331'
+            'ed8c8bd1c379b822701ced67290c1658bf08920a .github/update-assets/chroma-app.part04332'
+            'de5ccefff8a0b55d14dbbf3d68a676db205f68a1 .github/update-assets/chroma-app.part043330'
+            '18d14807d9083cc737dfc036bb108bac31396259 .github/update-assets/chroma-app.part043331'
+            '80292895cb38ed0a173b79903b3020ee7be906c0 .github/update-assets/chroma-app.part043332'
+            '0a6f621c6abc08e8d86266f93cfee31836199ce1 .github/update-assets/chroma-app.part043333'
+            '205c7c49c126bfe83244d240ff7aef846751afbf .github/update-assets/chroma-app.part0434'
+          )
+
+          : > BAD_SCREENSHOT_HASHES.txt
+          ordered=()
+          for spec in "${specs[@]}"; do
+            expected=${spec%% *}
+            file=${spec#* }
+            if [ ! -f "$file" ]; then
+              echo "missing $file" >> BAD_SCREENSHOT_HASHES.txt
+              continue
+            fi
+            actual=$(git hash-object "$file")
+            if [ "$actual" != "$expected" ]; then
+              echo "$file expected=$expected actual=$actual" >> BAD_SCREENSHOT_HASHES.txt
+            fi
+            ordered+=("$file")
+          done
+
+          if [ -s BAD_SCREENSHOT_HASHES.txt ]; then
+            exit 0
+          fi
+
+          cat "${ordered[@]}" | base64 --decode > website/assets/chroma-app.webp
+          actual_image=$(git hash-object website/assets/chroma-app.webp)
+          expected_image=50836a187e3efd4bff5f866295b8737a551d17d6
+          if [ "$actual_image" != "$expected_image" ]; then
+            echo "combined expected=$expected_image actual=$actual_image" > BAD_SCREENSHOT_HASHES.txt
+            exit 0
+          fi
+
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('website/index.html')
+          text = path.read_text(encoding='utf-8')
+          old = '<img src="assets/chroma-app.png" alt="Chroma profile editor showing a PUBG game profile" />'
+          new = '<img src="assets/chroma-app.webp" alt="Chroma game profiles and profile editor" />'
+          if old in text:
+              text = text.replace(old, new, 1)
+          if new not in text:
+              raise SystemExit('Expected screenshot markup was not found')
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          rm -f website/assets/chroma-app.png
+          rm -f SCREENSHOT_HASHES.txt BAD_SCREENSHOT_HASHES.txt WEBSITE_SCREENSHOT_UPDATE.md
+          rm -rf .github/update-assets
+          rm -f .github/workflows/finalize-website-screenshot.yml
+          rm -f .github/workflows/validate-website-screenshot.yml
+
+      - name: Commit result
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          if [ -f BAD_SCREENSHOT_HASHES.txt ]; then
+            git commit -m 'Record screenshot validation failure'
+          else
+            git commit -m 'Update website app screenshot'
+          fi
+          git push origin HEAD:agent/update-website-screenshot
