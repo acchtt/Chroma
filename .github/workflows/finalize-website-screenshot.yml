@@ -27,10 +27,8 @@ jobs:
           set -euo pipefail
           : > SCREENSHOT_HASHES.txt
           for file in .github/update-assets/chroma-app.part*; do
-            printf '%s %s\n' "$(git hash-object "$file")" "$file" >> SCREENSHOT_HASHES.txt
+            printf '%s %s %s\n' "$(git hash-object "$file")" "$(wc -c < "$file")" "$file" >> SCREENSHOT_HASHES.txt
           done
-          cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
-          printf '%s %s\n' "$(git hash-object website/assets/chroma-app.webp)" website/assets/chroma-app.webp >> SCREENSHOT_HASHES.txt
 
       - name: Commit hash report
         shell: bash
