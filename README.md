@@ -8,7 +8,7 @@ Chroma is a lightweight Windows utility that automatically applies a configurabl
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
-<img src="website/assets/chroma-app.png" alt="Chroma game profiles and profile editor" width="100%">
+<img src="website/assets/chroma-app-v13.webp" alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves" width="100%">
 
 ## Features
 
