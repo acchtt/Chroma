@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/update-website-screenshot
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -23,7 +26,7 @@ jobs:
         run: |
           cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
           python - <<'PY'
-          from pathlib import Path
+          from pathlib import import Path
 
           path = Path("website/index.html")
           text = path.read_text(encoding="utf-8")
