@@ -24,8 +24,11 @@ jobs:
       - name: Rebuild screenshot and update website
         shell: bash
         run: |
+          set -euo pipefail
           cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
-          python - <<'PY'
+          test -s website/assets/chroma-app.webp
+          file website/assets/chroma-app.webp | grep -q "Web/P image"
+          python3 - <<'PY'
           from pathlib import Path
 
           path = Path("website/index.html")
