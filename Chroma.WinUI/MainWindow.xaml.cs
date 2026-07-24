@@ -375,8 +375,7 @@ public sealed partial class MainWindow : Window
         };
         var detailText = new TextBlock
         {
-            Text = $"{update.CurrentVersionTag}  →  {update.LatestVersionTag}
-" +
+            Text = $"{update.CurrentVersionTag}  →  {update.LatestVersionTag}\n" +
                    "Chroma will verify the download before replacing any files.",
             Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
             TextWrapping = TextWrapping.Wrap
