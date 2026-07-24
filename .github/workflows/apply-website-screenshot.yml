@@ -26,7 +26,7 @@ jobs:
         run: |
           cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
           python - <<'PY'
-          from pathlib import import Path
+          from pathlib import Path
 
           path = Path("website/index.html")
           text = path.read_text(encoding="utf-8")
