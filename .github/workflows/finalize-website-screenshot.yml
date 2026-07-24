@@ -21,46 +21,22 @@ jobs:
           ref: agent/update-website-screenshot
           fetch-depth: 0
 
-      - name: Rebuild and verify screenshot
+      - name: Build screenshot hash report
         shell: bash
         run: |
           set -euo pipefail
+          : > SCREENSHOT_HASHES.txt
+          for file in .github/update-assets/chroma-app.part*; do
+            printf '%s %s\n' "$(git hash-object "$file")" "$file" >> SCREENSHOT_HASHES.txt
+          done
           cat .github/update-assets/chroma-app.part* | base64 --decode > website/assets/chroma-app.webp
-          actual_blob=$(git hash-object website/assets/chroma-app.webp)
-          expected_blob=50836a187e3efd4bff5f866295b8737a551d17d6
-          if [ "$actual_blob" != "$expected_blob" ]; then
-            echo "Unexpected screenshot blob: $actual_blob" >&2
-            exit 1
-          fi
+          printf '%s %s\n' "$(git hash-object website/assets/chroma-app.webp)" website/assets/chroma-app.webp >> SCREENSHOT_HASHES.txt
 
-      - name: Ensure website markup
-        shell: python
-        run: |
-          from pathlib import Path
-
-          path = Path("website/index.html")
-          text = path.read_text(encoding="utf-8")
-          old = '<img src="assets/chroma-app.png" alt="Chroma profile editor showing a PUBG game profile" />'
-          new = '<img src="assets/chroma-app.webp" alt="Chroma game profiles and profile editor" />'
-          if old in text:
-              text = text.replace(old, new, 1)
-          if new not in text:
-              raise SystemExit("Expected updated screenshot markup was not found")
-          path.write_text(text, encoding="utf-8")
-
-      - name: Remove old and temporary files
-        shell: bash
-        run: |
-          rm -f website/assets/chroma-app.png
-          rm -f WEBSITE_SCREENSHOT_UPDATE.md
-          rm -rf .github/update-assets
-          rm -f .github/workflows/finalize-website-screenshot.yml
-
-      - name: Commit verified website screenshot
+      - name: Commit hash report
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Update website app screenshot"
+          git add SCREENSHOT_HASHES.txt
+          git commit -m "Record screenshot hash diagnostics"
           git push origin HEAD:agent/update-website-screenshot
