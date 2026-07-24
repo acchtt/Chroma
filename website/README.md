@@ -1,6 +1,6 @@
-# ArcVibrance Website
+# Chroma Website
 
-Responsive, dependency-free landing page for ArcVibrance, published at
+Responsive, dependency-free landing page for Chroma, published at
 [acchtt.github.io/ArcVibrance](https://acchtt.github.io/ArcVibrance/).
 
 ## Run locally
@@ -18,10 +18,10 @@ Then open `http://localhost:8080`.
 - `index.html` — page structure and content
 - `styles.css` — responsive styling
 - `script.js` — mobile navigation and small header behaviors
-- `assets/arcvibrance-logo.png` — official ArcVibrance logo
+- `assets/chroma-logo.png` — official Chroma logo
 - `assets/favicon-32.png` — browser tab icon
 - `assets/apple-touch-icon.png` — iOS home-screen icon
-- `assets/arcvibrance-app.png` — application screenshot
+- `assets/chroma-app.png` — application screenshot
 
 Pushes that change this folder are deployed by
 `.github/workflows/deploy-pages.yml`.

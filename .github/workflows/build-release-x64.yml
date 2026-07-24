@@ -137,7 +137,7 @@ jobs:
   publish-release:
     name: Publish stable release
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'Release ArcVibrance ')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'Release Chroma ')
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -169,7 +169,7 @@ jobs:
             gh release edit "$RELEASE_TAG" \
               --latest \
               --prerelease=false \
-              --title "ArcVibrance $RELEASE_TAG" \
+              --title "Chroma $RELEASE_TAG" \
               --notes-file "$RELEASE_NOTES" \
               --repo "$GITHUB_REPOSITORY"
             gh release upload "$RELEASE_TAG" "$RELEASE_ARCHIVE" "$RELEASE_CHECKSUM" \
@@ -179,7 +179,7 @@ jobs:
             gh release create "$RELEASE_TAG" "$RELEASE_ARCHIVE" "$RELEASE_CHECKSUM" \
               --latest \
               --target "$GITHUB_SHA" \
-              --title "ArcVibrance $RELEASE_TAG" \
+              --title "Chroma $RELEASE_TAG" \
               --notes-file "$RELEASE_NOTES" \
               --repo "$GITHUB_REPOSITORY"
           fi

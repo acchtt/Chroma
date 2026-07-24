@@ -4,8 +4,8 @@ namespace ArcVibrance.Services;
 
 internal static class BrandAssets
 {
-    private const string IconResourceName = "ArcVibrance.Brand.ArcVibrance.ico";
-    private const string LogoResourceName = "ArcVibrance.Brand.ArcVibrance.png";
+    private const string IconResourceName = "ArcVibrance.Brand.Chroma.ico";
+    private const string LogoResourceName = "ArcVibrance.Brand.Chroma.png";
 
     private static readonly object Sync = new();
     private static bool _ready;
@@ -15,7 +15,7 @@ internal static class BrandAssets
         get
         {
             EnsureExtracted();
-            return Path.Combine(GetBrandDirectory(), "ArcVibrance.ico");
+            return Path.Combine(GetBrandDirectory(), "Chroma.ico");
         }
     }
 
@@ -24,7 +24,7 @@ internal static class BrandAssets
         get
         {
             EnsureExtracted();
-            return Path.Combine(GetBrandDirectory(), "ArcVibrance.png");
+            return Path.Combine(GetBrandDirectory(), "Chroma.png");
         }
     }
 
@@ -44,11 +44,11 @@ internal static class BrandAssets
             ExtractResource(
                 assembly,
                 IconResourceName,
-                Path.Combine(directory, "ArcVibrance.ico"));
+                Path.Combine(directory, "Chroma.ico"));
             ExtractResource(
                 assembly,
                 LogoResourceName,
-                Path.Combine(directory, "ArcVibrance.png"));
+                Path.Combine(directory, "Chroma.png"));
 
             _ready = true;
         }
@@ -68,7 +68,7 @@ internal static class BrandAssets
     {
         using Stream source = assembly.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException(
-                $"ArcVibrance is missing the embedded resource '{resourceName}'.");
+                $"Chroma is missing the embedded resource '{resourceName}'.");
 
         string temporaryPath = $"{destinationPath}.{Environment.ProcessId}.tmp";
         try

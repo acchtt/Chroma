@@ -87,7 +87,7 @@ public sealed class AgentClient
             {
                 throw new FileNotFoundException(
                     $"ArcVibrance.Agent.exe was not found in '{AppContext.BaseDirectory}'. " +
-                    "Run build.ps1 and launch dist\\x64\\ArcVibrance.exe.",
+                    "Run build.ps1 and launch the Chroma application from dist\\x64.",
                     agentPath);
             }
 
@@ -105,12 +105,12 @@ public sealed class AgentClient
             catch (Exception exception) when (exception is Win32Exception or InvalidOperationException)
             {
                 throw new InvalidOperationException(
-                    $"Windows could not start the ArcVibrance tray agent: {exception.Message}", exception);
+                    $"Windows could not start the Chroma tray agent: {exception.Message}", exception);
             }
 
             if (process is null)
             {
-                throw new InvalidOperationException("Windows did not create the ArcVibrance tray-agent process.");
+                throw new InvalidOperationException("Windows did not create the Chroma tray-agent process.");
             }
 
             for (int attempt = 0; attempt < 60; attempt++)
@@ -127,14 +127,14 @@ public sealed class AgentClient
                         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                         "ArcVibrance", "Logs", "ArcVibrance.Agent.log");
                     throw new InvalidOperationException(
-                        $"ArcVibrance.Agent.exe exited during startup (code {process.ExitCode}). " +
+                        $"The Chroma agent exited during startup (code {process.ExitCode}). " +
                         $"Check the agent log at {logPath}.");
                 }
                 // Exit code 0 can mean that another agent instance already owns
                 // the mutex and is still completing startup, so keep probing.
             }
 
-            throw new TimeoutException("The ArcVibrance tray agent started but its IPC service did not become ready.");
+            throw new TimeoutException("The Chroma tray agent started but its IPC service did not become ready.");
         }
         finally
         {
@@ -165,7 +165,7 @@ public sealed class AgentClient
         AgentResponse? response = await SendAsync(command, CommandTimeout, cancellationToken);
         if (response is not { Success: true } value)
         {
-            throw new IOException(response?.ErrorMessage ?? "ArcVibrance Agent is not available.");
+            throw new IOException(response?.ErrorMessage ?? "Chroma Agent is not available.");
         }
 
         return Convert(value.Status);

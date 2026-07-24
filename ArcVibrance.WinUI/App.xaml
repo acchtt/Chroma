@@ -10,12 +10,12 @@
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Dark">
-                    <Color x:Key="AppBackgroundColor">#020611</Color>
-                    <Color x:Key="SidebarColor">#030817</Color>
-                    <Color x:Key="PanelColor">#071321</Color>
-                    <Color x:Key="PanelRaisedColor">#0A192B</Color>
-                    <Color x:Key="PanelHoverColor">#10243A</Color>
-                    <Color x:Key="StrokeColor">#1B2A44</Color>
+                    <Color x:Key="AppBackgroundColor">#020412</Color>
+                    <Color x:Key="SidebarColor">#040617</Color>
+                    <Color x:Key="PanelColor">#081225</Color>
+                    <Color x:Key="PanelRaisedColor">#0C1A31</Color>
+                    <Color x:Key="PanelHoverColor">#122641</Color>
+                    <Color x:Key="StrokeColor">#203453</Color>
                     <Color x:Key="TextPrimaryColor">#F7F9FF</Color>
                     <Color x:Key="TextSecondaryColor">#AAB4C8</Color>
                     <Color x:Key="TextMutedColor">#738097</Color>
@@ -28,38 +28,38 @@
                     <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
                     <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
                     <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
-                    <SolidColorBrush x:Key="TitleBarBrush" Color="#AA050A16" />
-                    <SolidColorBrush x:Key="ProfileCardBrush" Color="#091526" />
-                    <SolidColorBrush x:Key="ProfileIconBrush" Color="#050B16" />
-                    <SolidColorBrush x:Key="ProfileIconStrokeBrush" Color="#263650" />
+                    <SolidColorBrush x:Key="TitleBarBrush" Color="#B0030615" />
+                    <SolidColorBrush x:Key="ProfileCardBrush" Color="#09172B" />
+                    <SolidColorBrush x:Key="ProfileIconBrush" Color="#05091A" />
+                    <SolidColorBrush x:Key="ProfileIconStrokeBrush" Color="#293C5D" />
                     <SolidColorBrush x:Key="ProfileMenuIconBrush" Color="#D7DFEC" />
                     <SolidColorBrush x:Key="DropZoneStrokeBrush" Color="#6C7180" />
                     <SolidColorBrush x:Key="EditorIconBrush" Color="#080D18" />
-                    <SolidColorBrush x:Key="InputBrush" Color="#050D1B" />
-                    <SolidColorBrush x:Key="InputStrokeBrush" Color="#2B4162" />
-                    <SolidColorBrush x:Key="DisabledPanelBrush" Color="#06111F" />
-                    <SolidColorBrush x:Key="DisabledPanelStrokeBrush" Color="#1B344E" />
-                    <SolidColorBrush x:Key="DisabledBadgeBrush" Color="#15233A" />
-                    <SolidColorBrush x:Key="FooterBrush" Color="#06111F" />
-                    <SolidColorBrush x:Key="FooterStrokeBrush" Color="#182A43" />
-                    <SolidColorBrush x:Key="StatusCardBrush" Color="#071426" />
-                    <SolidColorBrush x:Key="StatusCardStrokeBrush" Color="#1B344E" />
+                    <SolidColorBrush x:Key="InputBrush" Color="#050C1C" />
+                    <SolidColorBrush x:Key="InputStrokeBrush" Color="#30496D" />
+                    <SolidColorBrush x:Key="DisabledPanelBrush" Color="#071223" />
+                    <SolidColorBrush x:Key="DisabledPanelStrokeBrush" Color="#203955" />
+                    <SolidColorBrush x:Key="DisabledBadgeBrush" Color="#172741" />
+                    <SolidColorBrush x:Key="FooterBrush" Color="#071222" />
+                    <SolidColorBrush x:Key="FooterStrokeBrush" Color="#1D314D" />
+                    <SolidColorBrush x:Key="StatusCardBrush" Color="#08162A" />
+                    <SolidColorBrush x:Key="StatusCardStrokeBrush" Color="#203A58" />
                     <SolidColorBrush x:Key="ButtonHoverOverlayBrush" Color="#10FFFFFF" />
                     <SolidColorBrush x:Key="ButtonPressedOverlayBrush" Color="#18FFFFFF" />
-                    <SolidColorBrush x:Key="NumericHoverBrush" Color="#122A43" />
-                    <SolidColorBrush x:Key="NumericPressedBrush" Color="#1B3B5B" />
+                    <SolidColorBrush x:Key="NumericHoverBrush" Color="#14304F" />
+                    <SolidColorBrush x:Key="NumericPressedBrush" Color="#1D4265" />
                     <SolidColorBrush x:Key="InactiveNavTextBrush" Color="#A7B1C4" />
-                    <SolidColorBrush x:Key="ProfilesNavIconBrush" Color="#70E2FF" />
-                    <SolidColorBrush x:Key="SettingsNavIconBrush" Color="#B477FF" />
+                    <SolidColorBrush x:Key="ProfilesNavIconBrush" Color="#68E4FF" />
+                    <SolidColorBrush x:Key="SettingsNavIconBrush" Color="#A86EFF" />
                     <SolidColorBrush x:Key="AboutNavIconBrush" Color="#A9B3C8" />
-                    <SolidColorBrush x:Key="FooterSecondaryIconBrush" Color="#AFC5FF" />
-                    <SolidColorBrush x:Key="CyanBrush" Color="#18CEFF" />
-                    <SolidColorBrush x:Key="MagentaBrush" Color="#F21CC8" />
+                    <SolidColorBrush x:Key="FooterSecondaryIconBrush" Color="#B2C9FF" />
+                    <SolidColorBrush x:Key="CyanBrush" Color="#00D1FC" />
+                    <SolidColorBrush x:Key="MagentaBrush" Color="#F414B6" />
                     <SolidColorBrush x:Key="PositiveBrush" Color="#24D889" />
                     <SolidColorBrush x:Key="DangerBrush" Color="#FF5579" />
                     <SolidColorBrush x:Key="PrimaryActionForegroundBrush" Color="#FDFEFF" />
-                    <SolidColorBrush x:Key="LogoTaglinePrimaryBrush" Color="#15B8F3" />
-                    <SolidColorBrush x:Key="LogoTaglineSecondaryBrush" Color="#A67CFF" />
+                    <SolidColorBrush x:Key="LogoTaglinePrimaryBrush" Color="#00BDF7" />
+                    <SolidColorBrush x:Key="LogoTaglineSecondaryBrush" Color="#A76BFF" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <Color x:Key="AppBackgroundColor">#F4F7FC</Color>
@@ -101,46 +101,46 @@
                     <SolidColorBrush x:Key="NumericHoverBrush" Color="#0C5F75A5" />
                     <SolidColorBrush x:Key="NumericPressedBrush" Color="#145F75A5" />
                     <SolidColorBrush x:Key="InactiveNavTextBrush" Color="#6B7890" />
-                    <SolidColorBrush x:Key="ProfilesNavIconBrush" Color="#008EC4" />
-                    <SolidColorBrush x:Key="SettingsNavIconBrush" Color="#7450DB" />
+                    <SolidColorBrush x:Key="ProfilesNavIconBrush" Color="#008FB5" />
+                    <SolidColorBrush x:Key="SettingsNavIconBrush" Color="#6C35D5" />
                     <SolidColorBrush x:Key="AboutNavIconBrush" Color="#718096" />
                     <SolidColorBrush x:Key="FooterSecondaryIconBrush" Color="#5B6CB8" />
-                    <SolidColorBrush x:Key="CyanBrush" Color="#007FAF" />
-                    <SolidColorBrush x:Key="MagentaBrush" Color="#C218A3" />
+                    <SolidColorBrush x:Key="CyanBrush" Color="#007F9D" />
+                    <SolidColorBrush x:Key="MagentaBrush" Color="#B10C82" />
                     <SolidColorBrush x:Key="PositiveBrush" Color="#0B8F62" />
                     <SolidColorBrush x:Key="DangerBrush" Color="#C23E5C" />
                     <SolidColorBrush x:Key="PrimaryActionForegroundBrush" Color="#FDFEFF" />
-                    <SolidColorBrush x:Key="LogoTaglinePrimaryBrush" Color="#118EDC" />
-                    <SolidColorBrush x:Key="LogoTaglineSecondaryBrush" Color="#7A53F4" />
+                    <SolidColorBrush x:Key="LogoTaglinePrimaryBrush" Color="#007FBD" />
+                    <SolidColorBrush x:Key="LogoTaglineSecondaryBrush" Color="#7037DA" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <Color x:Key="CyanColor">#18CEFF</Color>
-            <Color x:Key="BlueColor">#087BFF</Color>
-            <Color x:Key="VioletColor">#7137FF</Color>
-            <Color x:Key="MagentaColor">#F21CC8</Color>
-            <Color x:Key="PinkColor">#FF4B83</Color>
+            <Color x:Key="CyanColor">#00D1FC</Color>
+            <Color x:Key="BlueColor">#01A7F6</Color>
+            <Color x:Key="VioletColor">#7728F5</Color>
+            <Color x:Key="MagentaColor">#F414B6</Color>
+            <Color x:Key="PinkColor">#FF4D95</Color>
             <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
 
             <LinearGradientBrush x:Key="NeonGradientBrush" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#18CEFF" Offset="0" />
-                <GradientStop Color="#5538FF" Offset="0.48" />
-                <GradientStop Color="#F21CC8" Offset="1" />
+                <GradientStop Color="#00D1FC" Offset="0" />
+                <GradientStop Color="#7728F5" Offset="0.52" />
+                <GradientStop Color="#F414B6" Offset="1" />
             </LinearGradientBrush>
             <LinearGradientBrush x:Key="NavActiveBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.88">
-                <GradientStop Color="#075CB8" Offset="0" />
-                <GradientStop Color="#4930CA" Offset="0.52" />
-                <GradientStop Color="#A5139A" Offset="1" />
+                <GradientStop Color="#0477C9" Offset="0" />
+                <GradientStop Color="#5E27D3" Offset="0.52" />
+                <GradientStop Color="#B31291" Offset="1" />
             </LinearGradientBrush>
             <LinearGradientBrush x:Key="SliderGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
-                <GradientStop Color="#08C5FF" Offset="0" />
-                <GradientStop Color="#6340FF" Offset="0.5" />
-                <GradientStop Color="#F21CC8" Offset="1" />
+                <GradientStop Color="#00D1FC" Offset="0" />
+                <GradientStop Color="#7728F5" Offset="0.52" />
+                <GradientStop Color="#F414B6" Offset="1" />
             </LinearGradientBrush>
             <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
-                <GradientStop Color="#1AB6FF" Offset="0" />
-                <GradientStop Color="#5850FF" Offset="0.54" />
-                <GradientStop Color="#F021CC" Offset="1" />
+                <GradientStop Color="#00BFF7" Offset="0" />
+                <GradientStop Color="#7728F5" Offset="0.54" />
+                <GradientStop Color="#F414B6" Offset="1" />
             </LinearGradientBrush>
 
             <Style TargetType="TextBlock">

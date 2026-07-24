@@ -1,14 +1,14 @@
-# ArcVibrance
+# Chroma
 
 **Per-game saturation profiles for Intel® Arc™ graphics.**
 
-ArcVibrance is a lightweight Windows utility that automatically applies a configurable color-vibrance profile when a game starts and restores the desktop color state when the game closes.
+Chroma is a lightweight Windows utility that automatically applies a configurable color-vibrance profile when a game starts and restores the desktop color state when the game closes.
 
-> Current release: **v1.0**
+> Current release: **v1.1**
 
-[Visit the ArcVibrance website](https://acchtt.github.io/ArcVibrance/)
+[Visit the Chroma website](https://acchtt.github.io/ArcVibrance/)
 
-<img src="website/assets/arcvibrance-app.png" alt="ArcVibrance game profiles and profile editor" width="100%">
+<img src="website/assets/chroma-app.png" alt="Chroma game profiles and profile editor" width="100%">
 
 ## Features
 
@@ -27,7 +27,7 @@ ArcVibrance is a lightweight Windows utility that automatically applies a config
 - Intel Arc graphics hardware
 - A current Intel graphics driver
 
-ArcVibrance is currently designed specifically for Intel Arc graphics. Other GPU vendors are not supported.
+The current release uses Intel's native graphics-control API. Native AMD and NVIDIA backends are planned but are not included yet.
 
 ## Download
 
@@ -68,16 +68,16 @@ artwork is embedded in the UI executable.
 
 ## Reporting issues
 
-Please include your Windows version, Intel Arc GPU model, Intel graphics-driver version, affected game, reproduction steps, and relevant ArcVibrance logs.
+Please include your Windows version, Intel Arc GPU model, Intel graphics-driver version, affected game, reproduction steps, and relevant Chroma logs.
 
 ## Licensing
 
-ArcVibrance-authored source code is licensed under the [MIT License](LICENSE).
+Chroma-authored source code is licensed under the [MIT License](LICENSE).
 
-The **ArcVibrance** name, logo, icon, and visual brand assets are covered by the separate [brand usage notice](BRAND_USAGE.md).
+The **Chroma** name, logo, icon, and visual brand assets are covered by the separate [brand usage notice](BRAND_USAGE.md).
 
 Intel Graphics Control Library materials retain their original Intel copyright and license terms. See [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Disclaimer
 
-ArcVibrance is an independent project and is not affiliated with, endorsed by, or sponsored by Intel Corporation. Intel and Intel Arc are trademarks of Intel Corporation or its subsidiaries.
+Chroma is an independent project and is not affiliated with, endorsed by, or sponsored by Intel Corporation. Intel and Intel Arc are trademarks of Intel Corporation or its subsidiaries.

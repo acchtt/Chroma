@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Spacing="9" VerticalAlignment="Center" Margin="14,0,0,0">
                 <Image x:Name="TitleBarBrandLogo" Width="18" Height="18" />
-                <TextBlock Text="ArcVibrance" FontSize="13" Foreground="{ThemeResource TextSecondaryBrush}" />
+                <TextBlock Text="Chroma" FontSize="13" Foreground="{ThemeResource TextSecondaryBrush}" />
             </StackPanel>
         </Grid>
 
@@ -50,8 +50,8 @@
                             <Ellipse Width="140" Height="140" Opacity="0.22">
                                 <Ellipse.Fill>
                                     <RadialGradientBrush>
-                                        <GradientStop Color="#3925FF" Offset="0" />
-                                        <GradientStop Color="#141B4B" Offset="0.58" />
+                                        <GradientStop Color="#7728F5" Offset="0" />
+                                        <GradientStop Color="#171341" Offset="0.58" />
                                         <GradientStop Color="Transparent" Offset="1" />
                                     </RadialGradientBrush>
                                 </Ellipse.Fill>
@@ -61,16 +61,16 @@
                                    Height="128"
                                    Stretch="Uniform" />
                         </Grid>
-                        <TextBlock Text="ArcVibrance"
+                        <TextBlock Text="Chroma"
                                    FontSize="23"
                                    FontWeight="SemiBold"
                                    Margin="0,2,0,0"
                                    HorizontalAlignment="Center">
                             <TextBlock.Foreground>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                    <GradientStop Color="#16CEFF" Offset="0" />
+                                    <GradientStop Color="#00D1FC" Offset="0" />
                                     <GradientStop Color="#EAF5FF" Offset="0.52" />
-                                    <GradientStop Color="#F21CC8" Offset="1" />
+                                    <GradientStop Color="#F414B6" Offset="1" />
                                 </LinearGradientBrush>
                             </TextBlock.Foreground>
                         </TextBlock>
@@ -610,11 +610,11 @@
                                     <ColumnDefinition Width="76" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Spacing="4">
-                                    <TextBlock Text="About ArcVibrance"
+                                    <TextBlock Text="About Chroma"
                                                Foreground="{ThemeResource CyanBrush}"
                                                FontSize="13.5"
                                                FontWeight="SemiBold" />
-                                    <TextBlock Text="Per-game saturation profiles for Intel® Arc™ graphics, powered by a lightweight native monitoring agent."
+                                    <TextBlock Text="Automatic per-game color profiles powered by a lightweight native monitoring agent."
                                                Foreground="{ThemeResource TextSecondaryBrush}"
                                                FontSize="11.5"
                                                TextWrapping="Wrap"
@@ -654,7 +654,7 @@
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                 <StackPanel Spacing="5">
                                     <TextBlock Text="Launch at sign-in" FontSize="17" FontWeight="SemiBold" />
-                                    <TextBlock Text="Start ArcVibrance automatically after you sign in to Windows." Foreground="{ThemeResource TextSecondaryBrush}" />
+                                    <TextBlock Text="Start Chroma automatically after you sign in to Windows." Foreground="{ThemeResource TextSecondaryBrush}" />
                                 </StackPanel>
                                 <ToggleSwitch Grid.Column="1" IsOn="{Binding StartWithWindows, Mode=TwoWay}" VerticalAlignment="Center" />
                             </Grid>
@@ -664,8 +664,8 @@
                             <StackPanel Spacing="14">
                                 <TextBlock Text="Close button behavior" FontSize="17" FontWeight="SemiBold" />
                                 <TextBlock Text="Choose whether the close button hides the window or closes the interface. The background service can continue applying profiles." Foreground="{ThemeResource TextSecondaryBrush}" TextWrapping="Wrap" />
-                                <RadioButton x:Name="MinimizeRadio" Content="Hide the window and keep ArcVibrance in the system tray" Checked="CloseBehavior_Checked" Tag="0" />
-                                <RadioButton x:Name="ExitRadio" Content="Close the ArcVibrance interface" Checked="CloseBehavior_Checked" Tag="1" />
+                                <RadioButton x:Name="MinimizeRadio" Content="Hide the window and keep Chroma in the system tray" Checked="CloseBehavior_Checked" Tag="0" />
+                                <RadioButton x:Name="ExitRadio" Content="Close the Chroma interface" Checked="CloseBehavior_Checked" Tag="1" />
                             </StackPanel>
                         </Border>
 
@@ -690,7 +690,7 @@
                                 <StackPanel Spacing="5">
                                     <TextBlock Text="Background service" FontSize="17" FontWeight="SemiBold" />
                                     <TextBlock Text="{Binding AgentConnectionText}" Foreground="{ThemeResource CyanBrush}" />
-                                    <TextBlock Text="Detects the active game and applies Intel Arc saturation profiles in the background." Foreground="{ThemeResource TextSecondaryBrush}" />
+                                    <TextBlock Text="Detects the active game and applies its color profile in the background." Foreground="{ThemeResource TextSecondaryBrush}" />
                                 </StackPanel>
                                 <Button Grid.Column="1" Style="{StaticResource OutlineButtonStyle}" Content="Refresh profiles" Click="ReloadProfiles_Click" VerticalAlignment="Center" />
                             </Grid>
@@ -706,9 +706,9 @@
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="160"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Image x:Name="AboutBrandLogo" Width="150" Height="150" Stretch="Uniform" />
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="10">
-                                    <TextBlock Text="ArcVibrance" FontSize="34" FontWeight="SemiBold" />
-                                    <TextBlock Text="WinUI 3 migration preview" Foreground="{ThemeResource CyanBrush}" FontSize="17" />
-                                    <TextBlock Text="ArcVibrance automatically applies per-game saturation profiles through the Intel Graphics Control Library while keeping the user interface isolated in a responsive C# process." TextWrapping="Wrap" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" />
+                                    <TextBlock Text="Chroma" FontSize="34" FontWeight="SemiBold" />
+                                    <TextBlock Text="Per-game color profiles" Foreground="{ThemeResource CyanBrush}" FontSize="17" />
+                                    <TextBlock Text="Chroma automatically applies per-game color profiles while keeping the interface responsive and the monitoring agent lightweight." TextWrapping="Wrap" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" />
                                     <TextBlock x:Name="AboutVersionText"
                                                Text="Version • Windows App SDK 2.2 • .NET 8"
                                                Foreground="{ThemeResource TextMutedBrush}" />
@@ -722,9 +722,9 @@
                         <Border Style="{StaticResource CardBorderStyle}" Padding="24">
                             <StackPanel Spacing="9">
                                 <TextBlock Text="Architecture" Foreground="{ThemeResource CyanBrush}" FontSize="18" FontWeight="SemiBold" />
-                                <TextBlock Text="• ArcVibrance.exe — C# / WinUI 3 presentation and profile management" Foreground="{ThemeResource TextSecondaryBrush}" />
-                                <TextBlock Text="• ArcVibrance.Agent.exe — existing C++ Intel backend and monitoring runtime" Foreground="{ThemeResource TextSecondaryBrush}" />
-                                <TextBlock Text="• Named pipe — versioned binary IPC compatible with the previous UI" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• Desktop interface — profile creation and management" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• Native agent — GPU color control and game monitoring" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• Versioned IPC — reliable communication between the interface and agent" Foreground="{ThemeResource TextSecondaryBrush}" />
                             </StackPanel>
                         </Border>
                     </StackPanel>

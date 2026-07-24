@@ -372,7 +372,7 @@ public sealed partial class MainWindow : Window
         var dialog = new ContentDialog
         {
             XamlRoot = Root.XamlRoot,
-            Title = "ArcVibrance is up to date",
+            Title = "Chroma is up to date",
             Content =
                 $"You are running {update.CurrentVersionTag}. " +
                 $"The latest stable release is {update.LatestVersionTag}.",
@@ -390,7 +390,7 @@ public sealed partial class MainWindow : Window
     private async Task ShowUpdateErrorDialogAsync(Exception exception)
     {
         string message = exception is HttpRequestException
-            ? "ArcVibrance could not reach GitHub. Check your internet connection and try again."
+            ? "Chroma could not reach GitHub. Check your internet connection and try again."
             : exception.Message;
 
         var dialog = new ContentDialog
@@ -683,7 +683,7 @@ public sealed partial class MainWindow : Window
         {
             XamlRoot = Root.XamlRoot,
             Title = "Remove profile?",
-            Content = $"Remove {profile.DisplayName} from ArcVibrance?",
+            Content = $"Remove {profile.DisplayName} from Chroma?",
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Close

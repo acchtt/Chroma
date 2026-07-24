@@ -332,7 +332,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int)
     using namespace ArcVibrance;
 
     InitializeLogging();
-    Log(LogLevel::Info, L"ArcVibrance Agent starting");
+    Log(LogLevel::Info, L"Chroma Agent starting");
 
     HANDLE mutex = CreateMutexW(nullptr, TRUE, AGENT_MUTEX_NAME);
     if (mutex == nullptr || GetLastError() == ERROR_ALREADY_EXISTS)
@@ -354,7 +354,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int)
         return 1;
     }
 
-    g_agentWindow = CreateWindowExW(0, kWindowClass, L"ArcVibrance Agent", 0,
+    g_agentWindow = CreateWindowExW(0, kWindowClass, L"Chroma Agent", 0,
         0, 0, 0, 0, HWND_MESSAGE, nullptr, instance, nullptr);
     if (g_agentWindow == nullptr)
     {
@@ -408,7 +408,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int)
     if (wakePipe != INVALID_HANDLE_VALUE) CloseHandle(wakePipe);
     if (pipeThread.joinable()) pipeThread.join();
 
-    Log(LogLevel::Info, L"ArcVibrance Agent stopped cleanly");
+    Log(LogLevel::Info, L"Chroma Agent stopped cleanly");
     CloseHandle(mutex);
     ShutdownLogging();
     return static_cast<int>(message.wParam);

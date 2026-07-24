@@ -152,7 +152,7 @@ public sealed class MainViewModel : ObservableObject
                 _settingsStore.SetAutoStartEnabled(value);
                 SetProperty(ref _startWithWindows, value);
                 Notification = value
-                    ? "ArcVibrance will start in the system tray after Windows sign-in."
+                    ? "Chroma will start in the system tray after Windows sign-in."
                     : "Windows startup disabled.";
             }
             catch (Exception exception)
@@ -405,7 +405,7 @@ public sealed class MainViewModel : ObservableObject
         catch
         {
             AgentStatus = AgentStatus.Disconnected;
-            Notification = "Profiles saved. ArcVibrance Agent is offline.";
+            Notification = "Profiles saved. Chroma Agent is offline.";
         }
     }
 

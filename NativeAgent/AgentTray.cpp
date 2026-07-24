@@ -38,7 +38,7 @@ bool AddAgentTrayIcon(HWND owner)
         return false;
     }
 
-    wcscpy_s(data.szTip, L"ArcVibrance");
+    wcscpy_s(data.szTip, L"Chroma");
     if (!Shell_NotifyIconW(NIM_ADD, &data))
     {
         return false;
@@ -69,9 +69,9 @@ void ShowAgentTrayMenu(HWND owner)
         return;
     }
 
-    AppendMenuW(menu, MF_STRING | MF_DEFAULT, ID_AGENT_TRAY_SHOW, L"Open ArcVibrance");
+    AppendMenuW(menu, MF_STRING | MF_DEFAULT, ID_AGENT_TRAY_SHOW, L"Open Chroma");
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-    AppendMenuW(menu, MF_STRING, ID_AGENT_TRAY_EXIT, L"Exit ArcVibrance");
+    AppendMenuW(menu, MF_STRING, ID_AGENT_TRAY_EXIT, L"Exit Chroma");
 
     POINT point{};
     GetCursorPos(&point);

@@ -53,7 +53,7 @@ public sealed class UpdateService
             string.IsNullOrWhiteSpace(release.TagName))
         {
             throw new InvalidDataException(
-                "GitHub did not return a valid stable ArcVibrance release.");
+                "GitHub did not return a valid stable Chroma release.");
         }
 
         Version currentVersion = ParseVersion(CurrentVersionTag);
@@ -81,7 +81,7 @@ public sealed class UpdateService
             CurrentVersionTag,
             LatestVersionTag: NormalizeTag(release.TagName),
             ReleaseName: string.IsNullOrWhiteSpace(release.Name)
-                ? $"ArcVibrance {NormalizeTag(release.TagName)}"
+                ? $"Chroma {NormalizeTag(release.TagName)}"
                 : release.Name.Trim(),
             ReleaseNotes: release.Body?.Trim() ?? string.Empty,
             releaseUri,
@@ -192,7 +192,7 @@ public sealed class UpdateService
         Process? process = Process.Start(startInfo);
         if (process is null)
         {
-            throw new InvalidOperationException("Windows could not start the ArcVibrance updater.");
+            throw new InvalidOperationException("Windows could not start the Chroma updater.");
         }
     }
 
@@ -213,7 +213,7 @@ public sealed class UpdateService
         string[] components = normalized.Split('.', StringSplitOptions.RemoveEmptyEntries);
         if (components.Length is < 1 or > 4)
         {
-            throw new FormatException($"Unsupported ArcVibrance version: {value}");
+            throw new FormatException($"Unsupported Chroma version: {value}");
         }
 
         int[] numbers = new int[4];
@@ -221,7 +221,7 @@ public sealed class UpdateService
         {
             if (!int.TryParse(components[index], out numbers[index]) || numbers[index] < 0)
             {
-                throw new FormatException($"Unsupported ArcVibrance version: {value}");
+                throw new FormatException($"Unsupported Chroma version: {value}");
             }
         }
 
@@ -406,7 +406,7 @@ public sealed class UpdateService
         catch (UnauthorizedAccessException exception)
         {
             throw new InvalidOperationException(
-                "ArcVibrance cannot update this installation without write permission. " +
+                "Chroma cannot update this installation without write permission. " +
                 "Move it to a user-writable folder or run it as administrator.",
                 exception);
         }
@@ -456,7 +456,7 @@ public sealed class UpdateService
                 StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidDataException(
-                $"GitHub returned an unexpected ArcVibrance {description} URL.");
+                $"GitHub returned an unexpected Chroma {description} URL.");
         }
 
         return uri;
@@ -518,7 +518,7 @@ public sealed class UpdateService
         $createdFiles = [Collections.Generic.List[string]]::new()
 
         try {
-            "Waiting for ArcVibrance PID $ApplicationPid to exit." | Set-Content $log
+            "Waiting for Chroma PID $ApplicationPid to exit." | Set-Content $log
             try { Wait-Process -Id $ApplicationPid -Timeout 60 -ErrorAction Stop } catch {
                 Stop-Process -Id $ApplicationPid -Force -ErrorAction SilentlyContinue
                 Start-Sleep -Milliseconds 500

@@ -1,17 +1,17 @@
-# ArcVibrance Brand Usage
+# Chroma Brand Usage
 
-The MIT License applies to the ArcVibrance source code. It does not grant permission to use the ArcVibrance name, logo, icon, or other visual brand assets to identify an unofficial or modified distribution.
+The MIT License applies to the Chroma source code. It does not grant permission to use the Chroma name, logo, icon, or other visual brand assets to identify an unofficial or modified distribution.
 
 You may:
 
-- Refer to ArcVibrance by name when describing compatibility, forks, reviews, or contributions.
-- State that a project is based on or derived from ArcVibrance.
+- Refer to Chroma by name when describing compatibility, forks, reviews, or contributions.
+- State that a project is based on or derived from Chroma.
 - Retain factual attribution and links to the official repository.
 
 You may not, without prior written permission:
 
-- Present a modified build as an official ArcVibrance release.
-- Use the ArcVibrance logo or icon as the primary branding of a fork.
+- Present a modified build as an official Chroma release.
+- Use the Chroma logo or icon as the primary branding of a fork.
 - Suggest endorsement, sponsorship, or official affiliation.
 - Use confusingly similar branding intended to impersonate the official project.
 
