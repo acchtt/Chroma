@@ -344,11 +344,80 @@ public sealed partial class MainWindow : Window
         UpdatesButton.IsEnabled = false;
         UpdatesButtonText.Text = "Preparing update…";
 
+        var statusText = new TextBlock
+        {
+            Text = "Preparing update…",
+            FontSize = 15,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            TextWrapping = TextWrapping.Wrap
+        };
+        var percentText = new TextBlock
+        {
+            Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
+            HorizontalAlignment = HorizontalAlignment.Right
+        };
+        var progressHeader = new Grid();
+        progressHeader.ColumnDefinitions.Add(new ColumnDefinition());
+        progressHeader.ColumnDefinitions.Add(new ColumnDefinition
+        {
+            Width = GridLength.Auto
+        });
+        progressHeader.Children.Add(statusText);
+        Grid.SetColumn(percentText, 1);
+        progressHeader.Children.Add(percentText);
+
+        var progressBar = new ProgressBar
+        {
+            Minimum = 0,
+            Maximum = 100,
+            IsIndeterminate = true,
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+        var detailText = new TextBlock
+        {
+            Text = $"{update.CurrentVersionTag}  →  {update.LatestVersionTag}
+" +
+                   "Chroma will verify the download before replacing any files.",
+            Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
+            TextWrapping = TextWrapping.Wrap
+        };
+        var content = new StackPanel
+        {
+            Spacing = 12,
+            MinWidth = 430
+        };
+        content.Children.Add(progressHeader);
+        content.Children.Add(progressBar);
+        content.Children.Add(detailText);
+
+        var progressDialog = new ContentDialog
+        {
+            XamlRoot = Root.XamlRoot,
+            Title = $"Updating Chroma to {update.LatestVersionTag}",
+            Content = content
+        };
+        var dialogOperation = progressDialog.ShowAsync();
+        await Task.Yield();
+
         var progress = new Progress<UpdateProgress>(value =>
         {
             UpdatesButtonText.Text = value.Percentage is double percentage
                 ? $"{value.Message} {percentage:0}%"
                 : value.Message;
+            statusText.Text = value.Message;
+
+            if (value.Percentage is double reportedPercentage)
+            {
+                double normalized = Math.Clamp(reportedPercentage, 0d, 100d);
+                progressBar.IsIndeterminate = false;
+                progressBar.Value = normalized;
+                percentText.Text = $"{normalized:0}%";
+            }
+            else
+            {
+                progressBar.IsIndeterminate = true;
+                percentText.Text = string.Empty;
+            }
         });
 
         try
@@ -357,13 +426,20 @@ public sealed partial class MainWindow : Window
                 update,
                 progress);
 
+            statusText.Text = "Restarting Chroma…";
+            percentText.Text = "100%";
+            progressBar.IsIndeterminate = true;
             UpdatesButtonText.Text = "Restarting…";
             UpdateService.LaunchPreparedUpdate(preparedUpdate);
+            progressDialog.Hide();
+            await dialogOperation;
             _forceClose = true;
             Close();
         }
         catch (Exception exception)
         {
+            progressDialog.Hide();
+            await dialogOperation;
             UpdatesButtonText.Text = $"Update {update.LatestVersionTag}";
             await ShowUpdateInstallErrorDialogAsync(exception, update.ReleaseUri);
         }
