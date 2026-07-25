@@ -1,0 +1,83 @@
+name: Finalize exact PNG screenshot
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/png-lossless-final
+          fetch-depth: 0
+
+      - name: Reconstruct and verify exact PNG
+        shell: python
+        run: |
+          from pathlib import Path
+          import base64
+          import hashlib
+          import struct
+
+          parts = sorted(Path('.github/png-parts').glob('part*.b64'))
+          if len(parts) != 6:
+              raise SystemExit(f'Expected 6 PNG parts, found {len(parts)}')
+
+          encoded = ''.join(part.read_text(encoding='utf-8').strip() for part in parts)
+          data = base64.b64decode(encoded, validate=True)
+
+          expected_sha256 = 'f96692044fc823e5d226cf5cdb8d0bd83fe112ddb79b4c422953fd4af37e3002'
+          actual_sha256 = hashlib.sha256(data).hexdigest()
+          if actual_sha256 != expected_sha256:
+              raise SystemExit(f'PNG SHA-256 mismatch: {actual_sha256}')
+
+          if data[:8] != b'\x89PNG\r\n\x1a\n':
+              raise SystemExit('File does not have a valid PNG signature')
+
+          width, height = struct.unpack('>II', data[16:24])
+          if (width, height) != (1266, 813):
+              raise SystemExit(f'Unexpected PNG dimensions: {width}x{height}')
+
+          output = Path('website/assets/chroma-app-v13-final.png')
+          output.write_bytes(data)
+
+          readme = Path('README.md')
+          readme_text = readme.read_text(encoding='utf-8').replace(
+              'website/assets/chroma-app-v13.webp',
+              'website/assets/chroma-app-v13-final.png',
+          )
+          readme.write_text(readme_text, encoding='utf-8')
+
+          index = Path('website/index.html')
+          index_text = index.read_text(encoding='utf-8').replace(
+              'assets/chroma-app-v13.webp',
+              'assets/chroma-app-v13-final.png',
+          )
+          index.write_text(index_text, encoding='utf-8')
+
+          old_asset = Path('website/assets/chroma-app-v13.webp')
+          if old_asset.exists():
+              old_asset.unlink()
+
+      - name: Remove upload staging
+        shell: bash
+        run: |
+          rm -rf .github/png-parts
+          rm -rf .github/png-lossless
+          rm -f .github/workflows/finalize-png-screenshot.yml
+
+      - name: Commit clean screenshot replacement
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Replace screenshot with exact PNG"
+          git push origin HEAD:fix/png-lossless-final
