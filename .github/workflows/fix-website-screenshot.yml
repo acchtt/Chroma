@@ -41,7 +41,7 @@ jobs:
           output = Path("website/assets/chroma-app-v13.webp")
           output.write_bytes(data)
 
-          expected_sha256 = "a5c4b48c64ce14d2c2eee6715371ce8b25fdcc4a945e4ae7802fbcccf7e1985f"
+          expected_sha256 = "37f48c12c512fde7e424d74fe9020e7bc21e359edfc9e1c691b98d5daaf21cfa"
           actual_sha256 = hashlib.sha256(data).hexdigest()
           if actual_sha256 != expected_sha256:
               raise SystemExit(f"Unexpected SHA-256: {actual_sha256}")
