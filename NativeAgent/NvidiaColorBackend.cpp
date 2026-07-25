@@ -7,8 +7,8 @@ namespace Chroma
 {
 namespace
 {
-constexpr NvidiaColorBackend::NvStatus kNvApiOk = 0;
-constexpr NvidiaColorBackend::NvStatus kNvApiEndEnumeration = -7;
+constexpr int kNvApiOk = 0;
+constexpr int kNvApiEndEnumeration = -7;
 
 constexpr unsigned int kNvApiInitializeId = 0x0150E828;
 constexpr unsigned int kNvApiUnloadId = 0xD22BDD7E;
