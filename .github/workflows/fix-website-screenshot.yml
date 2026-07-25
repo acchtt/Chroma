@@ -1,0 +1,53 @@
+name: Fix website screenshot asset
+
+on:
+  push:
+    branches:
+      - fix/verified-website-screenshot
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/verified-website-screenshot
+          fetch-depth: 0
+
+      - name: Rebuild and verify screenshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat \
+            .github/screenshot-fix/chunk00.b64 \
+            .github/screenshot-fix/chunk01.b64 \
+            .github/screenshot-fix/chunk02.b64 \
+            .github/screenshot-fix/chunk03.b64 \
+            .github/screenshot-fix/chunk04.b64 \
+            | base64 --decode > website/assets/chroma-app-v13.webp
+
+          test "$(sha256sum website/assets/chroma-app-v13.webp | cut -d' ' -f1)" = \
+            "a5c4b48c64ce14d2c2eee6715371ce8b25fdcc4a945e4ae7802fbcccf7e1985f"
+          test "$(git hash-object website/assets/chroma-app-v13.webp)" = \
+            "6b90c7efc8f757632330982ba9650f3a5d32f572"
+          file website/assets/chroma-app-v13.webp | grep -q 'Web/P image'
+
+      - name: Remove temporary files
+        shell: bash
+        run: |
+          rm -rf .github/screenshot-fix
+          rm -f .github/workflows/fix-website-screenshot.yml
+          rm -f fix-note.txt
+
+      - name: Commit repaired asset
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Repair website screenshot asset"
+          git push origin HEAD:fix/verified-website-screenshot
