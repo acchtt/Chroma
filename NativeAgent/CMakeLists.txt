@@ -15,6 +15,7 @@ add_executable(ChromaAgent WIN32
     ChromaRuntime.cpp
     ColorBackendFactory.cpp
     IntelColorBackend.cpp
+    NvidiaColorBackend.cpp
     IGCLManager.cpp
     GameMonitor.cpp
     ForegroundWatcher.cpp
