@@ -1,5 +1,6 @@
 #include "ColorBackendFactory.h"
 
+#include "AmdColorBackend.h"
 #include "IntelColorBackend.h"
 #include "NvidiaColorBackend.h"
 
@@ -17,6 +18,12 @@ std::unique_ptr<IColorBackend> CreateDefaultColorBackend()
     if (nvidia->Initialize())
     {
         return nvidia;
+    }
+
+    auto amd = std::make_unique<AmdColorBackend>();
+    if (amd->Initialize())
+    {
+        return amd;
     }
 
     // Preserve the existing Intel backend as the final object so runtime
