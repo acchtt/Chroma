@@ -36,12 +36,16 @@ set(CHROMA_AGENT_SOURCES
 
 if(CHROMA_ADLX_ROOT)
     set(CHROMA_ADLX_HELPER "${CHROMA_ADLX_ROOT}/SDK/ADLXHelper/Windows/Cpp/ADLXHelper.cpp")
-    if(EXISTS "${CHROMA_ADLX_HELPER}")
-        list(APPEND CHROMA_AGENT_SOURCES "${CHROMA_ADLX_HELPER}")
+    set(CHROMA_ADLX_WIN_APIS "${CHROMA_ADLX_ROOT}/SDK/Platform/Windows/WinAPIs.cpp")
+    if(EXISTS "${CHROMA_ADLX_HELPER}" AND EXISTS "${CHROMA_ADLX_WIN_APIS}")
+        list(APPEND CHROMA_AGENT_SOURCES
+            "${CHROMA_ADLX_HELPER}"
+            "${CHROMA_ADLX_WIN_APIS}"
+        )
         set(CHROMA_HAS_ADLX ON)
         message(STATUS "AMD ADLX support enabled from ${CHROMA_ADLX_ROOT}")
     else()
-        message(WARNING "CHROMA_ADLX_ROOT is set, but ADLXHelper.cpp was not found; AMD support is disabled")
+        message(WARNING "CHROMA_ADLX_ROOT is set, but required ADLX helper/platform sources were not found; AMD support is disabled")
     endif()
 else()
     message(STATUS "AMD ADLX SDK not found; building without AMD support")
