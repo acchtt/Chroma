@@ -38,7 +38,7 @@ private:
         double saturation,
         const DisplayColor& display) noexcept;
 
-    adlx::ADLXHelper helper_;
+    ::ADLXHelper helper_;
     std::vector<DisplayColor> displays_;
 #endif
     bool initialized_ = false;
