@@ -5,7 +5,15 @@ project(ChromaNative LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(ChromaAgent WIN32
+set(CHROMA_ADLX_ROOT "" CACHE PATH "Path to the root of the AMD ADLX SDK checkout")
+if(NOT CHROMA_ADLX_ROOT AND DEFINED ENV{ADLX_SDK_ROOT})
+    set(CHROMA_ADLX_ROOT "$ENV{ADLX_SDK_ROOT}")
+endif()
+if(NOT CHROMA_ADLX_ROOT AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/ADLX/SDK")
+    set(CHROMA_ADLX_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/ADLX")
+endif()
+
+set(CHROMA_AGENT_SOURCES
     agent_main.cpp
     AgentTray.cpp
     AppState.cpp
@@ -16,6 +24,7 @@ add_executable(ChromaAgent WIN32
     ColorBackendFactory.cpp
     IntelColorBackend.cpp
     NvidiaColorBackend.cpp
+    AmdColorBackend.cpp
     IGCLManager.cpp
     GameMonitor.cpp
     ForegroundWatcher.cpp
@@ -24,6 +33,21 @@ add_executable(ChromaAgent WIN32
     ColorAlgorithms_App.cpp
     Chroma.rc
 )
+
+if(CHROMA_ADLX_ROOT)
+    set(CHROMA_ADLX_HELPER "${CHROMA_ADLX_ROOT}/SDK/ADLXHelper/Windows/Cpp/ADLXHelper.cpp")
+    if(EXISTS "${CHROMA_ADLX_HELPER}")
+        list(APPEND CHROMA_AGENT_SOURCES "${CHROMA_ADLX_HELPER}")
+        set(CHROMA_HAS_ADLX ON)
+        message(STATUS "AMD ADLX support enabled from ${CHROMA_ADLX_ROOT}")
+    else()
+        message(WARNING "CHROMA_ADLX_ROOT is set, but ADLXHelper.cpp was not found; AMD support is disabled")
+    endif()
+else()
+    message(STATUS "AMD ADLX SDK not found; building without AMD support")
+endif()
+
+add_executable(ChromaAgent WIN32 ${CHROMA_AGENT_SOURCES})
 
 set_target_properties(ChromaAgent PROPERTIES OUTPUT_NAME "Chroma.Agent")
 if(MSVC)
@@ -35,6 +59,10 @@ if(MSVC)
     )
 endif()
 target_compile_definitions(ChromaAgent PRIVATE UNICODE _UNICODE)
+if(CHROMA_HAS_ADLX)
+    target_compile_definitions(ChromaAgent PRIVATE CHROMA_HAS_ADLX=1)
+    target_include_directories(ChromaAgent PRIVATE "${CHROMA_ADLX_ROOT}")
+endif()
 target_link_libraries(ChromaAgent PRIVATE
     Comctl32
     Shell32
