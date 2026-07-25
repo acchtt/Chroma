@@ -1,0 +1,1 @@
+This temporary marker triggers the verified screenshot repair pull request and is removed by the repair workflow.
