@@ -11,7 +11,7 @@
   --violet: #7728f5;
   --magenta: #f414b6;
   --radius: 20px;
-  --shell: 1160px;
+  --shell: 1360px;
 }
 
 * {
@@ -165,9 +165,9 @@ svg {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(520px, 1.12fr);
+  grid-template-columns: minmax(380px, 0.72fr) minmax(680px, 1.28fr);
   align-items: center;
-  gap: 76px;
+  gap: 52px;
 }
 
 .eyebrow {
@@ -341,7 +341,7 @@ h3 {
   border-radius: 17px;
   background: #0c1020;
   box-shadow: 0 32px 70px rgba(0, 0, 0, 0.38);
-  transform: perspective(1200px) rotateY(-3deg) rotateX(1deg);
+  transform: none;
 }
 
 .window-bar {
