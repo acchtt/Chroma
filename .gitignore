@@ -38,3 +38,6 @@ logs/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Local vendor SDK checkouts
+third_party/
