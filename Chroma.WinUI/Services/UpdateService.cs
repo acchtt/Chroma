@@ -150,7 +150,9 @@ public sealed class UpdateService
         progress?.Report(new UpdateProgress("Preparing update files…", null));
         ExtractArchiveSafely(archivePath, stagingDirectory);
         ValidateStagedUpdate(stagingDirectory);
-        EnsureInstallDirectoryWritable(AppContext.BaseDirectory);
+        string applicationPath = GetRunningApplicationPath();
+        string installationDirectory = GetVerifiedInstallationDirectory(applicationPath);
+        EnsureInstallDirectoryWritable(installationDirectory);
 
         string installerScriptPath = Path.Combine(updatesRoot, "Chroma.Update.ps1");
         Directory.CreateDirectory(updatesRoot);
@@ -163,12 +165,14 @@ public sealed class UpdateService
         return new PreparedUpdate(
             update.LatestVersionTag,
             stagingDirectory,
-            installerScriptPath);
+            installerScriptPath,
+            applicationPath);
     }
 
     public static void LaunchPreparedUpdate(PreparedUpdate update)
     {
-        string installationDirectory = Path.GetFullPath(AppContext.BaseDirectory);
+        string applicationPath = Path.GetFullPath(update.ApplicationPath);
+        _ = GetVerifiedInstallationDirectory(applicationPath);
         var startInfo = new ProcessStartInfo
         {
             FileName = "powershell.exe",
@@ -182,8 +186,8 @@ public sealed class UpdateService
         startInfo.ArgumentList.Add("Bypass");
         startInfo.ArgumentList.Add("-File");
         startInfo.ArgumentList.Add(update.InstallerScriptPath);
-        startInfo.ArgumentList.Add("-InstallDirectory");
-        startInfo.ArgumentList.Add(installationDirectory);
+        startInfo.ArgumentList.Add("-ApplicationPath");
+        startInfo.ArgumentList.Add(applicationPath);
         startInfo.ArgumentList.Add("-StagingDirectory");
         startInfo.ArgumentList.Add(update.StagingDirectory);
         startInfo.ArgumentList.Add("-ApplicationPid");
@@ -388,6 +392,72 @@ public sealed class UpdateService
         }
     }
 
+    private static string GetRunningApplicationPath()
+    {
+        string? processPath = Environment.ProcessPath;
+        if (string.IsNullOrWhiteSpace(processPath))
+        {
+            using Process process = Process.GetCurrentProcess();
+            processPath = process.MainModule?.FileName;
+        }
+
+        if (string.IsNullOrWhiteSpace(processPath))
+        {
+            throw new InvalidOperationException(
+                "Chroma could not determine the path of the running executable.");
+        }
+
+        return Path.GetFullPath(processPath);
+    }
+
+    private static string GetVerifiedInstallationDirectory(string applicationPath)
+    {
+        string fullApplicationPath = Path.GetFullPath(applicationPath);
+        if (!string.Equals(
+                Path.GetFileName(fullApplicationPath),
+                "Chroma.exe",
+                StringComparison.OrdinalIgnoreCase) ||
+            !File.Exists(fullApplicationPath))
+        {
+            throw new InvalidOperationException(
+                "Chroma could not verify the currently running installation.");
+        }
+
+        string? installationDirectory = Path.GetDirectoryName(fullApplicationPath);
+        if (string.IsNullOrWhiteSpace(installationDirectory))
+        {
+            throw new InvalidOperationException(
+                "Chroma could not determine the installation directory.");
+        }
+
+        installationDirectory = Path.GetFullPath(installationDirectory);
+        string agentPath = Path.Combine(installationDirectory, "Chroma.Agent.exe");
+        if (!File.Exists(agentPath))
+        {
+            throw new InvalidOperationException(
+                "Chroma.Agent.exe is not beside the running Chroma.exe. " +
+                "The updater will not replace files in an unverified folder.");
+        }
+
+        string updatesDirectory = Path.GetFullPath(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Chroma",
+            "Updates"))
+            .TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        string installationRoot = installationDirectory
+            .TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        if (installationRoot.StartsWith(
+                updatesDirectory,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                "Chroma is running from its temporary update folder. " +
+                "Launch the installed copy before updating.");
+        }
+
+        return installationDirectory;
+    }
+
     private static void EnsureInstallDirectoryWritable(string installationDirectory)
     {
         string probePath = Path.Combine(
@@ -504,13 +574,19 @@ public sealed class UpdateService
     private const string InstallerScript =
         """
         param(
-            [Parameter(Mandatory=$true)][string]$InstallDirectory,
+            [Parameter(Mandatory=$true)][string]$ApplicationPath,
             [Parameter(Mandatory=$true)][string]$StagingDirectory,
             [Parameter(Mandatory=$true)][int]$ApplicationPid
         )
 
         $ErrorActionPreference = 'Stop'
-        $install = [IO.Path]::GetFullPath($InstallDirectory)
+        $application = [IO.Path]::GetFullPath($ApplicationPath)
+        if (-not [IO.Path]::GetFileName($application).Equals(
+                'Chroma.exe',
+                [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Unexpected application target: $application"
+        }
+        $install = Split-Path -Parent $application
         $staging = [IO.Path]::GetFullPath($StagingDirectory)
         $updateRoot = Split-Path -Parent $staging
         $backup = Join-Path $updateRoot 'backup'
@@ -518,7 +594,15 @@ public sealed class UpdateService
         $createdFiles = [Collections.Generic.List[string]]::new()
 
         try {
-            "Waiting for Chroma PID $ApplicationPid to exit." | Set-Content $log
+            "Install target: $application" | Set-Content $log
+            "Staging source: $staging" | Add-Content $log
+            if (-not (Test-Path $application -PathType Leaf)) {
+                throw "The running Chroma executable no longer exists at $application"
+            }
+            if (-not (Test-Path (Join-Path $install 'Chroma.Agent.exe') -PathType Leaf)) {
+                throw "Chroma.Agent.exe is not present in the verified installation folder."
+            }
+            "Waiting for Chroma PID $ApplicationPid to exit." | Add-Content $log
             try { Wait-Process -Id $ApplicationPid -Timeout 60 -ErrorAction Stop } catch {
                 Stop-Process -Id $ApplicationPid -Force -ErrorAction SilentlyContinue
                 Start-Sleep -Milliseconds 500
@@ -556,10 +640,23 @@ public sealed class UpdateService
                 }
 
                 Copy-Item $source.FullName $destination -Force
+                $sourceHash = (Get-FileHash $source.FullName -Algorithm SHA256).Hash
+                $destinationHash = (Get-FileHash $destination -Algorithm SHA256).Hash
+                if (-not $sourceHash.Equals(
+                        $destinationHash,
+                        [StringComparison]::OrdinalIgnoreCase)) {
+                    throw "Replacement verification failed for $relative"
+                }
             }
 
-            "Update installed successfully." | Add-Content $log
-            Start-Process (Join-Path $install 'Chroma.exe') -WorkingDirectory $install
+            "Installed files replaced and verified in $install." | Add-Content $log
+            Start-Process $application -WorkingDirectory $install
+
+            if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
+            if (Test-Path $backup) { Remove-Item $backup -Recurse -Force }
+            Get-ChildItem $updateRoot -Filter '*.zip' -File -ErrorAction SilentlyContinue |
+                Remove-Item -Force -ErrorAction SilentlyContinue
+            "Update installed successfully. Temporary executable copies removed." | Add-Content $log
         }
         catch {
             "Update failed: $($_.Exception.Message)" | Add-Content $log
@@ -603,4 +700,5 @@ public sealed record UpdateProgress(string Message, double? Percentage);
 public sealed record PreparedUpdate(
     string VersionTag,
     string StagingDirectory,
-    string InstallerScriptPath);
+    string InstallerScriptPath,
+    string ApplicationPath);
