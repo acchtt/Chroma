@@ -32,6 +32,74 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .hero {
+      padding-bottom: 96px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 54px;
+    }
+
+    .hero-copy {
+      width: min(100%, 820px);
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .hero-copy > .eyebrow,
+    .hero-actions,
+    .hero-meta {
+      justify-content: center;
+    }
+
+    .hero-lead {
+      margin-inline: auto;
+    }
+
+    .app-preview {
+      width: min(100%, 1180px);
+      margin-inline: auto;
+    }
+
+    .preview-glow {
+      inset: 4% 9% -3%;
+      opacity: 0.82;
+      filter: blur(58px);
+    }
+
+    .app-preview figure {
+      padding: 6px;
+      border-radius: 22px;
+    }
+
+    .app-preview figure > img {
+      aspect-ratio: auto;
+      object-fit: contain;
+      border-radius: 15px;
+    }
+
+    .status-pill {
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      .hero-grid {
+        gap: 38px;
+      }
+
+      .hero-copy {
+        text-align: left;
+      }
+
+      .hero-copy > .eyebrow,
+      .hero-actions,
+      .hero-meta {
+        justify-content: flex-start;
+      }
+    }
+  </style>
 
   <script type="application/ld+json">
   {
@@ -113,14 +181,13 @@
           <div class="preview-glow" aria-hidden="true"></div>
           <figure>
             <img
-              src="assets/chroma-app.png"
+              src="assets/chroma-app.png?v=20260726"
               alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves"
               width="1266"
               height="813"
               decoding="async"
               fetchpriority="high" />
           </figure>
-          <div class="status-pill"><i></i> Profile active</div>
         </div>
       </div>
     </section>
