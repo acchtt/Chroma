@@ -60,9 +60,9 @@ public sealed partial class MainWindow
             var item = new ComboBoxItem
             {
                 Content = option.DisplayName,
-                Tag = option,
-                ToolTip = option.Detail
+                Tag = option
             };
+            ToolTipService.SetToolTip(item, option.Detail);
             _gpuSelectorCombo.Items.Add(item);
             if (option.Preference == savedPreference)
             {
