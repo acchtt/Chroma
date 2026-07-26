@@ -142,7 +142,29 @@ jobs:
             throw "Staged package should contain exactly 2 files, found $($packagedFiles.Count)."
           }
 
-          Compress-Archive -Path $packageFolder -DestinationPath $archive -CompressionLevel Optimal
+          # The built-in updater validates Chroma.exe and Chroma.Agent.exe at
+          # the archive root, so compress the folder contents rather than the
+          # containing versioned directory.
+          Compress-Archive -Path (Join-Path $packageFolder "*") -DestinationPath $archive -CompressionLevel Optimal
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [IO.Compression.ZipFile]::OpenRead($archive)
+          try {
+            $entryNames = @($zip.Entries |
+              Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } |
+              ForEach-Object { $_.FullName.Replace('/', '\') } |
+              Sort-Object)
+          }
+          finally {
+            $zip.Dispose()
+          }
+
+          $expectedEntries = @("Chroma.Agent.exe", "Chroma.exe") | Sort-Object
+          $differences = @(Compare-Object -ReferenceObject $expectedEntries -DifferenceObject $entryNames)
+          if ($differences.Count -ne 0) {
+            throw "Updater archive must contain only Chroma.exe and Chroma.Agent.exe at its root. Found: $($entryNames -join ', ')"
+          }
+
           $hash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  ${{ steps.release.outputs.archive }}" |
             Set-Content "$archive.sha256" -Encoding ascii -NoNewline
