@@ -94,7 +94,7 @@ public sealed class MainViewModel : ObservableObject
 
     public bool IsAgentConnected => AgentStatus.AgentRunning;
     public string AgentConnectionText => AgentStatus.AgentRunning
-        ? AgentStatus.RuntimeInitialized ? "Agent connected" : "Agent connected · Intel backend initializing"
+        ? AgentStatus.RuntimeInitialized ? "Agent connected" : "Agent connected · GPU backend initializing"
         : "Agent offline";
     public string MonitoringText => AgentStatus.GameActive
         ? "Active"
@@ -236,7 +236,7 @@ public sealed class MainViewModel : ObservableObject
             AgentStatus = await _agentClient.GetStatusAsync(cancellationToken);
             if (AgentStatus.AgentRunning && !AgentStatus.RuntimeInitialized)
             {
-                Notification = "Tray agent started. Waiting for the Intel color backend.";
+                Notification = "Tray agent started. Waiting for a compatible GPU color backend.";
             }
             return AgentStatus.AgentRunning;
         }
