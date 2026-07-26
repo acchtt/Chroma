@@ -1,8 +1,8 @@
 # Chroma
 
-**Per-game saturation profiles for Intel® Arc™ graphics.**
+**Automatic per-game saturation profiles for Intel, NVIDIA, and AMD graphics.**
 
-Chroma is a lightweight Windows utility that automatically applies a configurable color-vibrance profile when a game starts and restores the desktop color state when the game closes.
+Chroma is a lightweight Windows utility that detects the active game, applies its saved saturation profile through a native GPU color backend, and restores the desktop color state when the game closes.
 
 > Current release: **v1.3**
 
@@ -15,19 +15,29 @@ Chroma is a lightweight Windows utility that automatically applies a configurabl
 - Per-game saturation profiles from 0% to 300%
 - Automatic profile activation based on the foreground game executable
 - Automatic restoration of desktop color settings
+- Native color backends for Intel IGCL, NVIDIA NVAPI, and AMD ADLX
 - Lightweight native monitoring agent and system-tray operation
+- Primary-display GPU information in the monitoring card
 - Steam game detection and executable icon extraction
 - Windows startup support
 - Built-in release updater with SHA-256 verification, rollback, and automatic restart
 - Light and dark WinUI 3 interface
 
+## GPU support
+
+- **Intel:** IGCL backend; verified on Intel Arc hardware
+- **NVIDIA:** NVAPI Digital Vibrance backend; implemented and awaiting broader hardware validation
+- **AMD:** ADLX custom-color backend; implemented and awaiting broader hardware validation
+
+The backend used depends on the GPU and display path available to Windows. Hybrid-GPU laptops and unusual monitor-routing configurations may behave differently from desktop systems.
+
 ## Requirements
 
 - Windows 10 or Windows 11, 64-bit
-- Intel Arc graphics hardware
-- A current Intel graphics driver
+- A supported Intel, NVIDIA, or AMD graphics adapter
+- A current graphics driver for the installed GPU
 
-The current release uses Intel's native graphics-control API. Native AMD and NVIDIA backends are planned but are not included yet.
+AMD support is compiled when the ADLX SDK checkout is available under `third_party/ADLX`. Intel and NVIDIA support build without bundling vendor runtime DLLs.
 
 ## Download
 
@@ -37,7 +47,7 @@ Download the validated Windows x64 build from
 ## Repository layout
 
 - [`Chroma.WinUI/`](Chroma.WinUI/) — .NET 8 / WinUI 3 desktop interface
-- [`NativeAgent/`](NativeAgent/) — native C++ monitoring and Intel color-control agent
+- [`NativeAgent/`](NativeAgent/) — native C++ monitoring and GPU color-control agent
 - [`NativeAgent/tests/`](NativeAgent/tests/) — native profile-matching tests
 - [`website/`](website/) — dependency-free GitHub Pages website
 - [`.github/workflows/`](.github/workflows/) — automated Windows release builds
@@ -52,7 +62,14 @@ Recommended build environment:
 - Windows App SDK / WinUI 3 tooling
 - CMake
 
-From PowerShell:
+To include the AMD backend, clone ADLX into the expected folder:
+
+```powershell
+New-Item -ItemType Directory -Path "third_party" -Force | Out-Null
+git clone https://github.com/GPUOpen-LibrariesAndSDKs/ADLX.git "third_party\ADLX"
+```
+
+Build Chroma from PowerShell:
 
 ```powershell
 ./build.ps1 -Configuration Release -Platform x64 -SelfContained
@@ -60,15 +77,11 @@ From PowerShell:
 
 The build output is written to `dist/x64/`. The solution can also be opened directly from `Chroma.sln`.
 
-GitHub Actions runs the same Release x64 build and uploads a packaged Windows artifact for validation.
-Release builds use the version in `Chroma.WinUI.csproj`, publish a matching
-versioned ZIP, and include a SHA-256 checksum beside the download. The portable
-package contains only `Chroma.exe` and `Chroma.Agent.exe`; application
-artwork is embedded in the UI executable.
+GitHub Actions runs the same Release x64 build and uploads a packaged Windows artifact for validation. Release builds use the version in `Chroma.WinUI.csproj`, publish a matching versioned ZIP, and include a SHA-256 checksum beside the download. The portable package contains only `Chroma.exe` and `Chroma.Agent.exe`; application artwork is embedded in the UI executable.
 
 ## Reporting issues
 
-Please include your Windows version, Intel Arc GPU model, Intel graphics-driver version, affected game, reproduction steps, and relevant Chroma logs.
+Please include your Windows version, GPU vendor and model, graphics-driver version, monitor connection, affected game, reproduction steps, and relevant Chroma logs.
 
 ## Licensing
 
@@ -76,8 +89,8 @@ Chroma-authored source code is licensed under the [MIT License](LICENSE).
 
 The **Chroma** name, logo, icon, and visual brand assets are covered by the separate [brand usage notice](BRAND_USAGE.md).
 
-Intel Graphics Control Library materials retain their original Intel copyright and license terms. See [third-party notices](THIRD_PARTY_NOTICES.md).
+Third-party GPU API materials retain their original copyright and license terms. See [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Disclaimer
 
-Chroma is an independent project and is not affiliated with, endorsed by, or sponsored by Intel Corporation. Intel and Intel Arc are trademarks of Intel Corporation or its subsidiaries.
+Chroma is an independent project and is not affiliated with, endorsed by, or sponsored by Intel, NVIDIA, or AMD. Product and company names are trademarks of their respective owners.
