@@ -19,6 +19,7 @@ public partial class App : Application
         _ = UpdateService.CleanupStaleUpdateFilesAsync();
         MainWindowInstance = new MainWindow();
         MainWindowInstance.EnableUpdateExperience();
+        MainWindowInstance.EnableGpuSelector();
         BrandPalette.Apply(Resources);
         MainWindowInstance.Activate();
         MainWindowInstance.NotifyWindowOpened();
