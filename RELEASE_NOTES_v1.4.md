@@ -23,9 +23,14 @@ Display routing on hybrid-GPU laptops may affect which backend controls the conn
 
 ## Package
 
-Extract both files from `Chroma-v1.4-win-x64.zip` into the same folder before launching:
+The archive `Chroma-v1.4-win-x64.zip` contains a versioned application folder:
 
-- `Chroma.exe`
-- `Chroma.Agent.exe`
+```text
+Chroma-v1.4/
+├── Chroma.exe
+└── Chroma.Agent.exe
+```
+
+Extract the folder before launching `Chroma.exe`. Keep `Chroma.Agent.exe` beside it.
 
 The release also includes `Chroma-v1.4-win-x64.zip.sha256` for integrity verification.
