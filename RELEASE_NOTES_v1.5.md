@@ -10,6 +10,7 @@ Chroma v1.5 is a validation release for the built-in automatic updater. It packa
 - Retained primary-display GPU identification in the monitoring card.
 - Retained the updater progress interface, SHA-256 verification, rollback protection, and automatic restart.
 - Refreshed the repository and website presentation with the latest Chroma interface screenshot.
+- Corrected the release archive layout so the built-in updater finds both required executables at the ZIP root.
 
 ## Automatic updater test
 
@@ -24,14 +25,13 @@ From an existing Chroma v1.4 installation:
 
 ## Package
 
-The archive `Chroma-v1.5-win-x64.zip` contains:
+The archive `Chroma-v1.5-win-x64.zip` contains exactly these files at its root:
 
 ```text
-Chroma-v1.5/
-├── Chroma.exe
-└── Chroma.Agent.exe
+Chroma.exe
+Chroma.Agent.exe
 ```
 
-The release also includes `Chroma-v1.5-win-x64.zip.sha256` for updater and manual integrity verification.
+This root-level layout is required by the automatic updater. The release also includes `Chroma-v1.5-win-x64.zip.sha256` for updater and manual integrity verification.
 
-Extract the folder before launching Chroma manually. Keep `Chroma.Agent.exe` beside `Chroma.exe`.
+For manual installation, extract both files into the same folder before launching `Chroma.exe`.
