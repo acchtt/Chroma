@@ -1,6 +1,11 @@
 name: Apply v1.9 icon refresh
 
 on:
+  push:
+    branches:
+      - release/v1.9-icons
+    paths:
+      - .release-v1.9-icons
   pull_request:
     branches:
       - main
@@ -12,12 +17,12 @@ permissions:
 
 jobs:
   apply:
-    if: github.event.pull_request.head.ref == 'release/v1.9-icons'
+    if: github.ref == 'refs/heads/release/v1.9-icons' || github.event.pull_request.head.ref == 'release/v1.9-icons'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: release/v1.9-icons
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -116,4 +121,4 @@ Chroma v1.9 refreshes every Windows executable and tray icon from the current Ch
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Refresh Chroma executable and tray icons for v1.9"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push origin HEAD:release/v1.9-icons
