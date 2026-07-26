@@ -4,7 +4,7 @@
 
 Chroma is a lightweight Windows utility that detects the active game, applies its saved saturation profile through a native GPU color backend, and restores the desktop color state when the game closes.
 
-> Current release: **v1.9**
+> Current release: **v1.10**
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
@@ -18,6 +18,8 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 - Automatic profile activation based on the foreground game executable
 - Automatic restoration of desktop color settings
 - Native color backends for Intel IGCL, NVIDIA NVAPI, and AMD ADLX
+- GPU backend selector with Automatic, Intel, NVIDIA, and AMD choices
+- Automatic mode prioritizes the GPU driving the primary Windows display
 - Lightweight native monitoring agent and system-tray operation
 - Primary-display GPU information in the monitoring card
 - Steam game detection and executable icon extraction
