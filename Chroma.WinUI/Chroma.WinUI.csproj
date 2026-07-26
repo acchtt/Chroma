@@ -7,10 +7,10 @@
     <AssemblyName>Chroma</AssemblyName>
     <ApplicationIcon>Assets\Chroma.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.8.0</Version>
-    <AssemblyVersion>1.8.0.0</AssemblyVersion>
-    <FileVersion>1.8.0.0</FileVersion>
-    <InformationalVersion>v1.8</InformationalVersion>
+    <Version>1.9.0</Version>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <FileVersion>1.9.0.0</FileVersion>
+    <InformationalVersion>v1.9</InformationalVersion>
     <Product>Chroma</Product>
     <AssemblyTitle>Chroma</AssemblyTitle>
     <Authors>acchtt</Authors>
@@ -74,4 +74,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="GenerateChromaIcon"
+          BeforeTargets="PrepareForBuild"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)\..\tools\Chroma.IconBuilder\Chroma.IconBuilder.csproj&quot; --configuration Release -- &quot;$(MSBuildProjectDirectory)\Assets\Chroma.png&quot; &quot;$(MSBuildProjectDirectory)\Assets\Chroma.ico&quot;" />
+  </Target>
 </Project>
