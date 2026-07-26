@@ -1,0 +1,33 @@
+name: Apply updater target fix
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/apply_updater_target_fix.py
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Apply updater repair
+        run: python tools/apply_updater_target_fix.py
+
+      - name: Commit repair to pull request branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm tools/apply_updater_target_fix.py
+          git add Chroma.WinUI/Services/UpdateService.cs
+          git commit -m "Fix updater installation target and cleanup"
+          git push origin HEAD:${{ github.head_ref }}
