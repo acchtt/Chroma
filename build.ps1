@@ -1,7 +1,7 @@
 param(
     [ValidateSet('Debug','Release')]
     [string]$Configuration = 'Release',
-    [ValidateSet('x64','ARM64')]
+    [ValidateSet('x64')]
     [string]$Platform = 'x64',
     [switch]$SelfContained
 )
@@ -49,10 +49,6 @@ function Stop-ChromaProcesses {
 # agent instances before compiling so dotnet publish can replace the binaries.
 Stop-ChromaProcesses
 
-if ($Platform -ne 'x64') {
-    throw 'The Intel native agent is currently configured and tested for x64. Use -Platform x64.'
-}
-
 cmake -S (Join-Path $Root 'NativeAgent') -B $NativeBuild -A $Platform -DBUILD_TESTING=OFF
 if ($LASTEXITCODE -ne 0) { throw "CMake configuration failed with exit code $LASTEXITCODE." }
 
@@ -72,7 +68,7 @@ $Project = Join-Path $Root 'Chroma.WinUI\Chroma.WinUI.csproj'
 $Runtime = "win-$($Platform.ToLowerInvariant())"
 $SelfContainedValue = $SelfContained.IsPresent.ToString().ToLowerInvariant()
 
-# Pass the freshly built native binary into MSBuild.  The csproj marks it as
+# Pass the freshly built native binary into MSBuild. The csproj marks it as
 # content for both normal build output and publish output, which guarantees
 # that Chroma.Agent.exe sits beside every Chroma.exe produced here.
 $PublishArguments = @(
