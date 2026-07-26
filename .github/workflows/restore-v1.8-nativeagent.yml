@@ -21,11 +21,11 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Restore untouched NativeAgent files
+      - name: Restore exact NativeAgent blobs
         shell: bash
         run: |
           git fetch origin main
-          git checkout origin/main -- \
+          for path in \
             NativeAgent/ColorAlgorithms_App.cpp \
             NativeAgent/ColorAlgorithms_App.h \
             NativeAgent/GameMonitor.cpp \
@@ -36,13 +36,16 @@ jobs:
             NativeAgent/IGCLManager.h \
             NativeAgent/cApiWrapper.cpp \
             NativeAgent/igcl_api.h
-          rm -f .restore-v1.8-nativeagent
+          do
+            blob="$(git rev-parse "origin/main:${path}")"
+            git update-index --cacheinfo "100644,${blob},${path}"
+          done
+          git rm -f .restore-v1.8-nativeagent
 
       - name: Commit restored files
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Restore untouched NativeAgent line endings"
+          git commit -m "Restore exact NativeAgent blobs"
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
