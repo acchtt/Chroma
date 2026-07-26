@@ -7,9 +7,9 @@ using Windows.UI;
 namespace Chroma.Services;
 
 /// <summary>
-/// Applies the rounded Chroma badge palette to both WinUI themes.
-/// The visual system follows the logo's deep navy glass, cyan edge light,
-/// lavender core, pink glow, and small lime and gold spectrum highlights.
+/// Applies the neon spectrum from the rounded Chroma badge to both WinUI themes.
+/// Keeping the palette in code lets the existing XAML styles continue to use
+/// ThemeResource keys while the brand colors remain centralized.
 /// </summary>
 internal static class BrandPalette
 {
@@ -25,134 +25,134 @@ internal static class BrandPalette
             ApplyLightTheme(light);
         }
 
-        resources["CyanColor"] = ParseColor("#58ECF5");
-        resources["BlueColor"] = ParseColor("#6E9CFF");
-        resources["VioletColor"] = ParseColor("#A57BFF");
-        resources["MagentaColor"] = ParseColor("#F36ACF");
-        resources["PinkColor"] = ParseColor("#FF9BCF");
-        resources["LimeColor"] = ParseColor("#8CF5A5");
-        resources["GoldColor"] = ParseColor("#FFD97A");
-        resources["LimeBrush"] = Brush("#8CF5A5");
-        resources["GoldBrush"] = Brush("#FFD97A");
+        resources["CyanColor"] = ParseColor("#00E5FF");
+        resources["BlueColor"] = ParseColor("#168CFF");
+        resources["VioletColor"] = ParseColor("#8B45FF");
+        resources["MagentaColor"] = ParseColor("#FF2DBF");
+        resources["PinkColor"] = ParseColor("#FF67D4");
+        resources["LimeColor"] = ParseColor("#7CF3A0");
+        resources["GoldColor"] = ParseColor("#FFD568");
+        resources["LimeBrush"] = Brush("#7CF3A0");
+        resources["GoldBrush"] = Brush("#FFD568");
 
         resources["NeonGradientBrush"] = Gradient(
-            ("#58ECF5", 0.00),
-            ("#6E9CFF", 0.24),
-            ("#A57BFF", 0.50),
-            ("#F36ACF", 0.79),
-            ("#FF9BCF", 1.00));
+            ("#00E5FF", 0.00),
+            ("#168CFF", 0.24),
+            ("#8B45FF", 0.52),
+            ("#FF2DBF", 0.82),
+            ("#FF67D4", 1.00));
 
         LinearGradientBrush navigation = Gradient(
-            ("#37DDF0", 0.00),
-            ("#7C73FF", 0.46),
-            ("#ED52C7", 1.00));
-        navigation.Opacity = 0.94;
+            ("#078CFF", 0.00),
+            ("#7A35FF", 0.48),
+            ("#F022B8", 1.00));
+        navigation.Opacity = 0.96;
         resources["NavActiveBrush"] = navigation;
 
         resources["SliderGradientBrush"] = HorizontalGradient(
-            ("#58ECF5", 0.00),
-            ("#6E9CFF", 0.26),
-            ("#A57BFF", 0.56),
-            ("#F36ACF", 1.00));
+            ("#00E5FF", 0.00),
+            ("#168CFF", 0.26),
+            ("#8B45FF", 0.58),
+            ("#FF2DBF", 1.00));
 
         resources["PrimaryActionGradientBrush"] = HorizontalGradient(
-            ("#39DDF3", 0.00),
-            ("#6E9CFF", 0.25),
-            ("#A57BFF", 0.52),
-            ("#F36ACF", 0.82),
-            ("#FF9BCF", 1.00));
+            ("#00C9FF", 0.00),
+            ("#168CFF", 0.24),
+            ("#8B45FF", 0.52),
+            ("#FF2DBF", 0.82),
+            ("#FF67D4", 1.00));
     }
 
     private static void ApplyDarkTheme(ResourceDictionary theme)
     {
-        SetColor(theme, "AppBackgroundColor", "AppBackgroundBrush", "#030612");
-        SetColor(theme, "SidebarColor", "SidebarBrush", "#06091A");
-        SetColor(theme, "PanelColor", "PanelBrush", "#09162B");
-        SetColor(theme, "PanelRaisedColor", "PanelRaisedBrush", "#0E1F3B");
-        SetColor(theme, "PanelHoverColor", "PanelHoverBrush", "#152B4E");
-        SetColor(theme, "StrokeColor", "StrokeBrush", "#36577E");
-        SetColor(theme, "TextPrimaryColor", "TextPrimaryBrush", "#FBF9FF");
-        SetColor(theme, "TextSecondaryColor", "TextSecondaryBrush", "#C2C3D8");
-        SetColor(theme, "TextMutedColor", "TextMutedBrush", "#8793AB");
+        SetColor(theme, "AppBackgroundColor", "AppBackgroundBrush", "#02030D");
+        SetColor(theme, "SidebarColor", "SidebarBrush", "#040617");
+        SetColor(theme, "PanelColor", "PanelBrush", "#071326");
+        SetColor(theme, "PanelRaisedColor", "PanelRaisedBrush", "#0B1B34");
+        SetColor(theme, "PanelHoverColor", "PanelHoverBrush", "#10294B");
+        SetColor(theme, "StrokeColor", "StrokeBrush", "#29466F");
+        SetColor(theme, "TextPrimaryColor", "TextPrimaryBrush", "#F9FAFF");
+        SetColor(theme, "TextSecondaryColor", "TextSecondaryBrush", "#B6BED3");
+        SetColor(theme, "TextMutedColor", "TextMutedBrush", "#7F8CA6");
 
-        theme["TitleBarBrush"] = Brush("#DC030612");
-        theme["ProfileCardBrush"] = Brush("#0B1930");
-        theme["ProfileIconBrush"] = Brush("#070B1D");
-        theme["ProfileIconStrokeBrush"] = Brush("#3A5C84");
-        theme["ProfileMenuIconBrush"] = Brush("#ECE8F7");
-        theme["DropZoneStrokeBrush"] = Brush("#5A7198");
-        theme["EditorIconBrush"] = Brush("#070C1C");
-        theme["InputBrush"] = Brush("#071023");
-        theme["InputStrokeBrush"] = Brush("#40638E");
-        theme["DisabledPanelBrush"] = Brush("#0A172B");
-        theme["DisabledPanelStrokeBrush"] = Brush("#2F4C70");
-        theme["DisabledBadgeBrush"] = Brush("#1A2D4A");
-        theme["FooterBrush"] = Brush("#08152A");
-        theme["FooterStrokeBrush"] = Brush("#315174");
-        theme["StatusCardBrush"] = Brush("#09172D");
-        theme["StatusCardStrokeBrush"] = Brush("#35577D");
-        theme["ButtonHoverOverlayBrush"] = Brush("#18FFFFFF");
-        theme["ButtonPressedOverlayBrush"] = Brush("#26FFFFFF");
-        theme["NumericHoverBrush"] = Brush("#1A3B61");
-        theme["NumericPressedBrush"] = Brush("#27527D");
-        theme["InactiveNavTextBrush"] = Brush("#B8BDD1");
-        theme["ProfilesNavIconBrush"] = Brush("#71F2F8");
-        theme["SettingsNavIconBrush"] = Brush("#F88AD7");
-        theme["AboutNavIconBrush"] = Brush("#B69AFF");
-        theme["FooterSecondaryIconBrush"] = Brush("#9BC7FF");
-        theme["CyanBrush"] = Brush("#58ECF5");
-        theme["MagentaBrush"] = Brush("#F36ACF");
-        theme["PositiveBrush"] = Brush("#8CF5A5");
-        theme["DangerBrush"] = Brush("#FF7195");
+        theme["TitleBarBrush"] = Brush("#D9020410");
+        theme["ProfileCardBrush"] = Brush("#09182E");
+        theme["ProfileIconBrush"] = Brush("#05091A");
+        theme["ProfileIconStrokeBrush"] = Brush("#31527D");
+        theme["ProfileMenuIconBrush"] = Brush("#E6E9F5");
+        theme["DropZoneStrokeBrush"] = Brush("#526B98");
+        theme["EditorIconBrush"] = Brush("#050A18");
+        theme["InputBrush"] = Brush("#050D20");
+        theme["InputStrokeBrush"] = Brush("#365B89");
+        theme["DisabledPanelBrush"] = Brush("#071326");
+        theme["DisabledPanelStrokeBrush"] = Brush("#26466D");
+        theme["DisabledBadgeBrush"] = Brush("#172C4B");
+        theme["FooterBrush"] = Brush("#061225");
+        theme["FooterStrokeBrush"] = Brush("#27476E");
+        theme["StatusCardBrush"] = Brush("#07172D");
+        theme["StatusCardStrokeBrush"] = Brush("#2A4B73");
+        theme["ButtonHoverOverlayBrush"] = Brush("#16FFFFFF");
+        theme["ButtonPressedOverlayBrush"] = Brush("#24FFFFFF");
+        theme["NumericHoverBrush"] = Brush("#173A63");
+        theme["NumericPressedBrush"] = Brush("#24517F");
+        theme["InactiveNavTextBrush"] = Brush("#B0B9CF");
+        theme["ProfilesNavIconBrush"] = Brush("#65EEFF");
+        theme["SettingsNavIconBrush"] = Brush("#FF73D9");
+        theme["AboutNavIconBrush"] = Brush("#B7A5FF");
+        theme["FooterSecondaryIconBrush"] = Brush("#91C7FF");
+        theme["CyanBrush"] = Brush("#00E5FF");
+        theme["MagentaBrush"] = Brush("#FF2DBF");
+        theme["PositiveBrush"] = Brush("#6EF2A3");
+        theme["DangerBrush"] = Brush("#FF5D84");
         theme["PrimaryActionForegroundBrush"] = Brush("#FFFFFF");
-        theme["LogoTaglinePrimaryBrush"] = Brush("#58ECF5");
-        theme["LogoTaglineSecondaryBrush"] = Brush("#F58EDB");
+        theme["LogoTaglinePrimaryBrush"] = Brush("#00E5FF");
+        theme["LogoTaglineSecondaryBrush"] = Brush("#FF58CE");
     }
 
     private static void ApplyLightTheme(ResourceDictionary theme)
     {
-        SetColor(theme, "AppBackgroundColor", "AppBackgroundBrush", "#F8F7FF");
-        SetColor(theme, "SidebarColor", "SidebarBrush", "#FFFDFE");
+        SetColor(theme, "AppBackgroundColor", "AppBackgroundBrush", "#F7F8FF");
+        SetColor(theme, "SidebarColor", "SidebarBrush", "#FEFCFF");
         SetColor(theme, "PanelColor", "PanelBrush", "#FFFFFF");
-        SetColor(theme, "PanelRaisedColor", "PanelRaisedBrush", "#F7F2FF");
-        SetColor(theme, "PanelHoverColor", "PanelHoverBrush", "#EEF7FF");
-        SetColor(theme, "StrokeColor", "StrokeBrush", "#D1D8EA");
-        SetColor(theme, "TextPrimaryColor", "TextPrimaryBrush", "#171525");
-        SetColor(theme, "TextSecondaryColor", "TextSecondaryBrush", "#545B75");
-        SetColor(theme, "TextMutedColor", "TextMutedBrush", "#7F89A1");
+        SetColor(theme, "PanelRaisedColor", "PanelRaisedBrush", "#F5F3FF");
+        SetColor(theme, "PanelHoverColor", "PanelHoverBrush", "#EDF6FF");
+        SetColor(theme, "StrokeColor", "StrokeBrush", "#CBD7EA");
+        SetColor(theme, "TextPrimaryColor", "TextPrimaryBrush", "#151527");
+        SetColor(theme, "TextSecondaryColor", "TextSecondaryBrush", "#515D78");
+        SetColor(theme, "TextMutedColor", "TextMutedBrush", "#7D89A2");
 
-        theme["TitleBarBrush"] = Brush("#FCFAFF");
+        theme["TitleBarBrush"] = Brush("#FAFBFF");
         theme["ProfileCardBrush"] = Brush("#FFFFFF");
-        theme["ProfileIconBrush"] = Brush("#F5F2FF");
-        theme["ProfileIconStrokeBrush"] = Brush("#CFD6E8");
-        theme["ProfileMenuIconBrush"] = Brush("#596079");
-        theme["DropZoneStrokeBrush"] = Brush("#B3BDD2");
-        theme["EditorIconBrush"] = Brush("#F5F2FF");
+        theme["ProfileIconBrush"] = Brush("#F3F5FF");
+        theme["ProfileIconStrokeBrush"] = Brush("#C8D5EA");
+        theme["ProfileMenuIconBrush"] = Brush("#53617A");
+        theme["DropZoneStrokeBrush"] = Brush("#AABBD4");
+        theme["EditorIconBrush"] = Brush("#F3F5FF");
         theme["InputBrush"] = Brush("#FFFFFF");
-        theme["InputStrokeBrush"] = Brush("#C0CAE0");
-        theme["DisabledPanelBrush"] = Brush("#F7F7FC");
-        theme["DisabledPanelStrokeBrush"] = Brush("#D4DAE8");
-        theme["DisabledBadgeBrush"] = Brush("#ECEFFA");
+        theme["InputStrokeBrush"] = Brush("#B7C9E2");
+        theme["DisabledPanelBrush"] = Brush("#F6F7FC");
+        theme["DisabledPanelStrokeBrush"] = Brush("#CDD8E8");
+        theme["DisabledBadgeBrush"] = Brush("#E9EDF8");
         theme["FooterBrush"] = Brush("#FFFFFF");
-        theme["FooterStrokeBrush"] = Brush("#D4DAE8");
+        theme["FooterStrokeBrush"] = Brush("#CFDAEA");
         theme["StatusCardBrush"] = Brush("#FFFFFF");
-        theme["StatusCardStrokeBrush"] = Brush("#D4DAE8");
-        theme["ButtonHoverOverlayBrush"] = Brush("#0C1B2F52");
-        theme["ButtonPressedOverlayBrush"] = Brush("#151B2F52");
-        theme["NumericHoverBrush"] = Brush("#105A7EB0");
-        theme["NumericPressedBrush"] = Brush("#185A7EB0");
-        theme["InactiveNavTextBrush"] = Brush("#6C748C");
-        theme["ProfilesNavIconBrush"] = Brush("#087F93");
-        theme["SettingsNavIconBrush"] = Brush("#B72B91");
-        theme["AboutNavIconBrush"] = Brush("#7154BF");
-        theme["FooterSecondaryIconBrush"] = Brush("#4D72AC");
-        theme["CyanBrush"] = Brush("#087F93");
-        theme["MagentaBrush"] = Brush("#B72B91");
-        theme["PositiveBrush"] = Brush("#168453");
-        theme["DangerBrush"] = Brush("#C84368");
+        theme["StatusCardStrokeBrush"] = Brush("#CFDAEA");
+        theme["ButtonHoverOverlayBrush"] = Brush("#0B1A2F52");
+        theme["ButtonPressedOverlayBrush"] = Brush("#141A2F52");
+        theme["NumericHoverBrush"] = Brush("#10557DB0");
+        theme["NumericPressedBrush"] = Brush("#18557DB0");
+        theme["InactiveNavTextBrush"] = Brush("#697790");
+        theme["ProfilesNavIconBrush"] = Brush("#008DA8");
+        theme["SettingsNavIconBrush"] = Brush("#B9158C");
+        theme["AboutNavIconBrush"] = Brush("#6946C7");
+        theme["FooterSecondaryIconBrush"] = Brush("#426FB5");
+        theme["CyanBrush"] = Brush("#008DA8");
+        theme["MagentaBrush"] = Brush("#B9158C");
+        theme["PositiveBrush"] = Brush("#13875A");
+        theme["DangerBrush"] = Brush("#C63C62");
         theme["PrimaryActionForegroundBrush"] = Brush("#FFFFFF");
-        theme["LogoTaglinePrimaryBrush"] = Brush("#087F93");
-        theme["LogoTaglineSecondaryBrush"] = Brush("#A12A83");
+        theme["LogoTaglinePrimaryBrush"] = Brush("#008DA8");
+        theme["LogoTaglineSecondaryBrush"] = Brush("#A31A83");
     }
 
     private static void SetColor(
