@@ -9,7 +9,7 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/acchtt/Chroma/main/website/assets/chroma-app.png?v=20260726" alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves" width="100%">
+  <img src="https://raw.githubusercontent.com/acchtt/Chroma/main/website/assets/chroma-app.png" alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves" width="100%">
 </p>
 
 ## Features
