@@ -49,7 +49,10 @@ Download the validated Windows x64 build from
 - [`Chroma.WinUI/`](Chroma.WinUI/) — .NET 8 / WinUI 3 desktop interface
 - [`NativeAgent/`](NativeAgent/) — native C++ monitoring and GPU color-control agent
 - [`NativeAgent/tests/`](NativeAgent/tests/) — native profile-matching tests
+- [`third_party/`](third_party/) — instructions for local vendor SDK checkouts
 - [`website/`](website/) — dependency-free GitHub Pages website
+- [`build.ps1`](build.ps1) — validated Windows x64 build and publish script
+- [`clean.ps1`](clean.ps1) — safe local build-output and backup cleanup
 - [`.github/workflows/`](.github/workflows/) — automated Windows release builds
 
 ## Building from source
@@ -62,11 +65,11 @@ Recommended build environment:
 - Windows App SDK / WinUI 3 tooling
 - CMake
 
-To include the AMD backend, clone ADLX into the expected folder:
+To include the AMD backend, clone the official ADLX SDK into the expected folder and check out the same revision used by release builds:
 
 ```powershell
-New-Item -ItemType Directory -Path "third_party" -Force | Out-Null
 git clone https://github.com/GPUOpen-LibrariesAndSDKs/ADLX.git "third_party\ADLX"
+git -C "third_party\ADLX" checkout d9f04a9bba022d6cf6333f005dd540b4ad19fb63
 ```
 
 Build Chroma from PowerShell:
@@ -77,7 +80,27 @@ Build Chroma from PowerShell:
 
 The build output is written to `dist/x64/`. The solution can also be opened directly from `Chroma.sln`.
 
-GitHub Actions runs the same Release x64 build and uploads a packaged Windows artifact for validation. Release builds use the version in `Chroma.WinUI.csproj`, publish a matching versioned ZIP, and include a SHA-256 checksum beside the download. The portable package contains only `Chroma.exe` and `Chroma.Agent.exe`; application artwork is embedded in the UI executable.
+GitHub Actions runs the same Release x64 build, checks out the pinned ADLX SDK revision, and uploads a packaged Windows artifact for validation. Release builds use the version in `Chroma.WinUI.csproj`, publish a matching versioned ZIP, and include a SHA-256 checksum beside the download. The portable package contains only `Chroma.exe` and `Chroma.Agent.exe`; application artwork and vendor integration code are embedded in the executables.
+
+## Cleaning local outputs
+
+Remove generated build directories, IDE output, logs, and temporary backup files while preserving local vendor SDK checkouts:
+
+```powershell
+./clean.ps1
+```
+
+Preview the cleanup without deleting anything:
+
+```powershell
+./clean.ps1 -WhatIf
+```
+
+Remove vendor SDK checkouts as well:
+
+```powershell
+./clean.ps1 -VendorSdks
+```
 
 ## Reporting issues
 
