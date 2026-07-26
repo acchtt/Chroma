@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 
@@ -20,6 +21,7 @@ internal static class BrandPalette
             ApplyDarkTheme(GetThemeDictionary(resources, "Dark"));
             ApplyLightTheme(GetThemeDictionary(resources, "Light"));
             ApplySharedResources(resources);
+            ApplyUpdateStatusColors();
         }
         catch
         {
@@ -173,6 +175,40 @@ internal static class BrandPalette
             ("#A57BFF", 0.52),
             ("#F36ACF", 0.82),
             ("#FF9BCF", 1.00));
+    }
+
+    private static void ApplyUpdateStatusColors()
+    {
+        try
+        {
+            if (App.MainWindowInstance?.Content is not FrameworkElement root ||
+                root.FindName("UpdatesButtonText") is not TextBlock statusText)
+            {
+                return;
+            }
+
+            void RefreshColor()
+            {
+                string text = statusText.Text ?? string.Empty;
+                string color = text.Equals("Up to date", StringComparison.OrdinalIgnoreCase)
+                    ? "#8CF5A5"
+                    : text.StartsWith("Update ", StringComparison.OrdinalIgnoreCase) ||
+                      text.Contains("Preparing", StringComparison.OrdinalIgnoreCase) ||
+                      text.Contains("Restarting", StringComparison.OrdinalIgnoreCase)
+                        ? "#FFD97A"
+                        : text.Contains("Checking", StringComparison.OrdinalIgnoreCase)
+                            ? "#58ECF5"
+                            : "#BBC0D2";
+
+                statusText.Foreground = new SolidColorBrush(ParseColor(color));
+            }
+
+            statusText.RegisterPropertyChangedCallback(TextBlock.TextProperty, (_, _) => RefreshColor());
+            RefreshColor();
+        }
+        catch
+        {
+        }
     }
 
     private static void SetColorAndBrush(
