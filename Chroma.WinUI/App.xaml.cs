@@ -1,3 +1,4 @@
+using Chroma.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 
@@ -10,6 +11,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        BrandPalette.Apply(Resources);
         AppInstance.GetCurrent().Activated += Current_Activated;
     }
 
