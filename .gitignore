@@ -2,6 +2,8 @@
 .vs/
 **/bin/
 **/obj/
+TestResults/
+artifacts/
 *.user
 *.suo
 *.userosscache
@@ -10,6 +12,7 @@
 # CMake
 CMakeFiles/
 CMakeCache.txt
+CMakeUserPresets.json
 cmake_install.cmake
 build/
 out/
@@ -27,12 +30,19 @@ dist/
 
 # Packaged releases
 *.zip
+*.sha256
 
-# Logs and local state
+# Logs, editor state, and temporary files
 *.log
 logs/
 .vscode/
 .idea/
+*.tmp
+*.bak
+*.backup
+*.gpu-backup
+*.orig
+*.rej
 
 # OS files
 Thumbs.db
@@ -40,4 +50,5 @@ Desktop.ini
 .DS_Store
 
 # Local vendor SDK checkouts
-third_party/
+third_party/*
+!third_party/README.md
