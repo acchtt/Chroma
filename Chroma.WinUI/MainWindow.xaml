@@ -207,7 +207,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel>
                                 <TextBlock Text="Game Profiles" FontSize="25" FontWeight="SemiBold" />
-                                <TextBlock Text="Manage saturation and vibrance for your games" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" Margin="0,4,0,0" />
+                                <TextBlock Text="Manage per-game saturation profiles" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" Margin="0,4,0,0" />
                             </StackPanel>
                             <Button Grid.Column="1" Style="{StaticResource OutlineButtonStyle}" Click="AddGame_Click" Margin="0,0,10,0">
                                 <StackPanel Orientation="Horizontal" Spacing="10">
@@ -614,7 +614,7 @@
                                                Foreground="{ThemeResource CyanBrush}"
                                                FontSize="13.5"
                                                FontWeight="SemiBold" />
-                                    <TextBlock Text="Automatic per-game color profiles powered by a lightweight native monitoring agent."
+                                    <TextBlock Text="Automatic per-game saturation profiles with native Intel, NVIDIA, and AMD GPU control."
                                                Foreground="{ThemeResource TextSecondaryBrush}"
                                                FontSize="11.5"
                                                TextWrapping="Wrap"
@@ -690,7 +690,7 @@
                                 <StackPanel Spacing="5">
                                     <TextBlock Text="Background service" FontSize="17" FontWeight="SemiBold" />
                                     <TextBlock Text="{Binding AgentConnectionText}" Foreground="{ThemeResource CyanBrush}" />
-                                    <TextBlock Text="Detects the active game and applies its color profile in the background." Foreground="{ThemeResource TextSecondaryBrush}" />
+                                    <TextBlock Text="Detects the active game, applies its saturation profile, and restores desktop colors afterward." Foreground="{ThemeResource TextSecondaryBrush}" />
                                 </StackPanel>
                                 <Button Grid.Column="1" Style="{StaticResource OutlineButtonStyle}" Content="Refresh profiles" Click="ReloadProfiles_Click" VerticalAlignment="Center" />
                             </Grid>
@@ -707,8 +707,8 @@
                                 <Image x:Name="AboutBrandLogo" Width="150" Height="150" Stretch="Uniform" />
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="10">
                                     <TextBlock Text="Chroma" FontSize="34" FontWeight="SemiBold" />
-                                    <TextBlock Text="Per-game color profiles" Foreground="{ThemeResource CyanBrush}" FontSize="17" />
-                                    <TextBlock Text="Chroma automatically applies per-game color profiles while keeping the interface responsive and the monitoring agent lightweight." TextWrapping="Wrap" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" />
+                                    <TextBlock Text="Automatic game color profiles" Foreground="{ThemeResource CyanBrush}" FontSize="17" />
+                                    <TextBlock Text="Chroma detects the active game, applies its saved saturation profile through the available GPU color backend, and restores desktop colors when the game closes. A lightweight tray agent keeps monitoring in the background." TextWrapping="Wrap" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="15" />
                                     <TextBlock x:Name="AboutVersionText"
                                                Text="Version • Windows App SDK 2.2 • .NET 8"
                                                Foreground="{ThemeResource TextMutedBrush}" />
@@ -722,8 +722,9 @@
                         <Border Style="{StaticResource CardBorderStyle}" Padding="24">
                             <StackPanel Spacing="9">
                                 <TextBlock Text="Architecture" Foreground="{ThemeResource CyanBrush}" FontSize="18" FontWeight="SemiBold" />
-                                <TextBlock Text="• Desktop interface — profile creation and management" Foreground="{ThemeResource TextSecondaryBrush}" />
-                                <TextBlock Text="• Native agent — GPU color control and game monitoring" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• Desktop interface — create and manage per-game saturation profiles" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• Native tray agent — foreground-game monitoring and desktop restoration" Foreground="{ThemeResource TextSecondaryBrush}" />
+                                <TextBlock Text="• GPU backends — Intel IGCL, NVIDIA NVAPI, and AMD ADLX" Foreground="{ThemeResource TextSecondaryBrush}" />
                                 <TextBlock Text="• Versioned IPC — reliable communication between the interface and agent" Foreground="{ThemeResource TextSecondaryBrush}" />
                             </StackPanel>
                         </Border>
