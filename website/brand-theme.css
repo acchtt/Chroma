@@ -1,68 +1,69 @@
 /* Chroma rounded-neon brand pass.
-   Loaded after styles.css so layout stays stable while the visual system follows
-   the cyan, blue, violet, magenta, green, and warm glow of the new app badge. */
+   Loaded after styles.css so the existing layout remains stable while the
+   visual system follows the approved badge: deep navy glass, cyan edge light,
+   lavender core, pink glow, plus small lime and gold spectrum highlights. */
 :root {
-  --bg: #02030d;
-  --bg-soft: #050817;
-  --surface: #071326;
-  --surface-high: #0b1b34;
-  --line: rgba(123, 157, 220, 0.23);
-  --text: #f9faff;
-  --muted: #b2bad0;
-  --cyan: #00e5ff;
-  --blue: #168cff;
-  --violet: #8b45ff;
-  --magenta: #ff2dbf;
-  --pink: #ff67d4;
-  --lime: #7cf3a0;
-  --gold: #ffd568;
+  --bg: #030612;
+  --bg-soft: #06091a;
+  --surface: #09162b;
+  --surface-high: #0e1f3b;
+  --line: rgba(132, 154, 203, 0.24);
+  --text: #fbf9ff;
+  --muted: #bec0d3;
+  --cyan: #58ecf5;
+  --blue: #6e9cff;
+  --violet: #a57bff;
+  --magenta: #f36acf;
+  --pink: #ff9bcf;
+  --lime: #8cf5a5;
+  --gold: #ffd97a;
 }
 
 body {
   background:
-    radial-gradient(circle at 68% 5%, rgba(139, 69, 255, 0.24), transparent 31rem),
-    radial-gradient(circle at 91% 24%, rgba(255, 45, 191, 0.17), transparent 28rem),
-    radial-gradient(circle at 78% 62%, rgba(0, 229, 255, 0.11), transparent 32rem),
-    radial-gradient(circle at 16% 88%, rgba(124, 243, 160, 0.055), transparent 25rem),
+    radial-gradient(circle at 68% 4%, rgba(165, 123, 255, 0.24), transparent 31rem),
+    radial-gradient(circle at 92% 23%, rgba(243, 106, 207, 0.18), transparent 28rem),
+    radial-gradient(circle at 80% 63%, rgba(88, 236, 245, 0.11), transparent 32rem),
+    radial-gradient(circle at 16% 88%, rgba(140, 245, 165, 0.055), transparent 25rem),
     var(--bg);
 }
 
 .site-header {
-  background: rgba(2, 3, 13, 0.77);
-  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.14);
+  background: rgba(3, 6, 18, 0.78);
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.16);
 }
 
 .site-header.scrolled {
-  border-color: rgba(82, 117, 181, 0.28);
-  background: rgba(2, 3, 13, 0.94);
+  border-color: rgba(111, 143, 198, 0.3);
+  background: rgba(3, 6, 18, 0.95);
 }
 
 .brand img {
   border-radius: 12px;
   box-shadow:
-    0 0 18px rgba(0, 229, 255, 0.18),
-    0 0 30px rgba(255, 45, 191, 0.18);
+    0 0 18px rgba(88, 236, 245, 0.18),
+    0 0 32px rgba(243, 106, 207, 0.19);
 }
 
 .nav-links {
-  color: #d0d5e7;
+  color: #d5d3e2;
 }
 
 .nav-download {
-  border-color: rgba(88, 187, 255, 0.48);
-  color: #ffffff;
+  border-color: transparent;
+  color: #fff;
   background:
-    linear-gradient(rgba(5, 8, 23, 0.88), rgba(5, 8, 23, 0.88)) padding-box,
-    linear-gradient(115deg, var(--cyan), var(--violet) 55%, var(--magenta)) border-box;
+    linear-gradient(rgba(6, 9, 26, 0.9), rgba(6, 9, 26, 0.9)) padding-box,
+    linear-gradient(115deg, var(--cyan), var(--blue) 28%, var(--violet) 58%, var(--magenta)) border-box;
   box-shadow:
-    0 0 22px rgba(22, 140, 255, 0.13),
-    0 0 28px rgba(255, 45, 191, 0.1);
+    0 0 22px rgba(110, 156, 255, 0.14),
+    0 0 30px rgba(243, 106, 207, 0.11);
 }
 
 .nav-download:hover {
   background:
-    linear-gradient(rgba(12, 20, 43, 0.9), rgba(12, 20, 43, 0.9)) padding-box,
-    linear-gradient(115deg, var(--cyan), var(--violet) 55%, var(--magenta)) border-box;
+    linear-gradient(rgba(14, 24, 47, 0.94), rgba(14, 24, 47, 0.94)) padding-box,
+    linear-gradient(115deg, var(--cyan), var(--blue) 28%, var(--violet) 58%, var(--magenta)) border-box;
 }
 
 .hero {
@@ -85,10 +86,10 @@ body {
   height: 760px;
   right: -250px;
   top: 30px;
-  border-color: rgba(255, 45, 191, 0.2);
+  border-color: rgba(243, 106, 207, 0.22);
   box-shadow:
-    0 0 30px rgba(255, 45, 191, 0.12),
-    inset 0 0 35px rgba(22, 140, 255, 0.09);
+    0 0 34px rgba(243, 106, 207, 0.13),
+    inset 0 0 38px rgba(110, 156, 255, 0.09);
 }
 
 .hero::after {
@@ -96,20 +97,20 @@ body {
   height: 560px;
   right: -120px;
   top: 128px;
-  border-color: rgba(0, 229, 255, 0.22);
-  box-shadow: 0 0 34px rgba(0, 229, 255, 0.1);
+  border-color: rgba(88, 236, 245, 0.23);
+  box-shadow: 0 0 36px rgba(88, 236, 245, 0.11);
 }
 
 .eyebrow {
   color: var(--cyan);
-  text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  text-shadow: 0 0 20px rgba(88, 236, 245, 0.28);
 }
 
 .hero-copy > .eyebrow {
   padding: 7px 12px;
-  border: 1px solid rgba(0, 229, 255, 0.24);
+  border: 1px solid rgba(88, 236, 245, 0.24);
   border-radius: 999px;
-  background: rgba(3, 13, 31, 0.58);
+  background: rgba(7, 16, 35, 0.62);
 }
 
 .hero-copy > .eyebrow span {
@@ -121,9 +122,9 @@ h1 em {
   background: linear-gradient(
     95deg,
     var(--cyan) 0%,
-    var(--blue) 24%,
+    var(--blue) 25%,
     var(--violet) 52%,
-    var(--magenta) 82%,
+    var(--magenta) 80%,
     var(--pink) 100%
   );
   background-clip: text;
@@ -131,58 +132,58 @@ h1 em {
 }
 
 .hero-lead {
-  color: #b7bfd5;
+  color: #c0c1d3;
 }
 
 .button-primary {
   border-color: rgba(255, 255, 255, 0.12);
   background: linear-gradient(
     115deg,
-    #00c9ff 0%,
-    var(--blue) 24%,
+    #39ddf3 0%,
+    var(--blue) 25%,
     var(--violet) 52%,
     var(--magenta) 82%,
     var(--pink) 100%
   );
   box-shadow:
-    0 14px 36px rgba(22, 140, 255, 0.22),
-    0 12px 38px rgba(255, 45, 191, 0.2);
+    0 14px 36px rgba(110, 156, 255, 0.24),
+    0 12px 40px rgba(243, 106, 207, 0.2);
 }
 
 .button-primary:hover {
   box-shadow:
-    0 18px 44px rgba(22, 140, 255, 0.3),
-    0 16px 46px rgba(255, 45, 191, 0.3);
+    0 18px 46px rgba(110, 156, 255, 0.32),
+    0 16px 48px rgba(243, 106, 207, 0.3);
 }
 
 .button-secondary {
-  border-color: rgba(132, 161, 221, 0.28);
-  background: rgba(7, 19, 38, 0.68);
+  border-color: rgba(145, 158, 201, 0.3);
+  background: rgba(9, 22, 43, 0.72);
 }
 
 .button-secondary:hover {
-  border-color: rgba(0, 229, 255, 0.32);
-  background: rgba(11, 27, 52, 0.82);
+  border-color: rgba(88, 236, 245, 0.34);
+  background: rgba(14, 31, 59, 0.86);
 }
 
 .preview-glow {
   background: linear-gradient(
     125deg,
-    rgba(0, 229, 255, 0.24),
-    rgba(22, 140, 255, 0.24) 28%,
-    rgba(139, 69, 255, 0.4) 58%,
-    rgba(255, 45, 191, 0.25)
+    rgba(88, 236, 245, 0.24),
+    rgba(110, 156, 255, 0.25) 28%,
+    rgba(165, 123, 255, 0.42) 58%,
+    rgba(243, 106, 207, 0.27)
   );
-  filter: blur(48px);
+  filter: blur(49px);
 }
 
 .app-preview figure {
-  border-color: rgba(120, 156, 225, 0.3);
-  background: linear-gradient(145deg, #0b1530, #050817 58%, #0b0a22);
+  border-color: rgba(139, 157, 211, 0.32);
+  background: linear-gradient(145deg, #101a35, #06091a 58%, #100b25);
   box-shadow:
     0 34px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(0, 229, 255, 0.06),
-    0 0 42px rgba(139, 69, 255, 0.13);
+    0 0 0 1px rgba(88, 236, 245, 0.06),
+    0 0 44px rgba(165, 123, 255, 0.14);
 }
 
 .window-bar span:first-child {
@@ -198,11 +199,11 @@ h1 em {
 }
 
 .status-pill {
-  border-color: rgba(0, 229, 255, 0.34);
-  background: rgba(6, 17, 37, 0.93);
+  border-color: rgba(88, 236, 245, 0.35);
+  background: rgba(9, 22, 45, 0.94);
   box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.38),
-    0 0 26px rgba(0, 229, 255, 0.11);
+    0 14px 34px rgba(0, 0, 0, 0.4),
+    0 0 28px rgba(88, 236, 245, 0.11);
 }
 
 .status-pill i {
@@ -213,51 +214,52 @@ h1 em {
 .feature-card,
 .steps li,
 .download-card {
-  border-color: rgba(114, 149, 213, 0.22);
+  border-color: rgba(128, 150, 198, 0.24);
   background:
-    linear-gradient(145deg, rgba(14, 29, 56, 0.82), rgba(5, 10, 25, 0.88)),
+    linear-gradient(145deg, rgba(14, 31, 59, 0.84), rgba(6, 12, 29, 0.9)),
     var(--surface);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .feature-card:hover {
-  border-color: rgba(139, 69, 255, 0.34);
+  border-color: rgba(165, 123, 255, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 18px 45px rgba(0, 0, 0, 0.24),
-    0 0 32px rgba(139, 69, 255, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 18px 45px rgba(0, 0, 0, 0.26),
+    0 0 34px rgba(165, 123, 255, 0.09);
 }
 
 .feature-icon {
-  border-color: rgba(126, 158, 220, 0.24);
-  background: linear-gradient(145deg, rgba(18, 40, 73, 0.95), rgba(7, 13, 31, 0.96));
+  border-color: rgba(139, 157, 206, 0.25);
+  background: linear-gradient(145deg, rgba(20, 42, 75, 0.96), rgba(8, 14, 34, 0.97));
 }
 
 .feature-icon.cyan {
   color: var(--cyan);
-  box-shadow: 0 0 28px rgba(0, 229, 255, 0.12);
+  box-shadow: 0 0 28px rgba(88, 236, 245, 0.13);
 }
 
 .feature-icon.violet {
   color: var(--gold);
-  box-shadow: 0 0 28px rgba(255, 213, 104, 0.1);
+  box-shadow: 0 0 28px rgba(255, 217, 122, 0.11);
 }
 
 .feature-icon.magenta {
   color: var(--magenta);
-  box-shadow: 0 0 28px rgba(255, 45, 191, 0.12);
+  box-shadow: 0 0 28px rgba(243, 106, 207, 0.13);
 }
 
 .workflow {
   background:
-    radial-gradient(circle at 23% 50%, rgba(0, 229, 255, 0.075), transparent 25rem),
-    radial-gradient(circle at 82% 35%, rgba(255, 45, 191, 0.075), transparent 26rem);
+    radial-gradient(circle at 23% 50%, rgba(88, 236, 245, 0.075), transparent 25rem),
+    radial-gradient(circle at 82% 35%, rgba(243, 106, 207, 0.085), transparent 26rem);
 }
 
 .steps > li > span {
   color: var(--cyan);
-  background: rgba(0, 229, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.18);
+  border-color: rgba(88, 236, 245, 0.32);
+  background: rgba(88, 236, 245, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(88, 236, 245, 0.16);
 }
 
 .download-card {
@@ -267,12 +269,12 @@ h1 em {
 
 .download-card::before {
   position: absolute;
-  width: 320px;
-  height: 320px;
-  right: -120px;
-  top: -180px;
+  width: 340px;
+  height: 340px;
+  right: -130px;
+  top: -190px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 45, 191, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(243, 106, 207, 0.2), transparent 68%);
   pointer-events: none;
   content: "";
 }
@@ -280,13 +282,13 @@ h1 em {
 .download-card img {
   border-radius: 19px;
   box-shadow:
-    0 0 30px rgba(0, 229, 255, 0.15),
-    0 0 34px rgba(255, 45, 191, 0.15);
+    0 0 30px rgba(88, 236, 245, 0.16),
+    0 0 36px rgba(243, 106, 207, 0.17);
 }
 
 footer {
-  border-top-color: rgba(102, 134, 195, 0.2);
-  background: rgba(2, 3, 13, 0.58);
+  border-top-color: rgba(111, 137, 188, 0.22);
+  background: rgba(3, 6, 18, 0.62);
 }
 
 @media (max-width: 900px) {
