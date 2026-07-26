@@ -11,6 +11,10 @@
     <AssemblyVersion>1.3.0.0</AssemblyVersion>
     <FileVersion>1.3.0.0</FileVersion>
     <InformationalVersion>v1.3</InformationalVersion>
+    <Product>Chroma</Product>
+    <AssemblyTitle>Chroma</AssemblyTitle>
+    <Authors>acchtt</Authors>
+    <Description>Automatic per-game saturation profiles with native Intel, NVIDIA, and AMD GPU control.</Description>
     <Platforms>x64</Platforms>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
