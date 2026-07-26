@@ -57,11 +57,11 @@ public sealed class ProfileViewModel : ObservableObject
     public Brush SaturationBrush => new SolidColorBrush(
         SaturationPercent >= 150
             ? (_useLightTheme
-                ? Windows.UI.Color.FromArgb(255, 194, 24, 163)
-                : Windows.UI.Color.FromArgb(255, 240, 25, 200))
+                ? Windows.UI.Color.FromArgb(255, 183, 43, 145)
+                : Windows.UI.Color.FromArgb(255, 243, 106, 207))
             : (_useLightTheme
-                ? Windows.UI.Color.FromArgb(255, 0, 127, 175)
-                : Windows.UI.Color.FromArgb(255, 0, 200, 255)));
+                ? Windows.UI.Color.FromArgb(255, 8, 127, 147)
+                : Windows.UI.Color.FromArgb(255, 88, 236, 245)));
 
     public bool Enabled
     {
@@ -94,8 +94,8 @@ public sealed class ProfileViewModel : ObservableObject
             if (!IsSelected)
             {
                 return new SolidColorBrush(_useLightTheme
-                    ? Windows.UI.Color.FromArgb(255, 198, 211, 229)
-                    : Windows.UI.Color.FromArgb(255, 28, 44, 67));
+                    ? Windows.UI.Color.FromArgb(255, 209, 216, 234)
+                    : Windows.UI.Color.FromArgb(255, 54, 87, 126));
             }
 
             var gradient = new LinearGradientBrush
@@ -103,9 +103,10 @@ public sealed class ProfileViewModel : ObservableObject
                 StartPoint = new Windows.Foundation.Point(0, 0),
                 EndPoint = new Windows.Foundation.Point(1, 1)
             };
-            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 0, 200, 255), Offset = 0 });
-            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 112, 56, 255), Offset = 0.5 });
-            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 240, 25, 200), Offset = 1 });
+            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 88, 236, 245), Offset = 0 });
+            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 110, 156, 255), Offset = 0.28 });
+            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 165, 123, 255), Offset = 0.58 });
+            gradient.GradientStops.Add(new GradientStop { Color = Windows.UI.Color.FromArgb(255, 243, 106, 207), Offset = 1 });
             return gradient;
         }
     }
