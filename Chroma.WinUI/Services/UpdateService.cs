@@ -19,6 +19,79 @@ public sealed class UpdateService
 
     private static readonly HttpClient Client = CreateHttpClient();
 
+    public static async Task CleanupStaleUpdateFilesAsync()
+    {
+        // Give the external updater time to finish copying, verification,
+        // rollback cleanup, and its final log write before removing artifacts.
+        await Task.Delay(TimeSpan.FromSeconds(15)).ConfigureAwait(false);
+
+        string updatesRoot = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Chroma",
+            "Updates");
+        if (!Directory.Exists(updatesRoot))
+        {
+            return;
+        }
+
+        try
+        {
+            string retainedLogPath = Path.Combine(updatesRoot, "last-update.log");
+            string? latestLogPath = Directory
+                .EnumerateFiles(updatesRoot, "update.log", SearchOption.AllDirectories)
+                .OrderByDescending(File.GetLastWriteTimeUtc)
+                .FirstOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(latestLogPath) &&
+                File.Exists(latestLogPath))
+            {
+                File.Copy(latestLogPath, retainedLogPath, overwrite: true);
+            }
+
+            foreach (string directory in Directory.EnumerateDirectories(updatesRoot))
+            {
+                try
+                {
+                    Directory.Delete(directory, recursive: true);
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+            }
+
+            foreach (string file in Directory.EnumerateFiles(updatesRoot))
+            {
+                if (string.Equals(
+                        Path.GetFullPath(file),
+                        Path.GetFullPath(retainedLogPath),
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+            }
+        }
+        catch (IOException)
+        {
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+    }
+
     public async Task<UpdateCheckResult> CheckForUpdatesAsync(
         CancellationToken cancellationToken = default)
     {
@@ -656,7 +729,17 @@ public sealed class UpdateService
             if (Test-Path $backup) { Remove-Item $backup -Recurse -Force }
             Get-ChildItem $updateRoot -Filter '*.zip' -File -ErrorAction SilentlyContinue |
                 Remove-Item -Force -ErrorAction SilentlyContinue
-            "Update installed successfully. Temporary executable copies removed." | Add-Content $log
+
+            $updatesRoot = Split-Path -Parent $updateRoot
+            Get-ChildItem $updatesRoot -Directory -ErrorAction SilentlyContinue |
+                Where-Object {
+                    -not $_.FullName.Equals(
+                        $updateRoot,
+                        [StringComparison]::OrdinalIgnoreCase)
+                } |
+                Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+
+            "Update installed successfully. Temporary and past update files removed." | Add-Content $log
         }
         catch {
             "Update failed: $($_.Exception.Message)" | Add-Content $log

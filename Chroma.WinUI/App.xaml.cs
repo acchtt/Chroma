@@ -16,6 +16,7 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        _ = UpdateService.CleanupStaleUpdateFilesAsync();
         MainWindowInstance = new MainWindow();
         MainWindowInstance.EnableUpdateExperience();
         BrandPalette.Apply(Resources);
