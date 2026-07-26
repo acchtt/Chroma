@@ -1,0 +1,307 @@
+/* Chroma rounded-neon brand pass.
+   Loaded after styles.css so layout stays stable while the visual system follows
+   the cyan, blue, violet, magenta, green, and warm glow of the new app badge. */
+:root {
+  --bg: #02030d;
+  --bg-soft: #050817;
+  --surface: #071326;
+  --surface-high: #0b1b34;
+  --line: rgba(123, 157, 220, 0.23);
+  --text: #f9faff;
+  --muted: #b2bad0;
+  --cyan: #00e5ff;
+  --blue: #168cff;
+  --violet: #8b45ff;
+  --magenta: #ff2dbf;
+  --pink: #ff67d4;
+  --lime: #7cf3a0;
+  --gold: #ffd568;
+}
+
+body {
+  background:
+    radial-gradient(circle at 68% 5%, rgba(139, 69, 255, 0.24), transparent 31rem),
+    radial-gradient(circle at 91% 24%, rgba(255, 45, 191, 0.17), transparent 28rem),
+    radial-gradient(circle at 78% 62%, rgba(0, 229, 255, 0.11), transparent 32rem),
+    radial-gradient(circle at 16% 88%, rgba(124, 243, 160, 0.055), transparent 25rem),
+    var(--bg);
+}
+
+.site-header {
+  background: rgba(2, 3, 13, 0.77);
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.14);
+}
+
+.site-header.scrolled {
+  border-color: rgba(82, 117, 181, 0.28);
+  background: rgba(2, 3, 13, 0.94);
+}
+
+.brand img {
+  border-radius: 12px;
+  box-shadow:
+    0 0 18px rgba(0, 229, 255, 0.18),
+    0 0 30px rgba(255, 45, 191, 0.18);
+}
+
+.nav-links {
+  color: #d0d5e7;
+}
+
+.nav-download {
+  border-color: rgba(88, 187, 255, 0.48);
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(5, 8, 23, 0.88), rgba(5, 8, 23, 0.88)) padding-box,
+    linear-gradient(115deg, var(--cyan), var(--violet) 55%, var(--magenta)) border-box;
+  box-shadow:
+    0 0 22px rgba(22, 140, 255, 0.13),
+    0 0 28px rgba(255, 45, 191, 0.1);
+}
+
+.nav-download:hover {
+  background:
+    linear-gradient(rgba(12, 20, 43, 0.9), rgba(12, 20, 43, 0.9)) padding-box,
+    linear-gradient(115deg, var(--cyan), var(--violet) 55%, var(--magenta)) border-box;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero::before,
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+}
+
+.hero::before {
+  width: 760px;
+  height: 760px;
+  right: -250px;
+  top: 30px;
+  border-color: rgba(255, 45, 191, 0.2);
+  box-shadow:
+    0 0 30px rgba(255, 45, 191, 0.12),
+    inset 0 0 35px rgba(22, 140, 255, 0.09);
+}
+
+.hero::after {
+  width: 560px;
+  height: 560px;
+  right: -120px;
+  top: 128px;
+  border-color: rgba(0, 229, 255, 0.22);
+  box-shadow: 0 0 34px rgba(0, 229, 255, 0.1);
+}
+
+.eyebrow {
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+.hero-copy > .eyebrow {
+  padding: 7px 12px;
+  border: 1px solid rgba(0, 229, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(3, 13, 31, 0.58);
+}
+
+.hero-copy > .eyebrow span {
+  background: var(--lime);
+  box-shadow: 0 0 13px var(--lime);
+}
+
+h1 em {
+  background: linear-gradient(
+    95deg,
+    var(--cyan) 0%,
+    var(--blue) 24%,
+    var(--violet) 52%,
+    var(--magenta) 82%,
+    var(--pink) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.hero-lead {
+  color: #b7bfd5;
+}
+
+.button-primary {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(
+    115deg,
+    #00c9ff 0%,
+    var(--blue) 24%,
+    var(--violet) 52%,
+    var(--magenta) 82%,
+    var(--pink) 100%
+  );
+  box-shadow:
+    0 14px 36px rgba(22, 140, 255, 0.22),
+    0 12px 38px rgba(255, 45, 191, 0.2);
+}
+
+.button-primary:hover {
+  box-shadow:
+    0 18px 44px rgba(22, 140, 255, 0.3),
+    0 16px 46px rgba(255, 45, 191, 0.3);
+}
+
+.button-secondary {
+  border-color: rgba(132, 161, 221, 0.28);
+  background: rgba(7, 19, 38, 0.68);
+}
+
+.button-secondary:hover {
+  border-color: rgba(0, 229, 255, 0.32);
+  background: rgba(11, 27, 52, 0.82);
+}
+
+.preview-glow {
+  background: linear-gradient(
+    125deg,
+    rgba(0, 229, 255, 0.24),
+    rgba(22, 140, 255, 0.24) 28%,
+    rgba(139, 69, 255, 0.4) 58%,
+    rgba(255, 45, 191, 0.25)
+  );
+  filter: blur(48px);
+}
+
+.app-preview figure {
+  border-color: rgba(120, 156, 225, 0.3);
+  background: linear-gradient(145deg, #0b1530, #050817 58%, #0b0a22);
+  box-shadow:
+    0 34px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 229, 255, 0.06),
+    0 0 42px rgba(139, 69, 255, 0.13);
+}
+
+.window-bar span:first-child {
+  background: var(--pink);
+}
+
+.window-bar span:nth-child(2) {
+  background: var(--gold);
+}
+
+.window-bar span:nth-child(3) {
+  background: var(--cyan);
+}
+
+.status-pill {
+  border-color: rgba(0, 229, 255, 0.34);
+  background: rgba(6, 17, 37, 0.93);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.38),
+    0 0 26px rgba(0, 229, 255, 0.11);
+}
+
+.status-pill i {
+  background: var(--lime);
+  box-shadow: 0 0 12px var(--lime);
+}
+
+.feature-card,
+.steps li,
+.download-card {
+  border-color: rgba(114, 149, 213, 0.22);
+  background:
+    linear-gradient(145deg, rgba(14, 29, 56, 0.82), rgba(5, 10, 25, 0.88)),
+    var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.feature-card:hover {
+  border-color: rgba(139, 69, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 45px rgba(0, 0, 0, 0.24),
+    0 0 32px rgba(139, 69, 255, 0.08);
+}
+
+.feature-icon {
+  border-color: rgba(126, 158, 220, 0.24);
+  background: linear-gradient(145deg, rgba(18, 40, 73, 0.95), rgba(7, 13, 31, 0.96));
+}
+
+.feature-icon.cyan {
+  color: var(--cyan);
+  box-shadow: 0 0 28px rgba(0, 229, 255, 0.12);
+}
+
+.feature-icon.violet {
+  color: var(--gold);
+  box-shadow: 0 0 28px rgba(255, 213, 104, 0.1);
+}
+
+.feature-icon.magenta {
+  color: var(--magenta);
+  box-shadow: 0 0 28px rgba(255, 45, 191, 0.12);
+}
+
+.workflow {
+  background:
+    radial-gradient(circle at 23% 50%, rgba(0, 229, 255, 0.075), transparent 25rem),
+    radial-gradient(circle at 82% 35%, rgba(255, 45, 191, 0.075), transparent 26rem);
+}
+
+.steps > li > span {
+  color: var(--cyan);
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.18);
+}
+
+.download-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.download-card::before {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -120px;
+  top: -180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 45, 191, 0.18), transparent 68%);
+  pointer-events: none;
+  content: "";
+}
+
+.download-card img {
+  border-radius: 19px;
+  box-shadow:
+    0 0 30px rgba(0, 229, 255, 0.15),
+    0 0 34px rgba(255, 45, 191, 0.15);
+}
+
+footer {
+  border-top-color: rgba(102, 134, 195, 0.2);
+  background: rgba(2, 3, 13, 0.58);
+}
+
+@media (max-width: 900px) {
+  .hero::before {
+    right: -420px;
+  }
+
+  .hero::after {
+    right: -330px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .feature-card {
+    transition: none;
+  }
+}
