@@ -5,6 +5,23 @@ project(ChromaNative LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_program(DOTNET_EXECUTABLE dotnet REQUIRED)
+set(CHROMA_ICON_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../Chroma.WinUI/Assets/Chroma.png")
+set(CHROMA_ICON_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../Chroma.WinUI/Assets/Chroma.ico")
+set(CHROMA_ICON_BUILDER "${CMAKE_CURRENT_SOURCE_DIR}/../tools/Chroma.IconBuilder/Chroma.IconBuilder.csproj")
+
+add_custom_target(ChromaIcon
+    COMMAND "${DOTNET_EXECUTABLE}" run
+        --project "${CHROMA_ICON_BUILDER}"
+        --configuration Release
+        --
+        "${CHROMA_ICON_SOURCE}"
+        "${CHROMA_ICON_OUTPUT}"
+    BYPRODUCTS "${CHROMA_ICON_OUTPUT}"
+    COMMENT "Generating current multi-resolution Chroma icon"
+    VERBATIM
+)
+
 set(CHROMA_ADLX_ROOT "" CACHE PATH "Path to the root of the AMD ADLX SDK checkout")
 if(NOT CHROMA_ADLX_ROOT AND DEFINED ENV{ADLX_SDK_ROOT})
     set(CHROMA_ADLX_ROOT "$ENV{ADLX_SDK_ROOT}")
@@ -52,6 +69,7 @@ else()
 endif()
 
 add_executable(ChromaAgent WIN32 ${CHROMA_AGENT_SOURCES})
+add_dependencies(ChromaAgent ChromaIcon)
 
 set_target_properties(ChromaAgent PROPERTIES OUTPUT_NAME "Chroma.Agent")
 if(MSVC)
