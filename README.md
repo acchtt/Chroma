@@ -4,7 +4,7 @@
 
 Chroma is a lightweight Windows utility that detects the active game, applies its saved saturation profile through a native GPU color backend, and restores the desktop color state when the game closes.
 
-> Current release: **v1.7**
+> Current release: **v1.8**
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
@@ -24,6 +24,7 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 - Windows startup support
 - Update checks on every launch and tray/second-launch reopen
 - Visible updater progress for download, checksum verification, preparation, and restart
+- Automatic removal of old update packages, staging folders, and backups after installation
 - Updates replace the exact folder containing the launched `Chroma.exe`
 - SHA-256 verification, rollback protection, staged-file cleanup, and automatic restart
 - Light and dark WinUI 3 interface
