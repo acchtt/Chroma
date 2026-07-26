@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /Chroma/
+
+Sitemap: https://acchtt.github.io/Chroma/sitemap.xml
