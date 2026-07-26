@@ -4,7 +4,7 @@
 
 Chroma is a lightweight Windows utility that detects the active game, applies its saved saturation profile through a native GPU color backend, and restores the desktop color state when the game closes.
 
-> Current release: **v1.8**
+> Current release: **v1.9**
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
@@ -27,6 +27,7 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 - Automatic removal of old update packages, staging folders, and backups after installation
 - Updates replace the exact folder containing the launched `Chroma.exe`
 - SHA-256 verification, rollback protection, staged-file cleanup, and automatic restart
+- Shared current-brand icon for the app executable, agent executable, taskbar, and system tray
 - Light and dark WinUI 3 interface
 
 ## GPU support
@@ -55,6 +56,7 @@ Download the validated Windows x64 build from
 - [`Chroma.WinUI/`](Chroma.WinUI/) — .NET 8 / WinUI 3 desktop interface
 - [`NativeAgent/`](NativeAgent/) — native C++ monitoring and GPU color-control agent
 - [`NativeAgent/tests/`](NativeAgent/tests/) — native profile-matching tests
+- [`tools/Chroma.IconBuilder/`](tools/Chroma.IconBuilder/) — deterministic multi-resolution Windows ICO generator
 - [`third_party/`](third_party/) — instructions for local vendor SDK checkouts
 - [`website/`](website/) — dependency-free GitHub Pages website
 - [`build.ps1`](build.ps1) — validated Windows x64 build and publish script
@@ -84,7 +86,7 @@ Build Chroma from PowerShell:
 ./build.ps1 -Configuration Release -Platform x64 -SelfContained
 ```
 
-The build output is written to `dist/x64/`. The solution can also be opened directly from `Chroma.sln`.
+The current 1024 × 1024 `Chroma.png` artwork is converted into a multi-resolution `Chroma.ico` before both the native agent and WinUI application compile. The build output is written to `dist/x64/`. The solution can also be opened directly from `Chroma.sln`.
 
 GitHub Actions runs the same Release x64 build, checks out the pinned ADLX SDK revision, and uploads a packaged Windows artifact for validation. Release builds use the version in `Chroma.WinUI.csproj`, publish a matching versioned ZIP, and include a SHA-256 checksum beside the download. The portable package contains only `Chroma.exe` and `Chroma.Agent.exe`; application artwork and vendor integration code are embedded in the executables.
 
