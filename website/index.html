@@ -39,8 +39,9 @@
     }
 
     .hero-grid {
-      grid-template-columns: minmax(350px, .76fr) minmax(0, 1.24fr);
-      gap: clamp(42px, 5vw, 76px);
+      grid-template-columns: minmax(350px, .88fr) minmax(0, 1.12fr);
+      align-items: center;
+      gap: clamp(36px, 4.5vw, 66px);
     }
 
     .hero-copy {
@@ -62,29 +63,46 @@
       max-width: 555px;
     }
 
+    /* Keep the preview frame locked to the real 1266 x 813 screenshot.
+       These explicit sizing rules prevent the base hero grid from stretching
+       the figure to the height of the text column. */
     .app-preview {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-    }
-
-    .app-preview figure {
-      padding: 6px;
-      border-radius: 22px;
-      transform: perspective(1500px) rotateY(-1deg) rotateX(.3deg);
-      transform-origin: center;
-    }
-
-    .app-preview figure > img {
-      aspect-ratio: auto;
-      object-fit: contain;
-      border-radius: 15px;
+      position: relative;
+      align-self: center;
+      width: min(100%, 860px);
+      height: auto;
+      min-height: 0;
+      margin: 0 auto;
     }
 
     .preview-glow {
-      inset: 5% 7% -4%;
-      opacity: .9;
-      filter: blur(58px);
+      inset: 7% 6% 1%;
+      opacity: .82;
+      filter: blur(46px);
+    }
+
+    .app-preview figure {
+      display: block;
+      width: 100%;
+      height: auto !important;
+      min-height: 0 !important;
+      margin: 0;
+      padding: 8px;
+      overflow: hidden;
+      aspect-ratio: auto !important;
+      border-radius: 22px;
+      line-height: 0;
+      transform: none;
+    }
+
+    .app-preview figure > img {
+      display: block;
+      width: 100%;
+      height: auto !important;
+      max-height: none !important;
+      aspect-ratio: 1266 / 813;
+      object-fit: contain;
+      border-radius: 14px;
     }
 
     .section {
@@ -143,12 +161,8 @@
       }
 
       .app-preview {
-        max-width: 1040px;
+        width: min(100%, 980px);
         margin-inline: auto;
-      }
-
-      .app-preview figure {
-        transform: none;
       }
     }
 
@@ -177,6 +191,15 @@
 
       .hero-lead {
         margin-inline: 0;
+      }
+
+      .app-preview figure {
+        padding: 5px;
+        border-radius: 16px;
+      }
+
+      .app-preview figure > img {
+        border-radius: 11px;
       }
 
       .section {
@@ -265,7 +288,7 @@
           <div class="preview-glow" aria-hidden="true"></div>
           <figure>
             <img
-              src="assets/chroma-app.png?v=20260727"
+              src="assets/chroma-app.png?v=20260727b"
               alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves"
               width="1266"
               height="813"
