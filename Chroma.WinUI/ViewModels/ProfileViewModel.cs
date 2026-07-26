@@ -57,11 +57,11 @@ public sealed class ProfileViewModel : ObservableObject
     public Brush SaturationBrush => new SolidColorBrush(
         SaturationPercent >= 150
             ? (_useLightTheme
-                ? Windows.UI.Color.FromArgb(255, 183, 43, 145)
-                : Windows.UI.Color.FromArgb(255, 243, 106, 207))
+                ? Windows.UI.Color.FromArgb(255, 169, 54, 130)
+                : Windows.UI.Color.FromArgb(255, 232, 120, 199))
             : (_useLightTheme
-                ? Windows.UI.Color.FromArgb(255, 8, 127, 147)
-                : Windows.UI.Color.FromArgb(255, 88, 236, 245)));
+                ? Windows.UI.Color.FromArgb(255, 23, 125, 145)
+                : Windows.UI.Color.FromArgb(255, 101, 220, 229)));
 
     public bool Enabled
     {
@@ -94,8 +94,8 @@ public sealed class ProfileViewModel : ObservableObject
             if (!IsSelected)
             {
                 return new SolidColorBrush(_useLightTheme
-                    ? Windows.UI.Color.FromArgb(255, 209, 216, 234)
-                    : Windows.UI.Color.FromArgb(255, 54, 87, 126));
+                    ? Windows.UI.Color.FromArgb(255, 211, 217, 232)
+                    : Windows.UI.Color.FromArgb(255, 39, 61, 88));
             }
 
             var gradient = new LinearGradientBrush
