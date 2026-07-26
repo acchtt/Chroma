@@ -1,3 +1,5 @@
 #include "resource.h"
 
-IDI_CHROMA ICON "resources\\Chroma.ico"
+// Keep the native executable and system-tray icon synchronized with the
+// WinUI application branding instead of maintaining a separate icon copy.
+IDI_CHROMA ICON "..\\Chroma.WinUI\\Assets\\Chroma.ico"
