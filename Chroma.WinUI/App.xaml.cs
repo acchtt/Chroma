@@ -1,3 +1,4 @@
+using Chroma.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 
@@ -16,6 +17,7 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         MainWindowInstance = new MainWindow();
+        BrandPalette.Apply(Resources);
         MainWindowInstance.Activate();
     }
 
