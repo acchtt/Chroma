@@ -6,7 +6,7 @@ Chroma v1.9 refreshes the Windows executable and tray branding using the current
 
 - Rebuilt `Chroma.exe` with the current `Chroma.WinUI/Assets/Chroma.ico` asset.
 - Rebuilt `Chroma.Agent.exe` and its system-tray icon from the same shared ICO resource.
-- Confirmed the current branding artwork is already present in the repository.
+- Confirmed the current branding artwork is already present in the repository and displays correctly after a clean build.
 - Removed the temporary icon-generation workflow used during investigation.
 - Updated application, README, website, and release metadata to v1.9.
 
