@@ -1,0 +1,48 @@
+name: Restore v1.8 NativeAgent files
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .restore-v1.8-nativeagent
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    if: github.event.pull_request.head.ref == 'release/v1.8-cleanup'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore untouched NativeAgent files
+        shell: bash
+        run: |
+          git fetch origin main
+          git checkout origin/main -- \
+            NativeAgent/ColorAlgorithms_App.cpp \
+            NativeAgent/ColorAlgorithms_App.h \
+            NativeAgent/GameMonitor.cpp \
+            NativeAgent/GameMonitor.h \
+            NativeAgent/HueSaturation.cpp \
+            NativeAgent/HueSaturation.h \
+            NativeAgent/IGCLManager.cpp \
+            NativeAgent/IGCLManager.h \
+            NativeAgent/cApiWrapper.cpp \
+            NativeAgent/igcl_api.h
+          rm -f .restore-v1.8-nativeagent
+
+      - name: Commit restored files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Restore untouched NativeAgent line endings"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
