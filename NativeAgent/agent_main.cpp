@@ -294,11 +294,11 @@ LRESULT CALLBACK AgentWindowProcedure(HWND window, UINT message, WPARAM wParam, 
 
             if (initialized)
             {
-                Log(LogLevel::Info, L"Intel color backend initialized");
+                Log(LogLevel::Info, L"GPU color backend initialized");
             }
             else
             {
-                Log(LogLevel::Warning, L"Intel color backend is unavailable; the tray agent will retry");
+                Log(LogLevel::Warning, L"A compatible GPU color backend is unavailable; the tray agent will retry");
                 SetTimer(window, kBackendRetryTimerId, kBackendRetryIntervalMs, nullptr);
             }
             return 0;
@@ -373,8 +373,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int)
     }
     g_agentRuntime.AttachProfiles(&g_agentProfiles);
 
-    // Create the tray icon and IPC server before initializing IGCL. The agent
-    // therefore remains usable and can reopen the UI even when the graphics
+    // Create the tray icon and IPC server before initializing the GPU backend. The
+    // agent therefore remains usable and can reopen the UI even when the graphics
     // backend is temporarily unavailable during sign-in or driver startup.
     if (!AddAgentTrayIcon(g_agentWindow))
     {
