@@ -1,23 +1,17 @@
 name: Apply v1.9 icon refresh
 
 on:
-  push:
-    branches:
-      - release/v1.9-icons
-    paths:
-      - .release-v1.9-icons
-  pull_request:
-    branches:
-      - main
-    paths:
-      - .release-v1.9-icons
+  issue_comment:
+    types:
+      - created
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   apply:
-    if: github.ref == 'refs/heads/release/v1.9-icons' || github.event.pull_request.head.ref == 'release/v1.9-icons'
+    if: github.event.issue.pull_request && github.event.issue.number == 12 && github.event.comment.body == '/apply-v1.9-icons'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
