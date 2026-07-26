@@ -4,7 +4,7 @@ Chroma v1.8 completes the corrected automatic-update test path and adds automati
 
 ## Updated
 
-- Starts a delayed cleanup task whenever Chroma opens.
+- Starts a delayed cleanup task whenever Chroma opens, allowing the external installer to finish first.
 - Preserves the newest updater log as `%LOCALAPPDATA%\Chroma\Updates\last-update.log`.
 - Deletes all versioned update directories after the installer has finished.
 - Removes downloaded ZIP files, extracted staging copies, rollback backups, and obsolete updater scripts.
