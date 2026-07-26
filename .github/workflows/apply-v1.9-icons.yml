@@ -1,0 +1,119 @@
+name: Apply v1.9 icon refresh
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .release-v1.9-icons
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.ref == 'release/v1.9-icons'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Generate current multi-resolution ICO and update v1.9 metadata
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check pillow
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          from PIL import Image
+
+          root = Path('.')
+          png_path = root / 'Chroma.WinUI' / 'Assets' / 'Chroma.png'
+          ico_path = root / 'Chroma.WinUI' / 'Assets' / 'Chroma.ico'
+
+          image = Image.open(png_path).convert('RGBA')
+          if image.width != image.height or image.width < 256:
+              raise SystemExit(f'Expected a square source image at least 256 px, received {image.size}.')
+
+          sizes = [(16, 16), (20, 20), (24, 24), (32, 32), (40, 40),
+                   (48, 48), (64, 64), (128, 128), (256, 256)]
+          image.save(ico_path, format='ICO', sizes=sizes)
+
+          generated = Image.open(ico_path)
+          generated_sizes = set(generated.ico.sizes())
+          missing = set(sizes) - generated_sizes
+          if missing:
+              raise SystemExit(f'Generated ICO is missing sizes: {sorted(missing)}')
+          print('Generated ICO sizes:', sorted(generated_sizes))
+
+          csproj_path = root / 'Chroma.WinUI' / 'Chroma.WinUI.csproj'
+          csproj = csproj_path.read_text(encoding='utf-8')
+          replacements = {
+              '<Version>1.8.0</Version>': '<Version>1.9.0</Version>',
+              '<AssemblyVersion>1.8.0.0</AssemblyVersion>': '<AssemblyVersion>1.9.0.0</AssemblyVersion>',
+              '<FileVersion>1.8.0.0</FileVersion>': '<FileVersion>1.9.0.0</FileVersion>',
+              '<InformationalVersion>v1.8</InformationalVersion>': '<InformationalVersion>v1.9</InformationalVersion>',
+          }
+          for old, new in replacements.items():
+              if old not in csproj:
+                  raise SystemExit(f'Missing expected project version text: {old}')
+              csproj = csproj.replace(old, new, 1)
+          csproj_path.write_text(csproj, encoding='utf-8')
+
+          readme_path = root / 'README.md'
+          readme = readme_path.read_text(encoding='utf-8')
+          if 'Current release: **v1.8**' not in readme:
+              raise SystemExit('README v1.8 release label was not found.')
+          readme = readme.replace('Current release: **v1.8**', 'Current release: **v1.9**', 1)
+          readme_path.write_text(readme, encoding='utf-8')
+
+          website_path = root / 'website' / 'index.html'
+          website = website_path.read_text(encoding='utf-8')
+          website, software_count = re.subn(r'"softwareVersion":\s*"1\.8"', '"softwareVersion": "1.9"', website, count=1)
+          website, download_count = re.subn(r'Download v1\.8', 'Download v1.9', website, count=1)
+          if software_count != 1 or download_count != 1:
+              raise SystemExit(f'Website version replacements failed: software={software_count}, download={download_count}')
+          website_path.write_text(website, encoding='utf-8')
+
+          notes = '''# Chroma v1.9
+
+Chroma v1.9 refreshes every Windows executable and tray icon from the current Chroma branding source.
+
+## Updated
+
+- Regenerated `Chroma.WinUI/Assets/Chroma.ico` from the current 1024 × 1024 `Chroma.png` artwork.
+- Added 16, 20, 24, 32, 40, 48, 64, 128, and 256 pixel icon layers for Windows shell scaling.
+- `Chroma.exe` continues to embed the shared icon through the WinUI project configuration.
+- `Chroma.Agent.exe` and its system-tray icon continue to embed the same shared icon through `NativeAgent/Chroma.rc`.
+- Updated application, README, website, and release metadata to v1.9.
+
+## Test from v1.8
+
+1. Launch Chroma v1.8 and accept the v1.9 update.
+2. Confirm the updater replaces the files in the same folder and restarts Chroma.
+3. Confirm the Chroma window/taskbar icon uses the current multicolor Chroma mark.
+4. Confirm `Chroma.Agent.exe` and the system-tray icon use the same current mark.
+5. Windows may briefly retain an old Explorer icon-cache entry; restarting Explorer or signing out refreshes that cache without changing the executable.
+'''
+          (root / 'RELEASE_NOTES_v1.9.md').write_text(notes, encoding='utf-8')
+
+          trigger = root / '.release-v1.9-icons'
+          if trigger.exists():
+              trigger.unlink()
+          PY
+
+      - name: Commit v1.9 icon refresh
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Refresh Chroma executable and tray icons for v1.9"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
