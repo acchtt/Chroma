@@ -7,10 +7,10 @@
     <AssemblyName>Chroma</AssemblyName>
     <ApplicationIcon>Assets\Chroma.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.6.0</Version>
-    <AssemblyVersion>1.6.0.0</AssemblyVersion>
-    <FileVersion>1.6.0.0</FileVersion>
-    <InformationalVersion>v1.6</InformationalVersion>
+    <Version>1.7.0</Version>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <FileVersion>1.7.0.0</FileVersion>
+    <InformationalVersion>v1.7</InformationalVersion>
     <Product>Chroma</Product>
     <AssemblyTitle>Chroma</AssemblyTitle>
     <Authors>acchtt</Authors>
