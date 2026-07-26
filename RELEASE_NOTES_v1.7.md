@@ -1,6 +1,6 @@
 # Chroma v1.7
 
-Chroma v1.7 repairs the automatic updater installation target.
+Chroma v1.7 repairs the automatic updater installation target. The Windows x64 portable package is validated by the release workflow before publication.
 
 ## Fixed
 
