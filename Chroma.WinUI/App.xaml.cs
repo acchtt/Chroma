@@ -17,12 +17,19 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         MainWindowInstance = new MainWindow();
+        MainWindowInstance.EnableUpdateExperience();
         BrandPalette.Apply(Resources);
         MainWindowInstance.Activate();
+        MainWindowInstance.NotifyWindowOpened();
     }
 
     private void Current_Activated(object? sender, AppActivationArguments args)
     {
-        MainWindowInstance?.DispatcherQueue.TryEnqueue(() => MainWindowInstance.ShowAndActivate());
+        MainWindow? window = MainWindowInstance;
+        window?.DispatcherQueue.TryEnqueue(() =>
+        {
+            window.ShowAndActivate();
+            window.NotifyWindowOpened();
+        });
     }
 }
