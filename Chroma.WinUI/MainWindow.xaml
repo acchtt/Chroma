@@ -153,7 +153,7 @@
                             BorderThickness="1"
                             CornerRadius="14"
                             Padding="15,14"
-                            MinHeight="132">
+                            MinHeight="158">
                         <StackPanel Spacing="6">
                             <Grid ColumnSpacing="7">
                                 <Grid.ColumnDefinitions>
@@ -164,6 +164,24 @@
                                 <Ellipse Width="10" Height="10" Fill="{ThemeResource PositiveBrush}" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Text="Monitoring:" Foreground="{ThemeResource TextSecondaryBrush}" FontSize="13" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="2" Text="{Binding MonitoringText}" Foreground="{ThemeResource PositiveBrush}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid ColumnSpacing="6" Margin="0,2,0,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="GPU:"
+                                           Foreground="{ThemeResource TextMutedBrush}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding GpuNameText}"
+                                           Foreground="{ThemeResource TextSecondaryBrush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTipService.ToolTip="{Binding GpuNameText}"
+                                           VerticalAlignment="Center" />
                             </Grid>
                             <TextBlock Text="Active profile:" Foreground="{ThemeResource TextMutedBrush}" FontSize="12" Margin="0,3,0,0" />
                             <TextBlock Text="{Binding ActiveProfileText}" Foreground="{ThemeResource CyanBrush}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />

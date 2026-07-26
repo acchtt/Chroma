@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using Chroma.Infrastructure;
 using Chroma.Models;
 using Chroma.Services;
@@ -20,6 +21,7 @@ public sealed class MainViewModel : ObservableObject
     private bool _editorEnabled = true;
     private AgentStatus _agentStatus = AgentStatus.Disconnected;
     private string _notification = string.Empty;
+    private string _gpuName = "Detecting GPU...";
     private bool _isBusy;
     private bool _startWithWindows;
     private ThemeMode _themeMode;
@@ -116,6 +118,7 @@ public sealed class MainViewModel : ObservableObject
         }
     }
     public string AppliedSaturationText => $"{AgentStatus.AppliedSaturationPercent}%";
+    public string GpuNameText => FormatGpuName(_gpuName);
 
     public string Notification
     {
@@ -192,6 +195,8 @@ public sealed class MainViewModel : ObservableObject
         IsBusy = true;
         try
         {
+            _gpuName = PrimaryDisplayAdapter.GetName();
+            OnPropertyChanged(nameof(GpuNameText));
             _startWithWindows = _settingsStore.IsAutoStartEnabled();
             OnPropertyChanged(nameof(StartWithWindows));
             _themeMode = _settingsStore.GetThemeMode();
@@ -362,6 +367,7 @@ public sealed class MainViewModel : ObservableObject
         IsBusy = true;
         try
         {
+
             await Task.WhenAll(Profiles.Select(RedetectGameNameCoreAsync));
             OnPropertyChanged(nameof(ActiveProfileText));
             Notification = $"Updated names for {Profiles.Count} profiles";
@@ -440,5 +446,104 @@ public sealed class MainViewModel : ObservableObject
     {
         GameNameResult result = await _gameNameResolver.ResolveAsync(profile.ExecutablePath);
         profile.ApplyDetectedName(result);
+    }
+
+    private static string FormatGpuName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return "Unknown GPU";
+        }
+
+        string value = name
+            .Replace("(R)", "", StringComparison.OrdinalIgnoreCase)
+            .Replace("(TM)", "", StringComparison.OrdinalIgnoreCase)
+            .Replace(" Graphics", "", StringComparison.OrdinalIgnoreCase)
+            .Trim();
+
+        if (value.StartsWith("NVIDIA GeForce ", StringComparison.OrdinalIgnoreCase))
+        {
+            value = value["NVIDIA GeForce ".Length..];
+        }
+        else if (value.StartsWith("AMD ", StringComparison.OrdinalIgnoreCase))
+        {
+            value = value["AMD ".Length..];
+        }
+
+        while (value.Contains("  "))
+        {
+            value = value.Replace("  ", " ");
+        }
+
+        return value;
+    }
+    private static class PrimaryDisplayAdapter
+    {
+        private const uint DisplayDevicePrimaryDevice = 0x00000004;
+        private const uint DisplayDeviceActive = 0x00000001;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct DisplayDevice
+        {
+            public int Cb;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+
+            public uint StateFlags;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceId;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumDisplayDevices(
+            string? device,
+            uint deviceNumber,
+            ref DisplayDevice displayDevice,
+            uint flags);
+
+        public static string GetName()
+        {
+            try
+            {
+                for (uint index = 0; ; index++)
+                {
+                    var adapter = new DisplayDevice
+                    {
+                        Cb = Marshal.SizeOf<DisplayDevice>()
+                    };
+
+                    if (!EnumDisplayDevices(null, index, ref adapter, 0))
+                    {
+                        break;
+                    }
+
+                    bool active =
+                        (adapter.StateFlags & DisplayDeviceActive) != 0;
+                    bool primary =
+                        (adapter.StateFlags & DisplayDevicePrimaryDevice) != 0;
+
+                    if (active && primary &&
+                        !string.IsNullOrWhiteSpace(adapter.DeviceString))
+                    {
+                        return adapter.DeviceString.Trim();
+                    }
+                }
+
+                return "GPU not detected";
+            }
+            catch
+            {
+                return "GPU unavailable";
+            }
+        }
     }
 }
