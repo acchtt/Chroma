@@ -48,6 +48,13 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v7
 
+      - name: Check out AMD ADLX SDK
+        uses: actions/checkout@v7
+        with:
+          repository: GPUOpen-LibrariesAndSDKs/ADLX
+          ref: d9f04a9bba022d6cf6333f005dd540b4ad19fb63
+          path: third_party/ADLX
+
       - name: Set up .NET 8
         uses: actions/setup-dotnet@v6
         with:
