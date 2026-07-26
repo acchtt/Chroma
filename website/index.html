@@ -32,46 +32,47 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180" />
   <link rel="stylesheet" href="styles.css" />
+
   <style>
     .hero {
-      padding-bottom: 96px;
+      padding: 132px 0 76px;
     }
 
     .hero-grid {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 54px;
+      grid-template-columns: minmax(350px, .76fr) minmax(0, 1.24fr);
+      gap: clamp(42px, 5vw, 76px);
     }
 
     .hero-copy {
-      width: min(100%, 820px);
-      margin-inline: auto;
-      text-align: center;
+      max-width: 590px;
+      text-align: left;
     }
 
     .hero-copy > .eyebrow,
     .hero-actions,
     .hero-meta {
-      justify-content: center;
+      justify-content: flex-start;
+    }
+
+    .hero h1 {
+      font-size: clamp(50px, 5.6vw, 76px);
     }
 
     .hero-lead {
-      margin-inline: auto;
+      max-width: 555px;
     }
 
     .app-preview {
-      width: min(100%, 1180px);
-      margin-inline: auto;
-    }
-
-    .preview-glow {
-      inset: 4% 9% -3%;
-      opacity: 0.82;
-      filter: blur(58px);
+      width: 100%;
+      max-width: none;
+      margin: 0;
     }
 
     .app-preview figure {
       padding: 6px;
       border-radius: 22px;
+      transform: perspective(1500px) rotateY(-1deg) rotateX(.3deg);
+      transform-origin: center;
     }
 
     .app-preview figure > img {
@@ -80,13 +81,84 @@
       border-radius: 15px;
     }
 
+    .preview-glow {
+      inset: 5% 7% -4%;
+      opacity: .9;
+      filter: blur(58px);
+    }
+
+    .section {
+      padding: 78px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 32px;
+    }
+
+    .feature-card {
+      min-height: 230px;
+      padding: 27px;
+    }
+
+    .feature-icon {
+      margin-bottom: 22px;
+    }
+
+    .workflow-grid {
+      gap: clamp(42px, 7vw, 90px);
+    }
+
+    .download-section {
+      padding: 78px 0 96px;
+    }
+
     .status-pill {
       display: none;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 1120px) {
+      .hero {
+        padding-top: 118px;
+      }
+
       .hero-grid {
-        gap: 38px;
+        grid-template-columns: 1fr;
+        gap: 46px;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+        margin-inline: auto;
+        text-align: center;
+      }
+
+      .hero-copy > .eyebrow,
+      .hero-actions,
+      .hero-meta {
+        justify-content: center;
+      }
+
+      .hero-lead {
+        margin-inline: auto;
+      }
+
+      .app-preview {
+        max-width: 1040px;
+        margin-inline: auto;
+      }
+
+      .app-preview figure {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .hero {
+        padding: 108px 0 58px;
+      }
+
+      .hero-grid {
+        gap: 34px;
       }
 
       .hero-copy {
@@ -97,6 +169,18 @@
       .hero-actions,
       .hero-meta {
         justify-content: flex-start;
+      }
+
+      .hero h1 {
+        font-size: clamp(42px, 13vw, 58px);
+      }
+
+      .hero-lead {
+        margin-inline: 0;
+      }
+
+      .section {
+        padding: 62px 0;
       }
     }
   </style>
@@ -154,8 +238,8 @@
           <p class="eyebrow"><span></span> Intel &middot; NVIDIA &middot; AMD</p>
           <h1>Vivid color.<br /><em>Automatically.</em></h1>
           <p class="hero-lead">
-            Create a saturation profile for each game. Chroma detects what you
-            are playing, applies the profile, and restores your desktop afterward.
+            Create a saturation profile for every game. Chroma detects what you
+            are playing, applies the right color level, and restores your desktop afterward.
           </p>
 
           <div class="hero-actions">
@@ -163,7 +247,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" />
               </svg>
-              Download latest
+              Download v1.4
             </a>
             <a class="button button-secondary" href="https://github.com/acchtt/Chroma">
               View source
@@ -172,7 +256,7 @@
 
           <ul class="hero-meta" aria-label="Compatibility">
             <li>Windows 10 &amp; 11</li>
-            <li>Intel &middot; NVIDIA &middot; AMD</li>
+            <li>Windows x64</li>
             <li>Free &amp; open source</li>
           </ul>
         </div>
@@ -181,7 +265,7 @@
           <div class="preview-glow" aria-hidden="true"></div>
           <figure>
             <img
-              src="assets/chroma-app.png?v=20260726"
+              src="assets/chroma-app.png?v=20260727"
               alt="Chroma game profiles and profile editor showing PUBG, Counter-Strike 2, and Wuthering Waves"
               width="1266"
               height="813"
