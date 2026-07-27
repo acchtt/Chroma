@@ -73,7 +73,7 @@ public sealed partial class MainWindow
         });
         statusRow.Children.Add(new TextBlock
         {
-            Text = "LOW RISK",
+            Text = "SAFE",
             Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PositiveBrush"],
             FontSize = 11,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
