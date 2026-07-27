@@ -57,7 +57,7 @@ const addAntiCheatSection = () => {
         </article>
       </div>
 
-      <div class="download-card" style="margin-top: 24px; align-items: flex-start;">
+      <div class="download-card" style="margin-top: 24px; display: block;">
         <div>
           <p class="eyebrow">Assessment</p>
           <h3>Low risk, not a certification</h3>
