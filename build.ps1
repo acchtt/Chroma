@@ -125,7 +125,12 @@ if ($Configuration -eq 'Release' -and $UnexpectedDebugFiles.Count -gt 0) {
     throw "Distribution verification failed: Release output contains debug symbols: $($UnexpectedDebugFiles.FullName -join ', ')"
 }
 
+$uiSizeMiB = [Math]::Round($uiInfo.Length / 1MB, 2)
+$agentSizeMiB = [Math]::Round($agentInfo.Length / 1MB, 2)
+$totalSizeMiB = [Math]::Round(($uiInfo.Length + $agentInfo.Length) / 1MB, 2)
+
 Write-Host "Build complete: $Dist" -ForegroundColor Cyan
-Write-Host "  UI:    $UiExe" -ForegroundColor DarkCyan
-Write-Host "  Agent: $DistAgentExe" -ForegroundColor DarkCyan
+Write-Host "  UI:    $UiExe ($uiSizeMiB MiB)" -ForegroundColor DarkCyan
+Write-Host "  Agent: $DistAgentExe ($agentSizeMiB MiB)" -ForegroundColor DarkCyan
+Write-Host "  Total: $totalSizeMiB MiB" -ForegroundColor DarkCyan
 Write-Host "Launch this copy: $UiExe" -ForegroundColor Green
