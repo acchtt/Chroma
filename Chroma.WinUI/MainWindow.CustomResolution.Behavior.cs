@@ -107,8 +107,9 @@ public sealed partial class MainWindow
         try
         {
             ProfileViewModel? profile = _viewModel.SelectedProfile;
+            ResolutionOverride resolution = default;
             bool hasOverride = profile is not null &&
-                _resolutionOverrides.TryGetValue(profile.ExecutablePath, out ResolutionOverride resolution);
+                _resolutionOverrides.TryGetValue(profile.ExecutablePath, out resolution);
 
             _customResolutionToggle.IsEnabled = profile is not null;
             _customResolutionToggle.IsOn = hasOverride;
