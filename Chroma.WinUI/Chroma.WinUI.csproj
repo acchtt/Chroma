@@ -27,13 +27,17 @@
     <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <!--
       Release packages use the Windows App SDK single-file deployment model.
       The WinUI/.NET runtime and brand artwork are bundled into Chroma.exe.
       The native monitoring agent remains beside the launcher as the only
-      required companion file.
+      required companion file. Compression reduces the installed executable
+      size while preserving the same portable two-file distribution.
     -->
     <PublishSingleFile Condition="'$(SelfContained)' == 'true'">true</PublishSingleFile>
+    <EnableCompressionInSingleFile Condition="'$(SelfContained)' == 'true'">true</EnableCompressionInSingleFile>
     <IncludeAllContentForSelfExtract Condition="'$(SelfContained)' == 'true'">true</IncludeAllContentForSelfExtract>
     <DebugType Condition="'$(Configuration)' == 'Release'">None</DebugType>
     <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
