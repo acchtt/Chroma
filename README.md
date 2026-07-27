@@ -43,6 +43,20 @@ The backend used depends on the GPU and display path available to Windows. Hybri
 
 ## Anti-cheat transparency
 
+<table>
+  <tr>
+    <td width="64" align="center">🛡️</td>
+    <td>
+      <strong>Anti-cheat safety</strong><br>
+      <sub>External GPU control • no game-process access</sub>
+    </td>
+    <td width="180" align="center">
+      <strong>🟢 SAFE</strong><br>
+      <sub>Architecture review</sub>
+    </td>
+  </tr>
+</table>
+
 Chroma is designed to operate outside game processes. Its current architecture:
 
 - Does not inject DLLs or code into games
