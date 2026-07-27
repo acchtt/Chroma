@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "DisplayModeManager.h"
 #include "GameProfile.h"
 #include "IColorBackend.h"
 
@@ -46,10 +47,14 @@ public:
 
 private:
     int FindMatchingProfile(const std::wstring& executablePath) const;
-    bool ApplyProfile(int profileIndex, const std::wstring& executablePath);
+    bool ApplyProfile(
+        int profileIndex,
+        const std::wstring& executablePath,
+        HWND foregroundWindow);
 
     std::unique_ptr<IColorBackend> backend_;
     std::vector<GameProfile>* profiles_ = nullptr;
+    DisplayModeManager displayModeManager_;
     RuntimeStatus status_;
 };
 }

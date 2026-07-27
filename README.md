@@ -4,7 +4,7 @@
 
 Chroma is a lightweight Windows utility that detects the active game, applies its saved saturation profile through a native GPU color backend, and restores the desktop color state when the game closes.
 
-> Current release: **v1.10.4**
+> Current release: **v1.11**
 
 [Visit the Chroma website](https://acchtt.github.io/Chroma/)
 
@@ -15,8 +15,9 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 ## Features
 
 - Per-game saturation profiles from 0% to 300%
+- Optional per-profile custom resolution overrides
 - Automatic profile activation based on the foreground game executable
-- Automatic restoration of desktop color settings
+- Automatic restoration of desktop color and display mode settings
 - Native color backends for Intel IGCL, NVIDIA NVAPI, and AMD ADLX
 - GPU backend selector with Automatic, Intel, NVIDIA, and AMD choices
 - Automatic mode prioritizes the GPU driving the primary Windows display
@@ -40,6 +41,14 @@ Chroma is a lightweight Windows utility that detects the active game, applies it
 - **AMD:** ADLX custom-color backend; implemented and awaiting broader hardware validation
 
 The backend used depends on the GPU and display path available to Windows. Hybrid-GPU laptops and unusual monitor-routing configurations may behave differently from desktop systems.
+
+## Custom resolutions
+
+A profile can optionally request a width and height while its game is active. Chroma targets the monitor containing the foreground game window and restores the exact previous desktop mode when the game closes, another profile becomes active, profiles are reloaded, or the agent exits.
+
+For safety and refresh-rate consistency, Chroma only applies modes already exposed by Windows and the graphics driver at the monitor's current refresh rate. It does not create new driver timings. If the requested mode is unavailable, saturation still applies and the resolution remains unchanged.
+
+Custom resolution overrides are stored separately in `%LOCALAPPDATA%\Chroma\resolutions.txt`, so existing profile files remain backward compatible.
 
 ## Anti-cheat transparency
 
@@ -65,6 +74,7 @@ Chroma is designed to operate outside game processes. Its current architecture:
 - Does not modify game files, automate input, or install a kernel driver
 - Queries only the foreground executable path with limited Windows process permissions
 - Applies display saturation through Intel IGCL, NVIDIA NVAPI, or AMD ADLX
+- Applies supported display modes through documented Windows display APIs
 
 Based on the current source code, Chroma is considered low risk for VAC, BattlEye, Easy Anti-Cheat, and Riot Vanguard. This is an architectural assessment, not an official certification or allowlisting. Game-publisher policies and anti-cheat detection rules can change, so no third-party utility can guarantee approval for every game.
 
@@ -84,7 +94,7 @@ Download the validated Windows x64 build from
 ## Repository layout
 
 - [`Chroma.WinUI/`](Chroma.WinUI/) — .NET 8 / WinUI 3 desktop interface
-- [`NativeAgent/`](NativeAgent/) — native C++ monitoring and GPU color-control agent
+- [`NativeAgent/`](NativeAgent/) — native C++ monitoring, display-mode, and GPU color-control agent
 - [`NativeAgent/tests/`](NativeAgent/tests/) — native profile-matching tests
 - [`third_party/`](third_party/) — instructions for local vendor SDK checkouts
 - [`website/`](website/) — dependency-free GitHub Pages website
@@ -141,7 +151,7 @@ Remove vendor SDK checkouts as well:
 
 ## Reporting issues
 
-Please include your Windows version, GPU vendor and model, graphics-driver version, monitor connection, affected game, reproduction steps, and relevant Chroma logs.
+Please include your Windows version, GPU vendor and model, graphics-driver version, monitor connection, affected game, requested custom resolution, reproduction steps, and relevant Chroma logs.
 
 ## Licensing
 

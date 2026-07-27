@@ -1,7 +1,7 @@
 const header = document.querySelector('.site-header');
 const menu = document.querySelector('.menu-button');
 const links = document.querySelector('.nav-links');
-const releaseVersion = 'v1.10.4';
+const releaseVersion = 'v1.11';
 
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 12);
 
@@ -252,8 +252,8 @@ const addAntiCheatSection = () => {
           <div class="feature-icon magenta" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M4 17V7m5 10V4m5 13V9m5 8V6" /></svg>
           </div>
-          <h3>Official GPU interfaces</h3>
-          <p>Saturation is applied through Intel IGCL, NVIDIA NVAPI, or AMD ADLX display controls.</p>
+          <h3>Official system interfaces</h3>
+          <p>Saturation uses Intel IGCL, NVIDIA NVAPI, or AMD ADLX. Resolution switching uses Windows display APIs.</p>
         </article>
       </div>
 
@@ -285,7 +285,27 @@ const addAntiCheatSection = () => {
   }
 };
 
+const updateCustomResolutionCopy = () => {
+  const profileCard = document.querySelector('#features .feature-card');
+  const profileTitle = profileCard?.querySelector('h3');
+  const profileDescription = profileCard?.querySelector('p');
+  if (profileTitle) profileTitle.textContent = 'Per-game profiles';
+  if (profileDescription) {
+    profileDescription.textContent =
+      'Give every game its own saturation level and optional driver-supported resolution.';
+  }
+
+  const steps = document.querySelectorAll('#how-it-works .steps li');
+  const secondStepTitle = steps[1]?.querySelector('h3');
+  const secondStepDescription = steps[1]?.querySelector('p');
+  if (secondStepTitle) secondStepTitle.textContent = 'Set color and resolution';
+  if (secondStepDescription) {
+    secondStepDescription.textContent = 'Choose saturation and an optional custom display mode.';
+  }
+};
+
 addAntiCheatSection();
+updateCustomResolutionCopy();
 
 menu?.addEventListener('click', () => {
   const open = menu.getAttribute('aria-expanded') !== 'true';
