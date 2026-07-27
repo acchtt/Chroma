@@ -2,6 +2,8 @@
 
 #include "ColorBackendFactory.h"
 #include "GameMonitor.h"
+#include "Logger.h"
+#include "ResolutionOverride.h"
 
 #include <utility>
 
@@ -11,7 +13,6 @@ namespace
 {
 constexpr double kNormalSaturation = 1.0;
 }
-
 
 ChromaRuntime::ChromaRuntime()
     : ChromaRuntime(CreateDefaultColorBackend())
@@ -57,6 +58,7 @@ void ChromaRuntime::Shutdown()
 {
     if (!status_.initialized)
     {
+        displayModeManager_.Restore();
         return;
     }
 
@@ -73,7 +75,9 @@ bool ChromaRuntime::HandleForegroundWindow(
         return false;
     }
 
-    (void)foregroundWindow;
+    HWND targetWindow = foregroundWindow != nullptr
+        ? foregroundWindow
+        : GetForegroundWindow();
 
     const std::wstring foregroundPath =
         GameMonitor::GetForegroundExecutablePath();
@@ -90,7 +94,8 @@ bool ChromaRuntime::HandleForegroundWindow(
     {
         return ApplyProfile(
             matchingProfileIndex,
-            foregroundPath);
+            foregroundPath,
+            targetWindow);
     }
 
     const bool wasGameActive = status_.gameActive;
@@ -110,7 +115,8 @@ bool ChromaRuntime::ReapplyActiveProfile()
 
     return ApplyProfile(
         status_.activeProfileIndex,
-        status_.activeExecutablePath);
+        status_.activeExecutablePath,
+        GetForegroundWindow());
 }
 
 void ChromaRuntime::OnProfileRemoved(
@@ -133,20 +139,13 @@ void ChromaRuntime::OnProfileRemoved(
 
 bool ChromaRuntime::RestoreDesktop()
 {
-    if (!status_.initialized)
-    {
-        status_.gameActive = false;
-        status_.activeProfileIndex = -1;
-        status_.appliedSaturationPercent = 100;
-        status_.activeExecutablePath.clear();
-        status_.activeExecutableName.clear();
-        return false;
-    }
+    const bool displayRestored = displayModeManager_.Restore();
 
-    if (backend_ == nullptr ||
-        !backend_->SetSaturation(kNormalSaturation))
+    bool saturationRestored = true;
+    if (status_.initialized)
     {
-        return false;
+        saturationRestored = backend_ != nullptr &&
+            backend_->SetSaturation(kNormalSaturation);
     }
 
     status_.gameActive = false;
@@ -154,7 +153,7 @@ bool ChromaRuntime::RestoreDesktop()
     status_.appliedSaturationPercent = 100;
     status_.activeExecutablePath.clear();
     status_.activeExecutableName.clear();
-    return true;
+    return displayRestored && saturationRestored;
 }
 
 const RuntimeStatus& ChromaRuntime::GetStatus() const noexcept
@@ -197,7 +196,8 @@ int ChromaRuntime::FindMatchingProfile(
 
 bool ChromaRuntime::ApplyProfile(
     int profileIndex,
-    const std::wstring& executablePath)
+    const std::wstring& executablePath,
+    HWND foregroundWindow)
 {
     if (profiles_ == nullptr ||
         profileIndex < 0 ||
@@ -206,13 +206,32 @@ bool ChromaRuntime::ApplyProfile(
         return false;
     }
 
+    if (displayModeManager_.IsApplied() && !displayModeManager_.Restore())
+    {
+        Log(LogLevel::Warning,
+            L"Could not restore the previous display mode before applying a new profile");
+        return false;
+    }
+
     const GameProfile& profile = (*profiles_)[profileIndex];
+    ResolutionOverride resolutionOverride;
+    if (TryLoadResolutionOverride(profile.executablePath, resolutionOverride) &&
+        !displayModeManager_.Apply(
+            foregroundWindow,
+            resolutionOverride.width,
+            resolutionOverride.height))
+    {
+        Log(LogLevel::Warning,
+            L"The profile will continue with saturation only because its custom resolution could not be applied");
+    }
+
     const double saturation =
         static_cast<double>(profile.saturationPercent) / 100.0;
 
     if (backend_ == nullptr ||
         !backend_->SetSaturation(saturation))
     {
+        displayModeManager_.Restore();
         return false;
     }
 
