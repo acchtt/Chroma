@@ -1,7 +1,7 @@
 const header = document.querySelector('.site-header');
 const menu = document.querySelector('.menu-button');
 const links = document.querySelector('.nav-links');
-const releaseVersion = 'v1.10.3';
+const releaseVersion = 'v1.10.4';
 
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 12);
 
