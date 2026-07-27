@@ -127,6 +127,8 @@ public sealed partial class MainWindow
     private void UpdateResolutionEditorState()
     {
         if (_customResolutionToggle is null ||
+            _resolutionWidthTextBox is null ||
+            _resolutionHeightTextBox is null ||
             _resolutionFields is null ||
             _resolutionStatusText is null)
         {
@@ -134,7 +136,9 @@ public sealed partial class MainWindow
         }
 
         bool enabled = _customResolutionToggle.IsEnabled && _customResolutionToggle.IsOn;
-        _resolutionFields.IsEnabled = enabled;
+        _resolutionWidthTextBox.IsEnabled = enabled;
+        _resolutionHeightTextBox.IsEnabled = enabled;
+        _resolutionFields.IsHitTestVisible = enabled;
         _resolutionFields.Opacity = enabled ? 1 : 0.52;
 
         if (!enabled)
