@@ -17,8 +17,6 @@ public sealed partial class MainWindow
 
         _profileLayoutRefreshEnabled = true;
 
-        // Give the reorganized three-column workspace enough room while keeping
-        // the window fully resizable for smaller and larger displays.
         _appWindow?.Resize(new Windows.Graphics.SizeInt32(1360, 860));
 
         ApplyShellLayout();
@@ -46,15 +44,15 @@ public sealed partial class MainWindow
             .FirstOrDefault(border => Grid.GetColumn(border) == 0);
         if (sidebar?.Child is Grid sidebarGrid)
         {
-            sidebarGrid.Margin = new Thickness(20, 16, 20, 18);
+            sidebarGrid.Margin = new Thickness(20, 16, 20, 16);
 
             Border? statusCard = sidebarGrid.Children
                 .OfType<Border>()
                 .FirstOrDefault(border => Grid.GetRow(border) == 3);
             if (statusCard is not null)
             {
-                statusCard.Padding = new Thickness(16, 15, 16, 15);
-                statusCard.MinHeight = 166;
+                statusCard.Padding = new Thickness(16, 14, 16, 14);
+                statusCard.MinHeight = 160;
                 statusCard.CornerRadius = new CornerRadius(15);
             }
         }
@@ -72,11 +70,12 @@ public sealed partial class MainWindow
 
     private void ApplyProfilesWorkspaceLayout()
     {
-        ProfilesPage.Margin = new Thickness(22, 18, 22, 18);
+        ProfilesPage.Margin = new Thickness(22, 18, 22, 14);
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(150);
+            // Keep the footer useful without sacrificing editor height.
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(120);
         }
 
         if (ProfilesPage.ColumnDefinitions.Count >= 2)
@@ -96,7 +95,7 @@ public sealed partial class MainWindow
                 .FirstOrDefault(grid => Grid.GetRow(grid) == 0);
             if (header is not null)
             {
-                header.Margin = new Thickness(4, 2, 0, 18);
+                header.Margin = new Thickness(4, 2, 0, 16);
 
                 TextBlock? title = EnumerateLayoutDescendants<TextBlock>(header)
                     .FirstOrDefault(block => block.Text == "Game Profiles");
@@ -123,9 +122,9 @@ public sealed partial class MainWindow
 
         ProfilesList.Margin = new Thickness(0, 0, 0, 2);
 
-        DropZone.Padding = new Thickness(24, 22, 24, 22);
+        DropZone.Padding = new Thickness(24, 20, 24, 20);
         DropZone.Margin = new Thickness(0, 10, 0, 0);
-        DropZone.MinHeight = 104;
+        DropZone.MinHeight = 100;
         DropZone.CornerRadius = new CornerRadius(14);
 
         Border? editorCard = ProfilesPage.Children
@@ -133,7 +132,7 @@ public sealed partial class MainWindow
             .FirstOrDefault(border => Grid.GetColumn(border) == 1 && Grid.GetRow(border) == 0);
         if (editorCard is not null)
         {
-            editorCard.Padding = new Thickness(24, 22, 24, 20);
+            editorCard.Padding = new Thickness(24, 20, 24, 16);
             editorCard.CornerRadius = new CornerRadius(16);
             TuneEditorLayout(editorCard);
         }
@@ -143,8 +142,8 @@ public sealed partial class MainWindow
             .FirstOrDefault(border => Grid.GetRow(border) == 1 && Grid.GetColumnSpan(border) == 2);
         if (footer is not null)
         {
-            footer.Margin = new Thickness(0, 18, 0, 0);
-            footer.Padding = new Thickness(18, 14, 18, 14);
+            footer.Margin = new Thickness(0, 12, 0, 0);
+            footer.Padding = new Thickness(18, 10, 18, 10);
             footer.CornerRadius = new CornerRadius(16);
 
             Grid? footerGrid = footer.Child as Grid;
@@ -157,8 +156,11 @@ public sealed partial class MainWindow
 
             foreach (Button button in EnumerateLayoutDescendants<Button>(footer))
             {
-                button.MinHeight = 40;
+                button.MinHeight = 36;
             }
+
+            FooterBrandLogo.Width = 54;
+            FooterBrandLogo.Height = 54;
         }
     }
 
@@ -178,8 +180,8 @@ public sealed partial class MainWindow
                 ContainsLayoutText(panel, "Saturation"));
         if (editorBody is not null)
         {
-            editorBody.Margin = new Thickness(0, 16, 0, 10);
-            editorBody.Spacing = 14;
+            editorBody.Spacing = 12;
+            MakeEditorBodyScrollable(editorBody);
         }
 
         foreach (Border iconBorder in EnumerateLayoutDescendants<Border>(editorCard)
@@ -209,16 +211,16 @@ public sealed partial class MainWindow
         if (saturationEditor is not null)
         {
             saturationEditor.Width = 232;
-            saturationEditor.Height = 58;
-            saturationEditor.Margin = new Thickness(0, 5, 0, 0);
+            saturationEditor.Height = 56;
+            saturationEditor.Margin = new Thickness(0, 4, 0, 0);
         }
 
         Border? resolutionCard = FindDeepestLayoutDescendant<Border>(editorCard, border =>
             border.Child is StackPanel && ContainsLayoutText(border.Child, "Custom resolution"));
         if (resolutionCard is not null)
         {
-            resolutionCard.Padding = new Thickness(16, 14, 16, 14);
-            resolutionCard.Margin = new Thickness(0, 5, 0, 0);
+            resolutionCard.Padding = new Thickness(14, 12, 14, 12);
+            resolutionCard.Margin = new Thickness(0, 4, 0, 0);
             resolutionCard.CornerRadius = new CornerRadius(14);
         }
 
@@ -238,8 +240,34 @@ public sealed partial class MainWindow
         if (actionRow is not null)
         {
             actionRow.ColumnSpacing = 14;
-            actionRow.Margin = new Thickness(0, 16, 0, 0);
+            actionRow.Margin = new Thickness(0, 12, 0, 0);
         }
+    }
+
+    private static void MakeEditorBodyScrollable(StackPanel editorBody)
+    {
+        if (VisualTreeHelper.GetParent(editorBody) is not Grid parentGrid)
+        {
+            return;
+        }
+
+        int row = Grid.GetRow(editorBody);
+        editorBody.Margin = new Thickness(0);
+
+        parentGrid.Children.Remove(editorBody);
+
+        var scrollViewer = new ScrollViewer
+        {
+            Content = editorBody,
+            VerticalScrollMode = ScrollMode.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalScrollMode = ScrollMode.Disabled,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            Margin = new Thickness(0, 14, 0, 6),
+            Padding = new Thickness(0, 0, 4, 0)
+        };
+        Grid.SetRow(scrollViewer, row);
+        parentGrid.Children.Add(scrollViewer);
     }
 
     private void ProfilesList_ContainerContentChangingForLayout(
