@@ -14,35 +14,114 @@ public sealed partial class MainWindow
             return;
         }
 
-        var heading = new TextBlock
+        var headerGrid = new Grid
         {
-            Text = "Anti-cheat safety",
-            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CyanBrush"],
-            FontSize = 18,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+            ColumnSpacing = 14
+        };
+        headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(176) });
+
+        var shieldTile = new Border
+        {
+            Width = 48,
+            Height = 48,
+            Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["ProfileIconBrush"],
+            BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["ProfileIconStrokeBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(13),
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = new FontIcon
+            {
+                Glyph = "\uE83D",
+                FontSize = 23,
+                Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CyanBrush"]
+            }
         };
 
-        var statusBadge = new Border
+        var headingStack = new StackPanel
+        {
+            Spacing = 3,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        headingStack.Children.Add(new TextBlock
+        {
+            Text = "Anti-cheat safety",
+            FontSize = 19,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+        });
+        headingStack.Children.Add(new TextBlock
+        {
+            Text = "External GPU control • no game-process access",
+            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextMutedBrush"],
+            FontSize = 12.5,
+            TextWrapping = TextWrapping.Wrap
+        });
+        Grid.SetColumn(headingStack, 1);
+
+        var statusRow = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 7
+        };
+        statusRow.Children.Add(new Microsoft.UI.Xaml.Shapes.Ellipse
+        {
+            Width = 8,
+            Height = 8,
+            Fill = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PositiveBrush"],
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        statusRow.Children.Add(new TextBlock
+        {
+            Text = "LOW RISK",
+            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PositiveBrush"],
+            FontSize = 11,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            CharacterSpacing = 70
+        });
+
+        var statusContent = new StackPanel
+        {
+            Spacing = 2
+        };
+        statusContent.Children.Add(statusRow);
+        statusContent.Children.Add(new TextBlock
+        {
+            Text = "Architecture review",
+            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextMutedBrush"],
+            FontSize = 11.5
+        });
+
+        var statusPanel = new Border
         {
             Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["StatusCardBrush"],
             BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["StatusCardStrokeBrush"],
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(999),
-            Padding = new Thickness(11, 5, 11, 5),
-            HorizontalAlignment = HorizontalAlignment.Left,
-            Child = new TextBlock
-            {
-                Text = "LOW-RISK BY DESIGN",
-                Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PositiveBrush"],
-                FontSize = 11,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                CharacterSpacing = 90
-            }
+            CornerRadius = new CornerRadius(11),
+            Padding = new Thickness(12, 8, 12, 8),
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = statusContent
+        };
+        Grid.SetColumn(statusPanel, 2);
+
+        headerGrid.Children.Add(shieldTile);
+        headerGrid.Children.Add(headingStack);
+        headerGrid.Children.Add(statusPanel);
+
+        var headerPanel = new Border
+        {
+            Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["StatusCardBrush"],
+            BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["StatusCardStrokeBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(14),
+            Padding = new Thickness(16, 14, 16, 14),
+            Child = headerGrid
         };
 
         var summary = new TextBlock
         {
-            Text = "Chroma operates outside game processes and changes display saturation through GPU-vendor control APIs. Its current architecture avoids the techniques commonly associated with cheats.",
+            Text = "Chroma stays outside game processes and changes display saturation through GPU-vendor control APIs. Its current architecture avoids the techniques commonly associated with cheats.",
             Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextSecondaryBrush"],
             FontSize = 14,
             TextWrapping = TextWrapping.Wrap
@@ -80,9 +159,8 @@ public sealed partial class MainWindow
             }
         };
 
-        var content = new StackPanel { Spacing = 10 };
-        content.Children.Add(heading);
-        content.Children.Add(statusBadge);
+        var content = new StackPanel { Spacing = 14 };
+        content.Children.Add(headerPanel);
         content.Children.Add(summary);
         content.Children.Add(details);
         content.Children.Add(assessment);
