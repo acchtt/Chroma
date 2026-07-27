@@ -20,6 +20,7 @@ public partial class App : Application
         MainWindowInstance = new MainWindow();
         MainWindowInstance.EnableUpdateExperience();
         MainWindowInstance.EnableGpuSelector();
+        MainWindowInstance.EnableAntiCheatSafety();
         BrandPalette.Apply(Resources);
         MainWindowInstance.Activate();
         MainWindowInstance.NotifyWindowOpened();
