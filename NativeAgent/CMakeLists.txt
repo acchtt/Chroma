@@ -21,6 +21,8 @@ set(CHROMA_AGENT_SOURCES
     Logger.cpp
     Settings.cpp
     ChromaRuntime.cpp
+    DisplayModeManager.cpp
+    ResolutionOverride.cpp
     ColorBackendFactory.cpp
     IntelColorBackend.cpp
     NvidiaColorBackend.cpp
