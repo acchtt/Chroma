@@ -22,9 +22,13 @@ public sealed partial class MainWindow
     {
         LoadResolutionOverrides();
 
+        // Match only the original placeholder panel. The outer profile-editor card
+        // also contains these labels recursively, so requiring a direct StackPanel
+        // child prevents replacing the entire editor surface.
         Border? reservedPanel = FindResolutionDescendant<Border>(ProfilesPage, border =>
-            ResolutionPanelContainsText(border, "Custom resolution") &&
-            ResolutionPanelContainsText(border, "Coming soon"));
+            border.Child is StackPanel &&
+            ResolutionPanelContainsText(border.Child, "Custom resolution") &&
+            ResolutionPanelContainsText(border.Child, "Coming soon"));
         if (reservedPanel is null)
         {
             return;
