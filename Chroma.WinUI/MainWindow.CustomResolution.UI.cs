@@ -12,8 +12,10 @@ public sealed partial class MainWindow
         new(StringComparer.OrdinalIgnoreCase);
 
     private ToggleSwitch? _customResolutionToggle;
-    private TextBox? _resolutionWidthTextBox;
-    private TextBox? _resolutionHeightTextBox;
+    private ComboBox? _resolutionWidthComboBox;
+    private ComboBox? _resolutionHeightComboBox;
+    private IReadOnlyList<DisplayResolution> _supportedDisplayResolutions =
+        Array.Empty<DisplayResolution>();
     private FrameworkElement? _resolutionFields;
     private TextBlock? _resolutionStatusText;
     private bool _syncingResolutionEditor;
@@ -85,8 +87,12 @@ public sealed partial class MainWindow
         header.Children.Add(heading);
         header.Children.Add(_customResolutionToggle);
 
-        var widthStack = CreateResolutionField("Width", out _resolutionWidthTextBox, "1680");
-        var heightStack = CreateResolutionField("Height", out _resolutionHeightTextBox, "1050");
+        StackPanel widthStack = CreateResolutionField(
+            "Width",
+            out _resolutionWidthComboBox);
+        StackPanel heightStack = CreateResolutionField(
+            "Height",
+            out _resolutionHeightComboBox);
 
         var fieldsGrid = new Grid { ColumnSpacing = 10 };
         fieldsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -120,7 +126,7 @@ public sealed partial class MainWindow
         });
         var refreshText = new TextBlock
         {
-            Text = "Only driver-supported modes at the current refresh rate are applied.",
+            Text = "Dropdowns use modes exposed by active displays at their current refresh rates. The game monitor is validated again at launch.",
             Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
             FontSize = 11.5,
             TextWrapping = TextWrapping.Wrap,
@@ -144,22 +150,22 @@ public sealed partial class MainWindow
         panel.Child = content;
     }
 
-    private StackPanel CreateResolutionField(string label, out TextBox textBox, string placeholder)
+    private StackPanel CreateResolutionField(
+        string label,
+        out ComboBox comboBox)
     {
-        textBox = new TextBox
+        comboBox = new ComboBox
         {
             Height = 42,
-            MaxLength = 5,
-            PlaceholderText = placeholder,
-            TextAlignment = TextAlignment.Center,
-            HorizontalContentAlignment = HorizontalAlignment.Center,
+            PlaceholderText = "Select",
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            HorizontalContentAlignment = HorizontalAlignment.Stretch,
             VerticalContentAlignment = VerticalAlignment.Center,
             FontSize = 15,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            MaxDropDownHeight = 300
         };
-        textBox.BeforeTextChanging += ResolutionTextBox_BeforeTextChanging;
-        textBox.TextChanged += ResolutionTextBox_TextChanged;
-        textBox.LostFocus += (_, _) => UpdateResolutionEditorState();
+        comboBox.SelectionChanged += ResolutionComboBox_SelectionChanged;
 
         var stack = new StackPanel { Spacing = 5 };
         stack.Children.Add(new TextBlock
@@ -168,7 +174,7 @@ public sealed partial class MainWindow
             Foreground = (Brush)Application.Current.Resources["TextSecondaryBrush"],
             FontSize = 11.5
         });
-        stack.Children.Add(textBox);
+        stack.Children.Add(comboBox);
         return stack;
     }
 
