@@ -23,6 +23,7 @@ public partial class App : Application
         MainWindowInstance.EnableCustomResolutionEditor();
         MainWindowInstance.EnableProfileLayoutRefresh();
         MainWindowInstance.EnableUpdateButtonCopy();
+        MainWindowInstance.EnableFooterUtilityBar();
         MainWindowInstance.EnableAntiCheatSafety();
         BrandPalette.Apply(Resources);
         MainWindowInstance.Activate();
