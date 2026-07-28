@@ -20,9 +20,9 @@ public sealed partial class MainWindow
 
     private void SetIdleUpdateButtonText()
     {
-        if (UpdatesButtonText.Text is "Updates" or "Up to date")
+        if (UpdatesButtonText.Text is "Updates" or "Up to date" or "Check for updates")
         {
-            UpdatesButtonText.Text = "Check for updates";
+            UpdatesButtonText.Text = "Check updates";
         }
     }
 }
