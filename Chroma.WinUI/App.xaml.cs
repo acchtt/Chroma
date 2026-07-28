@@ -21,6 +21,7 @@ public partial class App : Application
         MainWindowInstance.EnableUpdateExperience();
         MainWindowInstance.EnableGpuSelector();
         MainWindowInstance.EnableCustomResolutionEditor();
+        MainWindowInstance.EnableCustomResolutionDropdowns();
         MainWindowInstance.EnableProfileLayoutRefresh();
         MainWindowInstance.EnableUpdateButtonCopy();
         MainWindowInstance.EnableFooterUtilityBar();
