@@ -8,6 +8,7 @@ namespace Chroma;
 public sealed partial class MainWindow
 {
     private bool _footerUtilityBarEnabled;
+    private bool _footerUtilityBarApplied;
 
     public void EnableFooterUtilityBar()
     {
@@ -17,11 +18,22 @@ public sealed partial class MainWindow
         }
 
         _footerUtilityBarEnabled = true;
+        ProfilesPage.Loaded += ProfilesPage_LoadedForFooterUtilityBar;
+        DispatcherQueue.TryEnqueue(ApplyFooterUtilityBar);
+    }
+
+    private void ProfilesPage_LoadedForFooterUtilityBar(object sender, RoutedEventArgs e)
+    {
         ApplyFooterUtilityBar();
     }
 
     private void ApplyFooterUtilityBar()
     {
+        if (_footerUtilityBarApplied)
+        {
+            return;
+        }
+
         Border? footer = ProfilesPage.Children
             .OfType<Border>()
             .FirstOrDefault(border => Grid.GetRow(border) == 1 && Grid.GetColumnSpan(border) == 2);
@@ -56,14 +68,14 @@ public sealed partial class MainWindow
         FooterVersionText.Foreground = (Brush)Application.Current.Resources["TextMutedBrush"];
         FooterVersionText.VerticalAlignment = VerticalAlignment.Center;
 
-        FooterBrandLogo.Width = 44;
-        FooterBrandLogo.Height = 44;
+        FooterBrandLogo.Width = 40;
+        FooterBrandLogo.Height = 40;
         FooterBrandLogo.Margin = new Thickness(4, 0, 0, 0);
         FooterBrandLogo.VerticalAlignment = VerticalAlignment.Center;
 
         var appDetails = new StackPanel
         {
-            Spacing = 3,
+            Spacing = 2,
             VerticalAlignment = VerticalAlignment.Center
         };
         appDetails.Children.Add(new TextBlock
@@ -101,14 +113,15 @@ public sealed partial class MainWindow
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(94);
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(82);
         }
 
-        footer.Margin = new Thickness(0, 12, 0, 0);
-        footer.Padding = new Thickness(18, 12, 18, 12);
-        footer.MinHeight = 82;
+        footer.Margin = new Thickness(0, 10, 0, 0);
+        footer.Padding = new Thickness(16, 8, 16, 8);
+        footer.MinHeight = 72;
         footer.CornerRadius = new CornerRadius(14);
         footer.Child = utilityGrid;
+        _footerUtilityBarApplied = true;
     }
 
     private static void ConfigureFooterActionButton(Button button, double width)

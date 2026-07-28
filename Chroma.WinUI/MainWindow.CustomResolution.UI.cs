@@ -17,6 +17,7 @@ public sealed partial class MainWindow
     private IReadOnlyList<DisplayResolution> _supportedDisplayResolutions =
         Array.Empty<DisplayResolution>();
     private FrameworkElement? _resolutionFields;
+    private FrameworkElement? _resolutionDetails;
     private TextBlock? _resolutionStatusText;
     private bool _syncingResolutionEditor;
 
@@ -67,7 +68,7 @@ public sealed partial class MainWindow
         });
         heading.Children.Add(new TextBlock
         {
-            Text = "Switch the game display and restore the desktop mode automatically.",
+            Text = "Use a supported display mode while this game is active.",
             Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
             FontSize = 11.5,
             TextWrapping = TextWrapping.Wrap
@@ -126,7 +127,7 @@ public sealed partial class MainWindow
         });
         var refreshText = new TextBlock
         {
-            Text = "Dropdowns use modes exposed by active displays at their current refresh rates. The game monitor is validated again at launch.",
+            Text = "Available modes at the current refresh rate.",
             Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
             FontSize = 11.5,
             TextWrapping = TextWrapping.Wrap,
@@ -142,11 +143,19 @@ public sealed partial class MainWindow
             TextWrapping = TextWrapping.Wrap
         };
 
-        var content = new StackPanel { Spacing = 11 };
+        var details = new StackPanel
+        {
+            Spacing = 9,
+            Visibility = Visibility.Collapsed
+        };
+        details.Children.Add(fieldsGrid);
+        details.Children.Add(refreshNote);
+        details.Children.Add(_resolutionStatusText);
+        _resolutionDetails = details;
+
+        var content = new StackPanel { Spacing = 10 };
         content.Children.Add(header);
-        content.Children.Add(fieldsGrid);
-        content.Children.Add(refreshNote);
-        content.Children.Add(_resolutionStatusText);
+        content.Children.Add(details);
         panel.Child = content;
     }
 
