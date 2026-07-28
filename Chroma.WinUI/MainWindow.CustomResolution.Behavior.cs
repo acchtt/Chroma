@@ -33,18 +33,36 @@ public sealed partial class MainWindow
         }
     }
 
-    private void ResolutionTextBox_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+    private void ResolutionComboBox_SelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
     {
-        args.Cancel = !string.IsNullOrEmpty(args.NewText) &&
-            (args.NewText.Length > 5 || !args.NewText.All(char.IsDigit));
-    }
-
-    private void ResolutionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (!_syncingResolutionEditor)
+        if (_syncingResolutionEditor)
         {
-            UpdateResolutionEditorState();
+            return;
         }
+
+        if (ReferenceEquals(sender, _resolutionWidthComboBox) &&
+            TryGetSelectedResolutionValue(_resolutionWidthComboBox, out int selectedWidth))
+        {
+            int preferredHeight = TryGetSelectedResolutionValue(
+                _resolutionHeightComboBox,
+                out int selectedHeight)
+                ? selectedHeight
+                : 0;
+
+            _syncingResolutionEditor = true;
+            try
+            {
+                PopulateResolutionHeights(selectedWidth, preferredHeight);
+            }
+            finally
+            {
+                _syncingResolutionEditor = false;
+            }
+        }
+
+        UpdateResolutionEditorState();
     }
 
     private async void SaveEditorWithResolution_Click(object sender, RoutedEventArgs e)
@@ -57,9 +75,7 @@ public sealed partial class MainWindow
 
         if (!TryReadResolutionEditor(out ResolutionOverride? resolution))
         {
-            _viewModel.Notification =
-                $"Resolution must be {ResolutionOverrideStore.MinimumWidth}–{ResolutionOverrideStore.MaximumWidth} pixels wide and " +
-                $"{ResolutionOverrideStore.MinimumHeight}–{ResolutionOverrideStore.MaximumHeight} pixels high.";
+            _viewModel.Notification = "Choose a valid width and height from the available display modes.";
             UpdateResolutionEditorState();
             return;
         }
@@ -97,8 +113,8 @@ public sealed partial class MainWindow
     private void SyncCustomResolutionEditor()
     {
         if (_customResolutionToggle is null ||
-            _resolutionWidthTextBox is null ||
-            _resolutionHeightTextBox is null)
+            _resolutionWidthComboBox is null ||
+            _resolutionHeightComboBox is null)
         {
             return;
         }
@@ -111,10 +127,21 @@ public sealed partial class MainWindow
             bool hasOverride = profile is not null &&
                 _resolutionOverrides.TryGetValue(profile.ExecutablePath, out resolution);
 
+            DisplayModeSnapshot snapshot = DisplayModeCatalog.GetSnapshot();
+            int preferredWidth = hasOverride
+                ? resolution.Width
+                : snapshot.Preferred.Width;
+            int preferredHeight = hasOverride
+                ? resolution.Height
+                : snapshot.Preferred.Height;
+
+            PopulateResolutionSelectors(
+                snapshot,
+                preferredWidth,
+                preferredHeight);
+
             _customResolutionToggle.IsEnabled = profile is not null;
             _customResolutionToggle.IsOn = hasOverride;
-            _resolutionWidthTextBox.Text = hasOverride ? resolution.Width.ToString() : "1920";
-            _resolutionHeightTextBox.Text = hasOverride ? resolution.Height.ToString() : "1080";
         }
         finally
         {
@@ -124,11 +151,110 @@ public sealed partial class MainWindow
         UpdateResolutionEditorState();
     }
 
+    private void PopulateResolutionSelectors(
+        DisplayModeSnapshot snapshot,
+        int preferredWidth,
+        int preferredHeight)
+    {
+        var modes = snapshot.Modes.ToList();
+        var preferredMode = new DisplayResolution(preferredWidth, preferredHeight);
+        if (ResolutionOverrideStore.IsValid(preferredWidth, preferredHeight) &&
+            !modes.Contains(preferredMode))
+        {
+            // Preserve an existing profile value when its monitor is currently
+            // disconnected. The native agent will validate it again at launch.
+            modes.Add(preferredMode);
+        }
+
+        _supportedDisplayResolutions = modes
+            .Distinct()
+            .OrderByDescending(mode => mode.Width)
+            .ThenByDescending(mode => mode.Height)
+            .ToArray();
+
+        int[] widths = _supportedDisplayResolutions
+            .Select(mode => mode.Width)
+            .Distinct()
+            .OrderByDescending(width => width)
+            .ToArray();
+
+        int selectedWidth = widths.Contains(preferredWidth)
+            ? preferredWidth
+            : widths.Contains(snapshot.Preferred.Width)
+                ? snapshot.Preferred.Width
+                : widths[0];
+
+        SetResolutionComboItems(
+            _resolutionWidthComboBox,
+            widths,
+            selectedWidth);
+        PopulateResolutionHeights(selectedWidth, preferredHeight);
+    }
+
+    private void PopulateResolutionHeights(
+        int selectedWidth,
+        int preferredHeight)
+    {
+        int[] heights = _supportedDisplayResolutions
+            .Where(mode => mode.Width == selectedWidth)
+            .Select(mode => mode.Height)
+            .Distinct()
+            .OrderByDescending(height => height)
+            .ToArray();
+
+        if (heights.Length == 0)
+        {
+            _resolutionHeightComboBox?.Items.Clear();
+            return;
+        }
+
+        int selectedHeight = heights.Contains(preferredHeight)
+            ? preferredHeight
+            : preferredHeight > 0
+                ? heights.OrderBy(height => Math.Abs(height - preferredHeight)).First()
+                : heights[0];
+
+        SetResolutionComboItems(
+            _resolutionHeightComboBox,
+            heights,
+            selectedHeight);
+    }
+
+    private static void SetResolutionComboItems(
+        ComboBox? comboBox,
+        IEnumerable<int> values,
+        int selectedValue)
+    {
+        if (comboBox is null)
+        {
+            return;
+        }
+
+        comboBox.Items.Clear();
+        ComboBoxItem? selectedItem = null;
+        foreach (int value in values)
+        {
+            var item = new ComboBoxItem
+            {
+                Content = value.ToString(),
+                Tag = value,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
+            comboBox.Items.Add(item);
+            if (value == selectedValue)
+            {
+                selectedItem = item;
+            }
+        }
+
+        comboBox.SelectedItem = selectedItem ?? comboBox.Items.FirstOrDefault();
+    }
+
     private void UpdateResolutionEditorState()
     {
         if (_customResolutionToggle is null ||
-            _resolutionWidthTextBox is null ||
-            _resolutionHeightTextBox is null ||
+            _resolutionWidthComboBox is null ||
+            _resolutionHeightComboBox is null ||
             _resolutionFields is null ||
             _resolutionStatusText is null)
         {
@@ -136,8 +262,8 @@ public sealed partial class MainWindow
         }
 
         bool enabled = _customResolutionToggle.IsEnabled && _customResolutionToggle.IsOn;
-        _resolutionWidthTextBox.IsEnabled = enabled;
-        _resolutionHeightTextBox.IsEnabled = enabled;
+        _resolutionWidthComboBox.IsEnabled = enabled;
+        _resolutionHeightComboBox.IsEnabled = enabled;
         _resolutionFields.IsHitTestVisible = enabled;
         _resolutionFields.Opacity = enabled ? 1 : 0.52;
 
@@ -159,8 +285,7 @@ public sealed partial class MainWindow
         else
         {
             _resolutionStatusText.Text =
-                $"Enter {ResolutionOverrideStore.MinimumWidth}–{ResolutionOverrideStore.MaximumWidth} for width and " +
-                $"{ResolutionOverrideStore.MinimumHeight}–{ResolutionOverrideStore.MaximumHeight} for height.";
+                "Choose a width and height from the available display-mode lists.";
             _resolutionStatusText.Foreground =
                 (Brush)Application.Current.Resources["TextSecondaryBrush"];
         }
@@ -185,9 +310,28 @@ public sealed partial class MainWindow
 
     private bool TryParseResolutionFields(out int width, out int height)
     {
-        bool validWidth = int.TryParse(_resolutionWidthTextBox?.Text, out width);
-        bool validHeight = int.TryParse(_resolutionHeightTextBox?.Text, out height);
-        return validWidth && validHeight && ResolutionOverrideStore.IsValid(width, height);
+        bool validWidth = TryGetSelectedResolutionValue(
+            _resolutionWidthComboBox,
+            out width);
+        bool validHeight = TryGetSelectedResolutionValue(
+            _resolutionHeightComboBox,
+            out height);
+        return validWidth && validHeight &&
+            ResolutionOverrideStore.IsValid(width, height);
+    }
+
+    private static bool TryGetSelectedResolutionValue(
+        ComboBox? comboBox,
+        out int value)
+    {
+        if (comboBox?.SelectedItem is ComboBoxItem { Tag: int selectedValue })
+        {
+            value = selectedValue;
+            return true;
+        }
+
+        value = 0;
+        return false;
     }
 
     private void Profiles_CollectionChangedForResolution(object? sender, NotifyCollectionChangedEventArgs e)
