@@ -22,6 +22,7 @@ public partial class App : Application
         MainWindowInstance.EnableGpuSelector();
         MainWindowInstance.EnableCustomResolutionEditor();
         MainWindowInstance.EnableProfileLayoutRefresh();
+        MainWindowInstance.EnableProfileEditorComfort();
         MainWindowInstance.EnableUpdateButtonCopy();
         MainWindowInstance.EnableFooterUtilityBar();
         MainWindowInstance.EnableAntiCheatSafety();
