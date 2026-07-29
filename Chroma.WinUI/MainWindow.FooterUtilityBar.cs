@@ -1,4 +1,3 @@
-using Chroma.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -66,16 +65,13 @@ public sealed partial class MainWindow
         FooterBrandLogo.Width = 56;
         FooterBrandLogo.Height = 56;
         FooterBrandLogo.Margin = new Thickness(0);
+        FooterBrandLogo.HorizontalAlignment = HorizontalAlignment.Center;
         FooterBrandLogo.VerticalAlignment = VerticalAlignment.Center;
-
-        FooterVersionText.Text = $"{UpdateService.CurrentVersionTag}  •  WinUI 3  •  .NET 8";
-        FooterVersionText.FontSize = 12;
-        FooterVersionText.Foreground = (Brush)Application.Current.Resources["TextMutedBrush"];
-        FooterVersionText.VerticalAlignment = VerticalAlignment.Center;
 
         var brandText = new StackPanel
         {
             Spacing = 4,
+            HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
         brandText.Children.Add(new TextBlock
@@ -83,20 +79,28 @@ public sealed partial class MainWindow
             Text = "Chroma",
             FontSize = 24,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Foreground = (Brush)Application.Current.Resources["CyanBrush"]
+            Foreground = (Brush)Application.Current.Resources["CyanBrush"],
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
         });
-        brandText.Children.Add(FooterVersionText);
-
-        var brandBlock = new Grid
+        brandText.Children.Add(new TextBlock
         {
-            MinWidth = 300,
-            ColumnSpacing = 18,
+            Text = "created by acchtt",
+            FontSize = 12,
+            Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+
+        var brandBlock = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 18,
+            MinWidth = 330,
+            Height = 64,
+            HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
-        brandBlock.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        brandBlock.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        Grid.SetColumn(FooterBrandLogo, 0);
-        Grid.SetColumn(brandText, 1);
         brandBlock.Children.Add(FooterBrandLogo);
         brandBlock.Children.Add(brandText);
 
@@ -104,8 +108,9 @@ public sealed partial class MainWindow
         {
             Width = 1,
             Height = 52,
-            Margin = new Thickness(12, 0, 12, 0),
+            Margin = new Thickness(28, 0, 28, 0),
             Background = (Brush)Application.Current.Resources["StrokeBrush"],
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
 
@@ -121,6 +126,7 @@ public sealed partial class MainWindow
             Glyph = "\uE83D",
             FontSize = 19,
             Foreground = (Brush)Application.Current.Resources["PositiveBrush"],
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         });
         safeContent.Children.Add(new TextBlock
@@ -129,6 +135,7 @@ public sealed partial class MainWindow
             FontSize = 14,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Foreground = (Brush)Application.Current.Resources["TextPrimaryBrush"],
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         });
 
@@ -142,19 +149,26 @@ public sealed partial class MainWindow
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(12),
             Child = safeContent,
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
-        ToolTipService.SetToolTip(
-            safeBadge,
-            "External GPU-control architecture. No game injection or game-memory access. Not an official anti-cheat certification.");
 
-        var actionGroup = new StackPanel
+        var actionGroup = new Grid
         {
-            Orientation = Orientation.Horizontal,
-            Spacing = 16,
+            ColumnSpacing = 16,
+            Height = 44,
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Center
         };
+        actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+        Grid.SetColumn(safeBadge, 0);
+        Grid.SetColumn(websiteButton, 1);
+        Grid.SetColumn(githubButton, 2);
+        Grid.SetColumn(UpdatesButton, 3);
         actionGroup.Children.Add(safeBadge);
         actionGroup.Children.Add(websiteButton);
         actionGroup.Children.Add(githubButton);
@@ -162,7 +176,9 @@ public sealed partial class MainWindow
 
         var commandBar = new Grid
         {
-            VerticalAlignment = VerticalAlignment.Stretch
+            Height = 64,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Center
         };
         commandBar.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         commandBar.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -178,16 +194,17 @@ public sealed partial class MainWindow
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(122);
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(110);
         }
 
         footer.Margin = new Thickness(0, 12, 0, 0);
-        footer.Padding = new Thickness(24, 16, 24, 16);
+        footer.Padding = new Thickness(24, 14, 24, 14);
         footer.MinHeight = 110;
         footer.CornerRadius = new CornerRadius(18);
         footer.BorderThickness = new Thickness(1);
         footer.BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"];
         footer.Background = (Brush)Application.Current.Resources["PanelBrush"];
+        footer.VerticalAlignment = VerticalAlignment.Center;
         footer.Child = commandBar;
         _footerUtilityBarApplied = true;
     }
@@ -197,19 +214,24 @@ public sealed partial class MainWindow
         button.Width = width;
         button.Height = 44;
         button.MinHeight = 44;
+        button.Margin = new Thickness(0);
         button.Padding = new Thickness(16, 0, 16, 0);
-        button.HorizontalAlignment = HorizontalAlignment.Right;
+        button.HorizontalAlignment = HorizontalAlignment.Center;
         button.VerticalAlignment = VerticalAlignment.Center;
+        button.HorizontalContentAlignment = HorizontalAlignment.Center;
+        button.VerticalContentAlignment = VerticalAlignment.Center;
         button.CornerRadius = new CornerRadius(12);
 
         foreach (FontIcon icon in EnumerateLayoutDescendants<FontIcon>(button))
         {
             icon.FontSize = 18;
+            icon.VerticalAlignment = VerticalAlignment.Center;
         }
 
         foreach (TextBlock text in EnumerateLayoutDescendants<TextBlock>(button))
         {
             text.FontSize = 14;
+            text.VerticalAlignment = VerticalAlignment.Center;
         }
     }
 
