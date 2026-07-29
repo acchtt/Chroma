@@ -68,9 +68,9 @@ public sealed partial class MainWindow
         FooterVersionText.Foreground = (Brush)Application.Current.Resources["TextMutedBrush"];
         FooterVersionText.VerticalAlignment = VerticalAlignment.Center;
 
-        FooterBrandLogo.Width = 40;
-        FooterBrandLogo.Height = 40;
-        FooterBrandLogo.Margin = new Thickness(4, 0, 0, 0);
+        FooterBrandLogo.Width = 44;
+        FooterBrandLogo.Height = 44;
+        FooterBrandLogo.Margin = new Thickness(0);
         FooterBrandLogo.VerticalAlignment = VerticalAlignment.Center;
 
         var appDetails = new StackPanel
@@ -81,11 +81,70 @@ public sealed partial class MainWindow
         appDetails.Children.Add(new TextBlock
         {
             Text = "Chroma",
-            FontSize = 14,
+            FontSize = 16,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Foreground = (Brush)Application.Current.Resources["CyanBrush"]
         });
         appDetails.Children.Add(FooterVersionText);
+
+        var brandBlock = new Grid
+        {
+            ColumnSpacing = 12,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        brandBlock.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        brandBlock.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        Grid.SetColumn(FooterBrandLogo, 0);
+        Grid.SetColumn(appDetails, 1);
+        brandBlock.Children.Add(FooterBrandLogo);
+        brandBlock.Children.Add(appDetails);
+
+        var divider = new Border
+        {
+            Width = 1,
+            Height = 38,
+            Margin = new Thickness(10, 0, 10, 0),
+            Background = (Brush)Application.Current.Resources["StrokeBrush"],
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        var safeContent = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 8,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        safeContent.Children.Add(new FontIcon
+        {
+            Glyph = "\uE83D",
+            FontSize = 17,
+            Foreground = (Brush)Application.Current.Resources["PositiveBrush"]
+        });
+        safeContent.Children.Add(new TextBlock
+        {
+            Text = "SAFE",
+            FontSize = 12,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            Foreground = (Brush)Application.Current.Resources["PositiveBrush"],
+            VerticalAlignment = VerticalAlignment.Center
+        });
+
+        var safeBadge = new Border
+        {
+            Width = 92,
+            Height = 36,
+            Padding = new Thickness(10, 0, 10, 0),
+            Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(9),
+            Child = safeContent,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        ToolTipService.SetToolTip(
+            safeBadge,
+            "External GPU-control architecture. No game injection or game-memory access. Not an official anti-cheat certification.");
 
         var utilityGrid = new Grid
         {
@@ -93,32 +152,35 @@ public sealed partial class MainWindow
             VerticalAlignment = VerticalAlignment.Center
         };
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         utilityGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-        Grid.SetColumn(appDetails, 0);
-        Grid.SetColumn(websiteButton, 2);
-        Grid.SetColumn(githubButton, 3);
-        Grid.SetColumn(UpdatesButton, 4);
-        Grid.SetColumn(FooterBrandLogo, 5);
+        Grid.SetColumn(brandBlock, 0);
+        Grid.SetColumn(divider, 1);
+        Grid.SetColumn(safeBadge, 3);
+        Grid.SetColumn(websiteButton, 4);
+        Grid.SetColumn(githubButton, 5);
+        Grid.SetColumn(UpdatesButton, 6);
 
-        utilityGrid.Children.Add(appDetails);
+        utilityGrid.Children.Add(brandBlock);
+        utilityGrid.Children.Add(divider);
+        utilityGrid.Children.Add(safeBadge);
         utilityGrid.Children.Add(websiteButton);
         utilityGrid.Children.Add(githubButton);
         utilityGrid.Children.Add(UpdatesButton);
-        utilityGrid.Children.Add(FooterBrandLogo);
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(82);
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(88);
         }
 
         footer.Margin = new Thickness(0, 10, 0, 0);
-        footer.Padding = new Thickness(16, 8, 16, 8);
-        footer.MinHeight = 72;
+        footer.Padding = new Thickness(16, 10, 16, 10);
+        footer.MinHeight = 78;
         footer.CornerRadius = new CornerRadius(14);
         footer.Child = utilityGrid;
         _footerUtilityBarApplied = true;
