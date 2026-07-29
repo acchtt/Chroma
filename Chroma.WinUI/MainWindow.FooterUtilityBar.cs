@@ -57,9 +57,9 @@ public sealed partial class MainWindow
         DetachFooterElement(FooterVersionText);
         DetachFooterElement(FooterBrandLogo);
 
-        ConfigureFooterActionButton(websiteButton, 130);
-        ConfigureFooterActionButton(githubButton, 130);
-        ConfigureFooterActionButton(UpdatesButton, 170);
+        ConfigureFooterActionButton(websiteButton, 128);
+        ConfigureFooterActionButton(githubButton, 128);
+        ConfigureFooterActionButton(UpdatesButton, 164);
         UpdatesButtonText.Text = "Check updates";
 
         FooterBrandLogo.Width = 56;
@@ -96,7 +96,7 @@ public sealed partial class MainWindow
         {
             Orientation = Orientation.Horizontal,
             Spacing = 18,
-            MinWidth = 330,
+            MinWidth = 300,
             Height = 64,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
@@ -108,7 +108,7 @@ public sealed partial class MainWindow
         {
             Width = 1,
             Height = 52,
-            Margin = new Thickness(28, 0, 28, 0),
+            Margin = new Thickness(24, 0, 24, 0),
             Background = (Brush)Application.Current.Resources["StrokeBrush"],
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
@@ -163,13 +163,10 @@ public sealed partial class MainWindow
         actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        actionGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-        Grid.SetColumn(safeBadge, 0);
-        Grid.SetColumn(websiteButton, 1);
-        Grid.SetColumn(githubButton, 2);
-        Grid.SetColumn(UpdatesButton, 3);
-        actionGroup.Children.Add(safeBadge);
+        Grid.SetColumn(websiteButton, 0);
+        Grid.SetColumn(githubButton, 1);
+        Grid.SetColumn(UpdatesButton, 2);
         actionGroup.Children.Add(websiteButton);
         actionGroup.Children.Add(githubButton);
         actionGroup.Children.Add(UpdatesButton);
@@ -187,9 +184,11 @@ public sealed partial class MainWindow
 
         Grid.SetColumn(brandBlock, 0);
         Grid.SetColumn(divider, 1);
+        Grid.SetColumn(safeBadge, 2);
         Grid.SetColumn(actionGroup, 3);
         commandBar.Children.Add(brandBlock);
         commandBar.Children.Add(divider);
+        commandBar.Children.Add(safeBadge);
         commandBar.Children.Add(actionGroup);
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
