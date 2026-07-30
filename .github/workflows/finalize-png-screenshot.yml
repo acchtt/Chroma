@@ -1,0 +1,112 @@
+name: Finalize exact PNG screenshot
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/png-lossless-final
+          fetch-depth: 0
+
+      - name: Reconstruct and verify PNG
+        shell: python
+        run: |
+          from pathlib import Path
+          import base64
+          import hashlib
+          import struct
+          import zlib
+
+          parts = sorted(Path('.github/png-parts').glob('part*.b64'))
+          if len(parts) != 6:
+              raise SystemExit(f'Expected 6 PNG parts, found {len(parts)}')
+
+          encoded = ''.join(part.read_text(encoding='utf-8').strip() for part in parts)
+          data = base64.b64decode(encoded, validate=True)
+
+          signature = b'\x89PNG\r\n\x1a\n'
+          if data[:8] != signature:
+              raise SystemExit('File does not have a valid PNG signature')
+
+          offset = 8
+          width = height = None
+          saw_iend = False
+          while offset < len(data):
+              if offset + 12 > len(data):
+                  raise SystemExit('Truncated PNG chunk header')
+              length = struct.unpack('>I', data[offset:offset + 4])[0]
+              chunk_type = data[offset + 4:offset + 8]
+              chunk_end = offset + 12 + length
+              if chunk_end > len(data):
+                  raise SystemExit(f'Truncated PNG chunk: {chunk_type!r}')
+              chunk_data = data[offset + 8:offset + 8 + length]
+              expected_crc = struct.unpack('>I', data[offset + 8 + length:chunk_end])[0]
+              actual_crc = zlib.crc32(chunk_type + chunk_data) & 0xffffffff
+              if actual_crc != expected_crc:
+                  raise SystemExit(f'PNG CRC mismatch in {chunk_type!r}')
+              if chunk_type == b'IHDR':
+                  width, height = struct.unpack('>II', chunk_data[:8])
+              if chunk_type == b'IEND':
+                  saw_iend = True
+                  offset = chunk_end
+                  break
+              offset = chunk_end
+
+          if not saw_iend or offset != len(data):
+              raise SystemExit('PNG is missing a clean IEND terminator')
+          if (width, height) != (1266, 813):
+              raise SystemExit(f'Unexpected PNG dimensions: {width}x{height}')
+
+          print(f'Validated PNG: {width}x{height}, {len(data)} bytes')
+          print(f'SHA-256: {hashlib.sha256(data).hexdigest()}')
+
+          output = Path('website/assets/chroma-app-v13-final.png')
+          output.write_bytes(data)
+
+          readme = Path('README.md')
+          readme_text = readme.read_text(encoding='utf-8').replace(
+              'website/assets/chroma-app-v13.webp',
+              'website/assets/chroma-app-v13-final.png',
+          )
+          if 'website/assets/chroma-app-v13-final.png' not in readme_text:
+              raise SystemExit('README screenshot reference was not updated')
+          readme.write_text(readme_text, encoding='utf-8')
+
+          index = Path('website/index.html')
+          index_text = index.read_text(encoding='utf-8').replace(
+              'assets/chroma-app-v13.webp',
+              'assets/chroma-app-v13-final.png',
+          )
+          if 'assets/chroma-app-v13-final.png' not in index_text:
+              raise SystemExit('Website screenshot reference was not updated')
+          index.write_text(index_text, encoding='utf-8')
+
+          old_asset = Path('website/assets/chroma-app-v13.webp')
+          if old_asset.exists():
+              old_asset.unlink()
+
+      - name: Remove upload staging
+        shell: bash
+        run: |
+          rm -rf .github/png-parts
+          rm -rf .github/png-lossless
+          rm -f .github/workflows/finalize-png-screenshot.yml
+
+      - name: Commit clean screenshot replacement
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Replace screenshot with exact PNG"
+          git push origin HEAD:fix/png-lossless-final
