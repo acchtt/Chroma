@@ -59,35 +59,35 @@ public sealed partial class MainWindow
 
         ConfigureFooterActionButton(websiteButton, 112);
         ConfigureFooterActionButton(githubButton, 112);
-        ConfigureFooterActionButton(UpdatesButton, 152);
-        UpdatesButtonText.Text = "Check updates";
+        ConfigureFooterActionButton(UpdatesButton, 112);
+        UpdatesButtonText.Text = "Updates";
 
-        FooterBrandLogo.Width = 48;
-        FooterBrandLogo.Height = 48;
+        FooterBrandLogo.Width = 44;
+        FooterBrandLogo.Height = 44;
         FooterBrandLogo.Margin = new Thickness(0);
         FooterBrandLogo.HorizontalAlignment = HorizontalAlignment.Center;
         FooterBrandLogo.VerticalAlignment = VerticalAlignment.Center;
 
         var logoGlow = new Border
         {
-            Width = 68,
-            Height = 68,
+            Width = 62,
+            Height = 62,
             Background = (Brush)Application.Current.Resources["NeonGradientBrush"],
-            CornerRadius = new CornerRadius(18),
-            Opacity = 0.16,
+            CornerRadius = new CornerRadius(16),
+            Opacity = 0.07,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
 
         var logoFrame = new Border
         {
-            Width = 64,
-            Height = 64,
-            Padding = new Thickness(7),
+            Width = 60,
+            Height = 60,
+            Padding = new Thickness(6),
             Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
-            BorderBrush = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"],
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(16),
+            CornerRadius = new CornerRadius(15),
             Child = FooterBrandLogo,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
@@ -95,8 +95,8 @@ public sealed partial class MainWindow
 
         var logoStage = new Grid
         {
-            Width = 68,
-            Height = 68,
+            Width = 62,
+            Height = 62,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -106,7 +106,7 @@ public sealed partial class MainWindow
         var brandTitle = new TextBlock
         {
             Text = "Chroma",
-            FontSize = 23,
+            FontSize = 22,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Foreground = (Brush)Application.Current.Resources["TextPrimaryBrush"],
             HorizontalAlignment = HorizontalAlignment.Left,
@@ -115,10 +115,11 @@ public sealed partial class MainWindow
 
         var titleAccent = new Border
         {
-            Width = 108,
-            Height = 2,
+            Width = 72,
+            Height = 1,
             Background = (Brush)Application.Current.Resources["PrimaryActionGradientBrush"],
             CornerRadius = new CornerRadius(1),
+            Opacity = 0.65,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -134,20 +135,20 @@ public sealed partial class MainWindow
 
         var sloganChip = new Border
         {
-            Height = 24,
-            Padding = new Thickness(10, 0, 10, 0),
-            Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
-            BorderBrush = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            Height = 22,
+            Padding = new Thickness(8, 0, 8, 0),
+            Background = (Brush)Application.Current.Resources["PanelBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"],
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(12),
+            CornerRadius = new CornerRadius(11),
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
             Child = new TextBlock
             {
                 Text = "Precision color, per game",
-                FontSize = 11,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                Foreground = (Brush)Application.Current.Resources["TextSecondaryBrush"],
+                FontSize = 10.5,
+                FontWeight = Microsoft.UI.Text.FontWeights.Normal,
+                Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
                 TextWrapping = TextWrapping.NoWrap,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
@@ -156,7 +157,7 @@ public sealed partial class MainWindow
 
         var brandText = new StackPanel
         {
-            Spacing = 2,
+            Spacing = 1,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -168,9 +169,9 @@ public sealed partial class MainWindow
         var brandBlock = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Spacing = 16,
-            MinWidth = 300,
-            Height = 72,
+            Spacing = 14,
+            MinWidth = 282,
+            Height = 66,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -180,10 +181,9 @@ public sealed partial class MainWindow
         var divider = new Border
         {
             Width = 1,
-            Height = 48,
-            Margin = new Thickness(20, 0, 20, 0),
-            Background = (Brush)Application.Current.Resources["NeonGradientBrush"],
-            Opacity = 0.32,
+            Height = 44,
+            Margin = new Thickness(16, 0, 16, 0),
+            Background = (Brush)Application.Current.Resources["StrokeBrush"],
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -261,8 +261,8 @@ public sealed partial class MainWindow
 
         var actionGroup = new Grid
         {
-            ColumnSpacing = 12,
-            Height = 46,
+            ColumnSpacing = 10,
+            Height = 44,
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -279,7 +279,7 @@ public sealed partial class MainWindow
 
         var commandBar = new Grid
         {
-            Height = 72,
+            Height = 66,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -299,12 +299,12 @@ public sealed partial class MainWindow
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(112);
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(104);
         }
 
         footer.Margin = new Thickness(0, 12, 0, 0);
-        footer.Padding = new Thickness(20, 12, 20, 12);
-        footer.MinHeight = 100;
+        footer.Padding = new Thickness(18, 10, 18, 10);
+        footer.MinHeight = 94;
         footer.CornerRadius = new CornerRadius(18);
         footer.BorderThickness = new Thickness(1);
         footer.BorderBrush = (Brush)Application.Current.Resources["FooterStrokeBrush"];
@@ -317,10 +317,10 @@ public sealed partial class MainWindow
     private void ConfigureFooterActionButton(Button button, double width)
     {
         button.Width = width;
-        button.Height = 46;
-        button.MinHeight = 46;
+        button.Height = 44;
+        button.MinHeight = 44;
         button.Margin = new Thickness(0);
-        button.Padding = new Thickness(14, 0, 14, 0);
+        button.Padding = new Thickness(12, 0, 12, 0);
         button.Background = (Brush)Application.Current.Resources["PanelRaisedBrush"];
         button.BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"];
         button.BorderThickness = new Thickness(1);
