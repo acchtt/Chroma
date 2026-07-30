@@ -57,62 +57,180 @@ public sealed partial class MainWindow
         DetachFooterElement(FooterVersionText);
         DetachFooterElement(FooterBrandLogo);
 
-        ConfigureFooterActionButton(websiteButton, 128);
-        ConfigureFooterActionButton(githubButton, 128);
-        ConfigureFooterActionButton(UpdatesButton, 164);
+        ConfigureFooterActionButton(websiteButton, 112);
+        ConfigureFooterActionButton(githubButton, 112);
+        ConfigureFooterActionButton(UpdatesButton, 152);
         UpdatesButtonText.Text = "Check updates";
 
-        FooterBrandLogo.Width = 56;
-        FooterBrandLogo.Height = 56;
+        FooterBrandLogo.Width = 48;
+        FooterBrandLogo.Height = 48;
         FooterBrandLogo.Margin = new Thickness(0);
         FooterBrandLogo.HorizontalAlignment = HorizontalAlignment.Center;
         FooterBrandLogo.VerticalAlignment = VerticalAlignment.Center;
 
-        var brandText = new StackPanel
+        var logoGlow = new Border
         {
-            Spacing = 4,
+            Width = 68,
+            Height = 68,
+            Background = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            CornerRadius = new CornerRadius(18),
+            Opacity = 0.16,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        var logoFrame = new Border
+        {
+            Width = 64,
+            Height = 64,
+            Padding = new Thickness(7),
+            Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(16),
+            Child = FooterBrandLogo,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        var logoStage = new Grid
+        {
+            Width = 68,
+            Height = 68,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        logoStage.Children.Add(logoGlow);
+        logoStage.Children.Add(logoFrame);
+
+        var brandTitle = new TextBlock
+        {
+            Text = "Chroma",
+            FontSize = 23,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            Foreground = (Brush)Application.Current.Resources["TextPrimaryBrush"],
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
-        brandText.Children.Add(new TextBlock
+
+        var titleAccent = new Border
         {
-            Text = "Chroma",
-            FontSize = 24,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Foreground = (Brush)Application.Current.Resources["CyanBrush"],
+            Width = 108,
+            Height = 2,
+            Background = (Brush)Application.Current.Resources["PrimaryActionGradientBrush"],
+            CornerRadius = new CornerRadius(1),
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
-        });
-        brandText.Children.Add(new TextBlock
+        };
+
+        var creatorText = new TextBlock
         {
             Text = "created by acchtt",
-            FontSize = 12,
+            FontSize = 11,
             Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
-        });
+        };
+
+        var sloganChip = new Border
+        {
+            Height = 24,
+            Padding = new Thickness(10, 0, 10, 0),
+            Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(12),
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = new TextBlock
+            {
+                Text = "Precision color, per game",
+                FontSize = 11,
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.Resources["TextSecondaryBrush"],
+                TextWrapping = TextWrapping.NoWrap,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            }
+        };
+
+        var brandText = new StackPanel
+        {
+            Spacing = 2,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        brandText.Children.Add(brandTitle);
+        brandText.Children.Add(titleAccent);
+        brandText.Children.Add(creatorText);
+        brandText.Children.Add(sloganChip);
 
         var brandBlock = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Spacing = 18,
+            Spacing = 16,
             MinWidth = 300,
-            Height = 64,
+            Height = 72,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center
         };
-        brandBlock.Children.Add(FooterBrandLogo);
+        brandBlock.Children.Add(logoStage);
         brandBlock.Children.Add(brandText);
 
         var divider = new Border
         {
             Width = 1,
-            Height = 52,
-            Margin = new Thickness(24, 0, 24, 0),
-            Background = (Brush)Application.Current.Resources["StrokeBrush"],
+            Height = 48,
+            Margin = new Thickness(20, 0, 20, 0),
+            Background = (Brush)Application.Current.Resources["NeonGradientBrush"],
+            Opacity = 0.32,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
+
+        var safeIcon = new Border
+        {
+            Width = 30,
+            Height = 30,
+            Background = (Brush)Application.Current.Resources["PanelBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(15),
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = new FontIcon
+            {
+                Glyph = "\uE83D",
+                FontSize = 16,
+                Foreground = (Brush)Application.Current.Resources["PositiveBrush"],
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            }
+        };
+
+        var safetyCopy = new StackPanel
+        {
+            Spacing = 1,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        safetyCopy.Children.Add(new TextBlock
+        {
+            Text = "Anti-cheat safe",
+            FontSize = 13.5,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            Foreground = (Brush)Application.Current.Resources["TextPrimaryBrush"],
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+        safetyCopy.Children.Add(new TextBlock
+        {
+            Text = "External GPU control",
+            FontSize = 10.5,
+            Foreground = (Brush)Application.Current.Resources["TextMutedBrush"],
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center
+        });
 
         var safeContent = new StackPanel
         {
@@ -121,42 +239,30 @@ public sealed partial class MainWindow
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
-        safeContent.Children.Add(new FontIcon
-        {
-            Glyph = "\uE83D",
-            FontSize = 19,
-            Foreground = (Brush)Application.Current.Resources["PositiveBrush"],
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center
-        });
-        safeContent.Children.Add(new TextBlock
-        {
-            Text = "Anti-cheat safe",
-            FontSize = 14,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Foreground = (Brush)Application.Current.Resources["TextPrimaryBrush"],
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center
-        });
+        safeContent.Children.Add(safeIcon);
+        safeContent.Children.Add(safetyCopy);
 
         var safeBadge = new Border
         {
-            Width = 190,
-            Height = 44,
-            Padding = new Thickness(16, 0, 16, 0),
+            Width = 180,
+            Height = 52,
+            Padding = new Thickness(14, 0, 14, 0),
             Background = (Brush)Application.Current.Resources["PanelRaisedBrush"],
             BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"],
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(12),
+            CornerRadius = new CornerRadius(14),
             Child = safeContent,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
+        ToolTipService.SetToolTip(
+            safeBadge,
+            "External GPU-control architecture. No game injection or game-memory access. Not an official anti-cheat certification.");
 
         var actionGroup = new Grid
         {
-            ColumnSpacing = 16,
-            Height = 44,
+            ColumnSpacing = 12,
+            Height = 46,
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -173,7 +279,7 @@ public sealed partial class MainWindow
 
         var commandBar = new Grid
         {
-            Height = 64,
+            Height = 72,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -193,16 +299,16 @@ public sealed partial class MainWindow
 
         if (ProfilesPage.RowDefinitions.Count >= 2)
         {
-            ProfilesPage.RowDefinitions[1].Height = new GridLength(110);
+            ProfilesPage.RowDefinitions[1].Height = new GridLength(112);
         }
 
         footer.Margin = new Thickness(0, 12, 0, 0);
-        footer.Padding = new Thickness(24, 14, 24, 14);
-        footer.MinHeight = 110;
+        footer.Padding = new Thickness(20, 12, 20, 12);
+        footer.MinHeight = 100;
         footer.CornerRadius = new CornerRadius(18);
         footer.BorderThickness = new Thickness(1);
-        footer.BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"];
-        footer.Background = (Brush)Application.Current.Resources["PanelBrush"];
+        footer.BorderBrush = (Brush)Application.Current.Resources["FooterStrokeBrush"];
+        footer.Background = (Brush)Application.Current.Resources["FooterBrush"];
         footer.VerticalAlignment = VerticalAlignment.Center;
         footer.Child = commandBar;
         _footerUtilityBarApplied = true;
@@ -211,10 +317,13 @@ public sealed partial class MainWindow
     private void ConfigureFooterActionButton(Button button, double width)
     {
         button.Width = width;
-        button.Height = 44;
-        button.MinHeight = 44;
+        button.Height = 46;
+        button.MinHeight = 46;
         button.Margin = new Thickness(0);
-        button.Padding = new Thickness(16, 0, 16, 0);
+        button.Padding = new Thickness(14, 0, 14, 0);
+        button.Background = (Brush)Application.Current.Resources["PanelRaisedBrush"];
+        button.BorderBrush = (Brush)Application.Current.Resources["StrokeBrush"];
+        button.BorderThickness = new Thickness(1);
         button.HorizontalAlignment = HorizontalAlignment.Center;
         button.VerticalAlignment = VerticalAlignment.Center;
         button.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -223,13 +332,13 @@ public sealed partial class MainWindow
 
         foreach (FontIcon icon in EnumerateLayoutDescendants<FontIcon>(button))
         {
-            icon.FontSize = 18;
+            icon.FontSize = 17;
             icon.VerticalAlignment = VerticalAlignment.Center;
         }
 
         foreach (TextBlock text in EnumerateLayoutDescendants<TextBlock>(button))
         {
-            text.FontSize = 14;
+            text.FontSize = 13.5;
             text.VerticalAlignment = VerticalAlignment.Center;
         }
     }
